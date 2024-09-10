@@ -2,7 +2,9 @@
 
 namespace toubeelib\core\domain\entities\rdv;
 
+use DateTime;
 use toubeelib\core\domain\entities\Entity;
+use toubeelib\core\domain\entities\praticien\Specialite;
 use toubeelib\core\dto\RdvDTO;
 
 class Rdv extends Entity
