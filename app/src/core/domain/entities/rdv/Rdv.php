@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\core\domain\entities\praticien;
+namespace toubeelib\core\domain\entities\rdv;
 
 use toubeelib\core\domain\entities\Entity;
 use toubeelib\core\dto\RdvDTO;
