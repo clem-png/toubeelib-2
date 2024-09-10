@@ -35,11 +35,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
 
     public function save(Rdv $rdv): string
     {
-        // TODO: Implement save() method.
+        $ID = Uuid::uuid4()->toString();
+        $rdv->setID($ID);
+        $this->rdvs[$ID] = $rdv;
+        return $ID;
     }
 
-    public function getSpecialiteById(string $id): Specialite
-    {
-        // TODO: Implement getSpecialiteById() method.
-    }
 }

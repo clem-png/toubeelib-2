@@ -11,6 +11,4 @@ interface RdvRepositoryInterface
    
    public function save(Rdv $rdv): string;
    
-   public function getSpecialiteById(string $id): Specialite;
-   
 }
