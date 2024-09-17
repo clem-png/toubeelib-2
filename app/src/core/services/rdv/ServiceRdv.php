@@ -2,7 +2,7 @@
 
 namespace toubeelib\core\services\rdv;
 
-use PharIo\Manifest\Exception;
+use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
@@ -18,12 +18,11 @@ class ServiceRdv implements ServiceRDVInterface{
     public function consulterRdv(string $rdv_id){
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
-        }catch (Exception $e){
-            throw new \Exception($e);
+        }catch (\Exception $e){
+            throw new RdvServiceException($e);
         }
 
         $rdvDTO = $rdv->toDTO();
-        // TODO : FAIRE LES EXCEPTIONS ET VERIFICATION
         return $rdvDTO;
     }
 

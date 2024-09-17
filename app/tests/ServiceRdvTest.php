@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 use toubeelib\core\dto\InputRdvDTO;
+use toubeelib\core\services\rdv\RdvServiceException;
 
 class ServiceRdvTest extends TestCase
 {
@@ -23,5 +24,9 @@ class ServiceRdvTest extends TestCase
 
         $this->assertSame($result->idPraticien, 'pa1');
         $this->assertSame($result->idPatient, 'p1');
+
+        $rdv_id = 'testid';
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->consulterRdv($rdv_id);
     }
 }
