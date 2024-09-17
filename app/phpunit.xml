@@ -1,4 +1,4 @@
-<phpunit bootstrap="vendor/autoload.php" colors="true" verbose="true" testdox="true">
+<phpunit bootstrap="vendor/autoload.php" verbose="true" testdox="true">
     <testsuites>
         <testsuite name="Application Test Suite">
             <directory>tests</directory>
