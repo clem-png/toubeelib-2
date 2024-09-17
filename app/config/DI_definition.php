@@ -1,29 +1,38 @@
 <?php
 
 use Psr\Container\ContainerInterface;
+use toubeelib\application\actions\GetRdvsByIdAction;
+use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
+use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\praticien\ServicePraticien;
+use toubeelib\core\services\praticien\ServicePraticienInterface;
+use toubeelib\core\services\rdv\ServiceRdv;
+use toubeelib\core\services\rdv\ServiceRDVInterface;
+use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
+use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 
 return [
 
-    'program.infra.rdv' => function (ContainerInterface $c){
-        return new \toubeelib\infrastructure\repositories\ArrayRdvRepository();
+    RdvRepositoryInterface::class => function (ContainerInterface $c){
+        return new ArrayRdvRepository();
     },
 
-    'program.infra.praticien' => function (ContainerInterface $c){
-        return new \toubeelib\infrastructure\repositories\ArrayPraticienRepository();
+    PraticienRepositoryInterface::class => function (ContainerInterface $c){
+        return new ArrayPraticienRepository();
     },
 
 
-    \toubeelib\core\services\rdv\ServiceRDVInterface::class => function (ContainerInterface $c) {
-        return new \toubeelib\core\services\rdv\ServiceRdv($c->get('program.infra.rdv'));
+    ServiceRDVInterface::class => function (ContainerInterface $c) {
+        return new ServiceRdv($c->get(RdvRepositoryInterface::class));
     },
 
-    \toubeelib\core\services\praticien\ServicePraticienInterface::class => function (ContainerInterface $c) {
-        return new \toubeelib\core\services\praticien\ServicePraticien($c->get('program.infra.praticien'));
+    ServicePraticienInterface::class => function (ContainerInterface $c) {
+        return new ServicePraticien($c->get(PraticienRepositoryInterface::class));
 
     },
 
-    \toubeelib\application\actions\GetRdvsByIdAction::class => function(ContainerInterface $c){
-        return new \toubeelib\application\actions\GetRdvsByIdAction($c->get(\toubeelib\core\services\rdv\ServiceRDVInterface::class));
+    GetRdvsByIdAction::class => function(ContainerInterface $c){
+        return new GetRdvsByIdAction($c->get(ServiceRDVInterface::class));
     }
 
 
