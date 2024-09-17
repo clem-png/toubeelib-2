@@ -7,13 +7,14 @@ use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\dto\SpecialiteDTO;
+use DateTime;
 
 interface ServiceRDVInterface{
 
-    public function listerDisponibilitesPraticien();
+    public function listerDisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id);
     public function consulterRdv(string $rdv_id);
     public function creerRdv(InputRdvDTO $DTO): RdvDTO;
-    public function annulerRdv();
+    public function annulerRdv(string $rdv_id);
     public function modifierPatientRdv();
 
 }

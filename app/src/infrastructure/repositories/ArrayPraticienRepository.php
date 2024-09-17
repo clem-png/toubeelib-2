@@ -80,5 +80,4 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
 
         return $praticien;
     }
-
 }

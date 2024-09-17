@@ -17,7 +17,7 @@ class Rdv extends Entity
     protected ?Specialite $specialite = null;
     protected string $status;
 
-    public function __construct(string $idPatient, string $idPraticien, string $status, DateTimeImmutable $dateDebut)
+    public function __construct(string $idPraticien, string $idPatient, string $status, DateTimeImmutable $dateDebut)
     {
         $this->idPatient = $idPatient;
         $this->idPraticien = $idPraticien;
@@ -28,5 +28,10 @@ class Rdv extends Entity
     public function toDTO(): RdvDTO
     {
         return new RdvDTO($this);
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 }

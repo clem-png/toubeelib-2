@@ -33,6 +33,17 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $this->rdvs[$id];
     }
 
+    public function getRdvByPraticienId(string $id): array
+    {
+        $rdvs = [];
+        foreach ($this->rdvs as $rdv) {
+            if ($rdv->idPraticien === $id) {
+                $rdvs[] = $rdv;
+            }
+        }
+        return $rdvs;
+    }
+
     public function save(Rdv $rdv): string
     {
         $ID = Uuid::uuid4()->toString();
@@ -41,4 +52,11 @@ class ArrayRdvRepository implements RdvRepositoryInterface
         return $ID;
     }
 
+    public function update(Rdv $rdv): void
+    {
+        if (!array_key_exists($rdv->getID(), $this->rdvs)) {
+            throw new RepositoryEntityNotFoundException('Rdv not found');
+        }
+        $this->rdvs[$rdv->getID()] = $rdv;
+    }
 }

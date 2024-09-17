@@ -15,7 +15,7 @@ class InputRdvDTO extends DTO
     protected string $status;
 
 
-    public function __construct(string $idPatient, string $idPraticien, DateTimeImmutable $dateDebut, string $status) {
+    public function __construct(string $idPraticien, string $idPatient, DateTimeImmutable $dateDebut, string $status) {
         $this->idPatient = $idPatient;
         $this->idPraticien = $idPraticien;
         $this->dateDebut = $dateDebut;
