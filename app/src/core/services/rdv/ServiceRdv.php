@@ -6,6 +6,7 @@ use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\domain\entities\rdv\Rdv;
 
 class ServiceRdv implements ServiceRDVInterface{
 
@@ -32,9 +33,11 @@ class ServiceRdv implements ServiceRDVInterface{
 
     public function creerRdv(InputRdvDTO $DTO): RdvDTO{
         try{
-            $rdv = New Rdv($DTO->get("idPatient"),$DTO->get("idPraticien"),$DTO->get("dateDebut"),$DTO->get("status"));
+            $rdv = New Rdv($DTO->idPatient,$DTO->idPraticien,$DTO->status,$DTO->dateDebut);
+            $id = $this->rdvRepository->save($rdv);
+            $rdv->setID($id);
         }catch (Exception $e){
-            throw new \Exception($e);
+            throw new RdvServiceException($e);
         }
         return new RdvDTO($rdv);
     }

@@ -11,8 +11,7 @@ class RdvDTO extends DTO
     protected string $id;
     protected string $idPatient;
     protected string $idPraticien;
-    protected string $dateDeb;
-    protected string $dateFin;
+    protected \DateTimeImmutable $dateDebut;
     protected string $specialite_label;
     protected string $status;
 
@@ -21,8 +20,9 @@ class RdvDTO extends DTO
         $this->id = $r->getID();
         $this->idPraticien = $r->idPraticien;
         $this->idPatient = $r->idPatient;
-        $this->dateDeb = $r->dateDebut->format('Y-m-d H:i') . PHP_EOL;
+        $this->dateDebut = $r->dateDebut;
         $this->specialite_label = $r->specialite->label??'';
+        $this->status = $r->status;
     }
 
 
