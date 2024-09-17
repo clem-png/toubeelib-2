@@ -2,6 +2,7 @@
 
 use Psr\Container\ContainerInterface;
 use toubeelib\application\actions\GetRdvsByIdAction;
+use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
@@ -21,9 +22,6 @@ return [
         return new ArrayPraticienRepository();
     },
 
-
-
-
     ServicePraticienInterface::class => function (ContainerInterface $c) {
         return new ServicePraticien($c->get(PraticienRepositoryInterface::class));
 
@@ -35,8 +33,9 @@ return [
 
     GetRdvsByIdAction::class => function(ContainerInterface $c){
         return new GetRdvsByIdAction($c->get(ServiceRDVInterface::class));
+    },
+
+    PostRdvsAction::class => function(ContainerInterface $c){
+        return new PostRdvsAction($c->get(ServiceRDVInterface::class));
     }
-
-
-
 ];
