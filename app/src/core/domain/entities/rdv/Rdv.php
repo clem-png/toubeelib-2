@@ -34,4 +34,9 @@ class Rdv extends Entity
     {
         $this->status = $status;
     }
+
+    public function setPatientId(string $id): void
+    {
+        $this->idPatient = $id;
+    }
 }

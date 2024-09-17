@@ -109,7 +109,17 @@ class ServiceRdv implements ServiceRDVInterface{
         }
     }
 
-    public function modifierPatientRdv(){
-        // TODO: Implement modifierPatientRdv() method.
+    public function modifierPatientRdv(String $rdv_id, String $patient_id):void{
+        try{
+            $rdv = $this->rdvRepository->getRdvById($rdv_id);
+            $rdv->setPatientId($patient_id);
+            $this->rdvRepository->update($rdv);
+        }catch (\Exception $e){
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function modifierSpecialiteRdv(){
+        //TODO : Implement modifierSpecialiteRdv() method.
     }
 }
