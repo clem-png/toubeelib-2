@@ -33,7 +33,7 @@ class ServiceRdv implements ServiceRDVInterface{
 
     public function creerRdv(InputRdvDTO $DTO): RdvDTO{
         try{
-            $rdv = New Rdv($DTO->get("idPatient"),$DTO->get("idPraticient"),$DTO->get("dateDebut"),$DTO->get("status"));
+            $rdv = New Rdv($DTO->get("idPatient"),$DTO->get("idPraticien"),$DTO->get("dateDebut"),$DTO->get("status"));
         }catch (Exception $e){
             throw new \Exception($e);
         }
