@@ -25,5 +25,16 @@ class RdvDTO extends DTO
         $this->status = $r->status;
     }
 
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'idPatient' => $this->idPatient,
+            'idPraticien' => $this->idPraticien,
+            'dateDebut' => $this->dateDebut->format('Y-m-d H:i:s'),
+            'specialite_label' => $this->specialite_label,
+            'status' => $this->status
+        ];
+    }
 
 }
