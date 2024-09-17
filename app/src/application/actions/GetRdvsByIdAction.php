@@ -14,7 +14,7 @@ class GetRdvsByIdAction extends AbstractAction
 
     private ServiceRDVInterface $serviceRdv;
 
-    public function __construct(ServiceRdv $serviceRdv)
+    public function __construct(ServiceRDVInterface $serviceRdv)
     {
         $this->serviceRdv = $serviceRdv;
     }
