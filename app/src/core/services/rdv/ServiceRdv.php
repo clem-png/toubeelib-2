@@ -4,6 +4,7 @@ namespace toubeelib\core\services\rdv;
 
 use PharIo\Manifest\Exception;
 use toubeelib\core\dto\InputRdvDTO;
+use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 
 class ServiceRdv implements ServiceRDVInterface{
@@ -30,8 +31,13 @@ class ServiceRdv implements ServiceRDVInterface{
         // TODO: Implement listerDisponibilitesPraticien() method.
     }
 
-    public function creerRdv(InputRdvDTO $DTO){
-        // TODO: Implement creerRdv() method.
+    public function creerRdv(InputRdvDTO $DTO): RdvDTO{
+        try{
+            $rdv = New Rdv($DTO->get("idPatient"),$DTO->get("idPraticient"),$DTO->get("dateDebut"),$DTO->get("status"));
+        }catch (Exception $e){
+            throw new \Exception($e);
+        }
+        return new RdvDTO($rdv);
     }
 
     public function annulerRdv(){

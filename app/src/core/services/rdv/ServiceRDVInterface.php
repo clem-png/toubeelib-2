@@ -12,7 +12,7 @@ interface ServiceRDVInterface{
 
     public function listerDisponibilitesPraticien();
     public function consulterRdv(string $rdv_id);
-    public function creerRdv(InputRdvDTO $DTO);
+    public function creerRdv(InputRdvDTO $DTO): RdvDTO;
     public function annulerRdv();
     public function modifierPatientRdv();
 

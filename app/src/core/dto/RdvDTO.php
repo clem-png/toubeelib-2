@@ -22,7 +22,6 @@ class RdvDTO extends DTO
         $this->idPraticien = $r->idPraticien;
         $this->idPatient = $r->idPatient;
         $this->dateDeb = $r->dateDebut->format('Y-m-d H:i') . PHP_EOL;
-        $this->dateFin = $r->dateFin->format('Y-m-d H:i') . PHP_EOL;
         $this->specialite_label = $r->specialite->label;
     }
 
