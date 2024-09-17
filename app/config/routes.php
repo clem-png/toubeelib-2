@@ -5,6 +5,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use toubeelib\application\actions\HomeAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
+use toubeelib\application\actions\PostRdvsAction;
 
 return function( \Slim\App $app):\Slim\App {
 
@@ -12,5 +13,6 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->get('/rdvs/{ID-RDV}[/]', GetRdvsByIdAction::class)->setName('rdvsId');
 
+    $app->post('/rdvs[/]', PostRdvsAction::class)->setName('rdvsAdd');
     return $app;
 };

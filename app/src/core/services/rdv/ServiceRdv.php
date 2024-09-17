@@ -3,6 +3,7 @@
 namespace toubeelib\core\services\rdv;
 
 use DateTime;
+use Exception;
 use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
