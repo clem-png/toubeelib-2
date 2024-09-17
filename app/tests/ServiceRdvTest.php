@@ -14,6 +14,7 @@ class ServiceRdvTest extends TestCase
 
     protected function setUp(): void
     {
+
         $this->rdvRepository = new ArrayRdvRepository();
         $this->serviceRdv = new ServiceRdv($this->rdvRepository);
     }
@@ -23,8 +24,8 @@ class ServiceRdvTest extends TestCase
         $rdv_id = 'r1';
         $result = $this->serviceRdv->consulterRdv($rdv_id);
 
-        $this->assertSame($result->idPraticien, 'pa1');
-        $this->assertSame($result->idPatient, 'p1');
+        $this->assertSame('pa1',$result->idPraticien);
+        $this->assertSame('p1', $result->idPatient);
 
         $rdv_id = 'testid';
         $this->expectException(RdvServiceException::class);
