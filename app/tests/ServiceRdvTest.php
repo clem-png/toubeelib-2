@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Handler\StreamHandler;
 use PHPUnit\Framework\TestCase;
 use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
@@ -19,7 +20,8 @@ class ServiceRdvTest extends TestCase
 
     protected function setUp(): void
     {
-        $logger = new \Monolog\Logger('test.log');   
+        $logger = new \Monolog\Logger('test.log');
+        $logger->pushHandler(new StreamHandler(__DIR__.'/test.log',\Monolog\Level::Info));
         $this->praticienRepository = new ArrayPraticienRepository();
         $this->praticienService = new ServicePraticien($this->praticienRepository, $logger);
 

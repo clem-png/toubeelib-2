@@ -4,6 +4,7 @@ namespace toubeelib\core\services\rdv;
 
 use DateTime;
 use Exception;
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\dto\InputRdvDTO;
@@ -115,6 +116,7 @@ class ServiceRdv implements ServiceRDVInterface{
 
             $id = $this->rdvRepository->save($rdv);
             $rdv->setID($id);
+            $this->logger->log(Level::Info, "Creation RDV : " . $id);
         } catch (Exception $e){
             throw new RdvServiceException($e);
         }
@@ -129,6 +131,7 @@ class ServiceRdv implements ServiceRDVInterface{
             }
             $rdv->setStatus("Cancelled");
             $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " - Action : Annulation");
         } catch (\Exception $e){
             throw new RdvServiceException($e);
         }
@@ -136,14 +139,18 @@ class ServiceRdv implements ServiceRDVInterface{
 
     public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?SpecialiteDTO $specialite = null): void {
         try {
+            $logAction = "";
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
             if ($patient_id !== null) {
                 $rdv->setPatientId($patient_id);
+                $logAction.= " Nouveau Patient : ".$patient_id;
             }
             if ($specialite !== null) {
                 $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
+                $logAction.= " Nouvelle spécialité  : ".$specialite->label;
             }
             $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " - Action :".$logAction);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
