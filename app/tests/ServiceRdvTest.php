@@ -178,4 +178,27 @@ class ServiceRdvTest extends TestCase
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->modifierPatientOuSpecialiteRdv('testid', null, $specialite);
     }
+
+    public function testModifierSpecialiteEtPatientRdv(){
+        $specialite = new SpecialiteDTO('A', 'Dentiste', 'Spécialiste des dents');
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Test existence du RDV
+        $rdv = $this->serviceRdv->consulterRdv($result->id);
+        $this->assertSame('Dentiste', $rdv->specialite_label);
+        $this->assertSame('pa1', $rdv->idPatient);
+
+        // Test modification de la spécialité et du patient
+        $specialite = new SpecialiteDTO('B', 'Ophtalmologue', 'Spécialiste des yeux');
+        $this->serviceRdv->modifierPatientOuSpecialiteRdv($rdv->id, 'pa2', $specialite);
+
+        $rdv = $this->serviceRdv->consulterRdv($result->id);
+        $this->assertSame('Ophtalmologue', $rdv->specialite_label);
+        $this->assertSame('pa2', $rdv->idPatient);
+
+        // Test exception si le RDV n'existe pas
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->modifierPatientOuSpecialiteRdv('testid', 'pa2', $specialite);
+    }
 }

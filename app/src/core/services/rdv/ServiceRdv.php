@@ -131,7 +131,7 @@ class ServiceRdv implements ServiceRDVInterface{
             }
             $rdv->setStatus("Cancelled");
             $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " - Action : Annulation");
+            $this->logger->log(Level::Info, "Annulation RDV : " . $rdv_id);
         } catch (\Exception $e){
             throw new RdvServiceException($e);
         }
@@ -150,7 +150,7 @@ class ServiceRdv implements ServiceRDVInterface{
                 $logAction.= " Nouvelle spécialité  : ".$specialite->label;
             }
             $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " - Action :".$logAction);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " -".$logAction);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
