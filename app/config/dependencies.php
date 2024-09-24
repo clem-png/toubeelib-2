@@ -23,12 +23,12 @@ return [
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
-        return new ServicePraticien($c->get(PraticienRepositoryInterface::class));
+        return new ServicePraticien($c->get(PraticienRepositoryInterface::class),$c->get('logger'));
 
     },
 
     ServiceRDVInterface::class => function (ContainerInterface $c) {
-        return new ServiceRdv($c->get(RdvRepositoryInterface::class),$c->get(ServicePraticienInterface::class));
+        return new ServiceRdv($c->get(RdvRepositoryInterface::class),$c->get(ServicePraticienInterface::class),$c->get('logger'));
     },
 
     GetRdvsByIdAction::class => function(ContainerInterface $c){

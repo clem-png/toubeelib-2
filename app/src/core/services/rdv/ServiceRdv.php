@@ -4,6 +4,7 @@ namespace toubeelib\core\services\rdv;
 
 use DateTime;
 use Exception;
+use Psr\Log\LoggerInterface;
 use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
@@ -18,14 +19,17 @@ class ServiceRdv implements ServiceRDVInterface{
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticienInterface $praticienService;
 
+    private LoggerInterface $logger;
+
     const JOURS_CONSULTATION = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
     const HEURE_DEBUT = '09:00';
     const HEURE_FIN = '17:00';
     const DUREE_RDV = '30'; //minutes
 
-    public function __construct(RdvRepositoryInterface $rdvRepository, ServicePraticienInterface $praticienService){
+    public function __construct(RdvRepositoryInterface $rdvRepository, ServicePraticienInterface $praticienService, LoggerInterface $logger){
         $this->rdvRepository = $rdvRepository;
         $this->praticienService = $praticienService;
+        $this->logger = $logger;
     }
 
     public function consulterRdv(string $rdv_id){

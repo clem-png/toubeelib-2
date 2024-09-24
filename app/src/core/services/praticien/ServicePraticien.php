@@ -2,6 +2,7 @@
 
 namespace toubeelib\core\services\praticien;
 
+use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\dto\InputPraticienDTO;
@@ -14,9 +15,12 @@ class ServicePraticien implements ServicePraticienInterface
 {
     private PraticienRepositoryInterface $praticienRepository;
 
-    public function __construct(PraticienRepositoryInterface $praticienRepository)
+    private LoggerInterface $logger;
+
+    public function __construct(PraticienRepositoryInterface $praticienRepository, LoggerInterface $logger)
     {
         $this->praticienRepository = $praticienRepository;
+        $this->logger = $logger;
     }
 
     public function createPraticien(InputPraticienDTO $p): PraticienDTO
