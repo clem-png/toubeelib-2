@@ -39,4 +39,9 @@ class Rdv extends Entity
     {
         $this->idPatient = $id;
     }
+
+    public function setSpecialite(Specialite $specialite): void
+    {
+        $this->specialite = $specialite;
+    }
 }

@@ -10,6 +10,7 @@ use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\domain\entities\rdv\Rdv;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
+use toubeelib\core\domain\entities\praticien\Specialite;
 
 
 class ServiceRdv implements ServiceRDVInterface{
@@ -110,17 +111,18 @@ class ServiceRdv implements ServiceRDVInterface{
         }
     }
 
-    public function modifierPatientRdv(String $rdv_id, String $patient_id):void{
-        try{
+    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?Specialite $specialite = null): void {
+        try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
-            $rdv->setPatientId($patient_id);
+            if ($patient_id !== null) {
+                $rdv->setPatientId($patient_id);
+            }
+            if ($specialite !== null) {
+                $rdv->setSpecialite($specialite);
+            }
             $this->rdvRepository->update($rdv);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
-    }
-
-    public function modifierSpecialiteRdv(){
-        //TODO : Implement modifierSpecialiteRdv() method.
     }
 }
