@@ -103,4 +103,34 @@ class ServiceRdvTest extends TestCase
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->annulerRdv('testid');
     }
+
+    public function testModifierPatientRdv()
+    {
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A");
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Test existence du RDV
+        $rdv = $this->serviceRdv->consulterRdv($result->id);
+        $this->assertSame('A', $rdv->status);
+        $this->assertSame('pa1', $rdv->idPatient);
+
+        // Test modification du patient
+        $this->serviceRdv->modifierPatientOuSpecialiteRdv($rdv->id, 'pa2');
+        $rdv = $this->serviceRdv->consulterRdv($result->id);
+        $this->assertSame('pa2', $rdv->idPatient);
+
+        // Test exception si le RDV n'existe pas
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->modifierPatientOuSpecialiteRdv('testid', 'pa2');
+    }
+
+    public function testModifierSpecialiteRdv()
+    {
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A");
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Test existence du RDV
+        $rdv = $this->serviceRdv->consulterRdv($result->id);
+        $this->assertSame('A', $rdv->status);
+    }
 }

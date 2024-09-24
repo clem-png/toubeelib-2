@@ -84,10 +84,19 @@ class ServiceRdv implements ServiceRDVInterface{
             // Vérifier si le praticien existe
             $praticien = $this->praticienService->getPraticienById($DTO->idPraticien);
             if (!$praticien) {
-                throw new RdvServiceException("Practitioner not found");
+                throw new RdvServiceException("Praticien pas trouvé");
             }
 
             // TODO: Verifier les spécialités du praticien et les disponibilités
+            
+            /*
+
+            // Vérifier les disponibilités du praticien
+            $date = DateTime::createFromImmutable($DTO->dateDebut);
+            $disponibilites = $this->listerDisponibilitePraticien($date, $date, $DTO->idPraticien);
+            if (!in_array($date, $disponibilites)) {
+                throw new RdvServiceException("Créneau non disponible");
+            }*/
 
             $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, $DTO->status, $DTO->dateDebut);
             $id = $this->rdvRepository->save($rdv);

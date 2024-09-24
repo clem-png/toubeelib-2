@@ -11,7 +11,7 @@ class InputRdvDTO extends DTO
     protected string $idPatient;
     protected string $idPraticien;
     protected DateTimeImmutable $dateDebut;
-    protected Specialite $specialite;
+    protected ?Specialite $specialite = null;
     protected string $status;
 
 

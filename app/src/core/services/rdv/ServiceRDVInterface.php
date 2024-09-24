@@ -15,6 +15,6 @@ interface ServiceRDVInterface{
     public function consulterRdv(string $rdv_id);
     public function creerRdv(InputRdvDTO $DTO): RdvDTO;
     public function annulerRdv(string $rdv_id);
-    public function modifierPatientRdv(String $rdv_id, String $patient_id);
+    public function modifierPatientOuSpecialiteRdv(String $rdv_id, String $patient_id);
 
 }
