@@ -12,4 +12,8 @@ class InputSpecialiteDTO extends DTO
     {
         $this->id = $id;
     }
+
+    public function __get(string $name): mixed{
+        return parent::__get($name);
+    }
 }

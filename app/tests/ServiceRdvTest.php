@@ -6,7 +6,7 @@ use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
-use toubeelib\core\dto\SpecialiteDTO;
+use toubeelib\core\dto\InputSpecialiteDTO;
 use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\core\services\praticien\ServicePraticien;
@@ -57,7 +57,7 @@ class ServiceRdvTest extends TestCase
         $this->assertSame($DTO->status, $savedRdv->status);
 
         //test création d'un RDV avec une spécialité
-        $specialite = new SpecialiteDTO('A', 'Dentiste', 'Spécialiste des dents');
+        $specialite = new InputSpecialiteDTO('A');
         $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
@@ -68,7 +68,6 @@ class ServiceRdvTest extends TestCase
         $this->assertSame($DTO->idPraticien, $savedRdv->idPraticien);
         $this->assertSame($DTO->dateDebut, $savedRdv->dateDebut);
         $this->assertSame($DTO->status, $savedRdv->status);
-        $this->assertSame($DTO->specialite->label, $savedRdv->specialite_label);
 
         // Test exception si le praticien n'existe pas
         $DTO = new InputRdvDTO("testid", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",), "A");
@@ -81,7 +80,7 @@ class ServiceRdvTest extends TestCase
         $this->serviceRdv->creerRdv($DTO);
 
         // Test exception si la spécialité n'est pas valide
-        $specialite = new SpecialiteDTO('B', 'Ophtalmologue', 'Spécialiste des yeux');
+        $specialite = new InputSpecialiteDTO('B');
         $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
@@ -159,7 +158,7 @@ class ServiceRdvTest extends TestCase
 
     public function testModifierSpecialiteRdv()
     {
-        $specialite = new SpecialiteDTO('A', 'Dentiste', 'Spécialiste des dents');
+        $specialite = new InputSpecialiteDTO('A');
         $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
@@ -168,7 +167,7 @@ class ServiceRdvTest extends TestCase
         $this->assertSame('Dentiste', $rdv->specialite_label);
 
         // Test modification de la spécialité
-        $specialite = new SpecialiteDTO('B', 'Ophtalmologue', 'Spécialiste des yeux');
+        $specialite = new InputSpecialiteDTO('B');
         $this->serviceRdv->modifierPatientOuSpecialiteRdv($rdv->id, null, $specialite);
 
         $rdv = $this->serviceRdv->consulterRdv($result->id);
@@ -180,7 +179,7 @@ class ServiceRdvTest extends TestCase
     }
 
     public function testModifierSpecialiteEtPatientRdv(){
-        $specialite = new SpecialiteDTO('A', 'Dentiste', 'Spécialiste des dents');
+        $specialite = new InputSpecialiteDTO('A');
         $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
@@ -190,7 +189,7 @@ class ServiceRdvTest extends TestCase
         $this->assertSame('pa1', $rdv->idPatient);
 
         // Test modification de la spécialité et du patient
-        $specialite = new SpecialiteDTO('B', 'Ophtalmologue', 'Spécialiste des yeux');
+        $specialite = new InputSpecialiteDTO('B');
         $this->serviceRdv->modifierPatientOuSpecialiteRdv($rdv->id, 'pa2', $specialite);
 
         $rdv = $this->serviceRdv->consulterRdv($result->id);

@@ -10,6 +10,7 @@ use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\dto\InputRdvDTO;
 use toubeelib\core\dto\RdvDTO;
 use toubeelib\core\dto\SpecialiteDTO;
+use toubeelib\core\dto\InputSpecialiteDTO;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\domain\entities\rdv\Rdv;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
@@ -92,13 +93,14 @@ class ServiceRdv implements ServiceRDVInterface{
             if (!$praticien) {
                 throw new RdvServiceException("Praticien pas trouvé");
             }
-            $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
-            if (!$specialite) {
-                throw new RdvServiceException("Specialite pas trouvé");
-            }
             
             //vérifier si la spécialité est la même que celle du praticien
             if($DTO->specialite !== null){
+                $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
+                if (!$specialite) {
+                    throw new RdvServiceException("Specialite pas trouvé");
+                }
+
                 if ($specialite->label !== $praticien->specialite_label) {
                     throw new RdvServiceException("Specialite non valide");
                 }
@@ -115,6 +117,7 @@ class ServiceRdv implements ServiceRDVInterface{
             $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, $DTO->status, $DTO->dateDebut);
 
             if($DTO->specialite !== null){
+                $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
                 $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
             }
 
@@ -142,7 +145,7 @@ class ServiceRdv implements ServiceRDVInterface{
         }
     }
 
-    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?SpecialiteDTO $specialite = null): void {
+    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?InputSpecialiteDTO $specialiteInput = null): void {
         try {
             $logAction = "";
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
@@ -150,7 +153,8 @@ class ServiceRdv implements ServiceRDVInterface{
                 $rdv->setPatientId($patient_id);
                 $logAction.= " Nouveau Patient : ".$patient_id;
             }
-            if ($specialite !== null) {
+            if ($specialiteInput !== null) {
+                $specialite = $this->praticienService->getSpecialiteById($specialiteInput->id);
                 $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
                 $logAction.= " Nouvelle spécialité  : ".$specialite->label;
             }
