@@ -6,10 +6,10 @@ use toubeelib\core\dto\DTO;
 
 class InputSpecialiteDTO extends DTO
 {
-    protected string $label;
+    protected string $id;
 
-    public function __construct(string $label)
+    public function __construct(string $id)
     {
-        $this->label = $label;
+        $this->id = $id;
     }
 }

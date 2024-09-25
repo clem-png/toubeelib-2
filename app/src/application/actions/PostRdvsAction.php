@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
 use toubeelib\core\dto\InputRdvDTO;
+use toubeelib\core\dto\InputSpecialiteDTO;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 
 class PostRdvsAction extends AbstractAction
@@ -41,7 +42,7 @@ class PostRdvsAction extends AbstractAction
             throw new HttpBadRequestException($rq, 'Mauvais format de données');
         }
 
-        $rdvDTO = new InputRdvDTO($params['idPraticien'], $params['idPatient'], new \DateTimeImmutable($params['date']), $params['status'], $params['specialite'] ?? null);
+        $rdvDTO = new InputRdvDTO($params['idPraticien'], $params['idPatient'], new \DateTimeImmutable($params['date']), $params['status'], new InputSpecialiteDTO($params['specialite']) ?? null);
         try {
             $res = $this->serviceRdv->creerRdv($rdvDTO);
         }

@@ -92,10 +92,14 @@ class ServiceRdv implements ServiceRDVInterface{
             if (!$praticien) {
                 throw new RdvServiceException("Praticien pas trouvé");
             }
+            $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
+            if (!$specialite) {
+                throw new RdvServiceException("Specialite pas trouvé");
+            }
             
             //vérifier si la spécialité est la même que celle du praticien
             if($DTO->specialite !== null){
-                if ($DTO->specialite->label !== $praticien->specialite_label) {
+                if ($specialite->label !== $praticien->specialite_label) {
                     throw new RdvServiceException("Specialite non valide");
                 }
             }
@@ -111,7 +115,7 @@ class ServiceRdv implements ServiceRDVInterface{
             $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, $DTO->status, $DTO->dateDebut);
 
             if($DTO->specialite !== null){
-                $rdv->setSpecialite(new Specialite($DTO->specialite->ID, $DTO->specialite->label, $DTO->specialite->description));
+                $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
             }
 
             $id = $this->rdvRepository->save($rdv);
