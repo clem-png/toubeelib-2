@@ -1,8 +1,10 @@
 <?php
 
 use Psr\Container\ContainerInterface;
+use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PostRdvsAction;
+use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
@@ -37,5 +39,13 @@ return [
 
     PostRdvsAction::class => function(ContainerInterface $c){
         return new PostRdvsAction($c->get(ServiceRDVInterface::class));
+    },
+
+    PutRdvsAnnulerAction::class => function(ContainerInterface $c){
+        return new PutRdvsAnnulerAction($c->get(ServiceRDVInterface::class));
+    },
+
+    GetPraticiensDisponibilitesAction::class => function(ContainerInterface $c){
+        return new GetPraticiensDisponibilitesAction($c->get(ServiceRDVInterface::class));
     }
 ];

@@ -123,7 +123,7 @@ class ServiceRdv implements ServiceRDVInterface{
         return new RdvDTO($rdv);
     }
 
-    public function annulerRdv(string $rdv_id):void{
+    public function annulerRdv(string $rdv_id):RdvDTO{
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
             if ($rdv->status === 'Cancelled') {
@@ -132,6 +132,7 @@ class ServiceRdv implements ServiceRDVInterface{
             $rdv->setStatus("Cancelled");
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Annulation RDV : " . $rdv_id);
+            return new RdvDTO($rdv);
         } catch (\Exception $e){
             throw new RdvServiceException($e);
         }
