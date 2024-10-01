@@ -90,6 +90,9 @@ class ServiceRdv implements ServiceRDVInterface{
         return array_values($disponibilites);
     }
 
+    /**
+     * @throws RdvServiceException
+     */
     public function creerRdv(InputRdvDTO $DTO): RdvDTO{
         try{
             // Vérifier si le praticien existe
@@ -131,6 +134,9 @@ class ServiceRdv implements ServiceRDVInterface{
         return new RdvDTO($rdv);
     }
 
+    /**
+     * @throws RdvServiceException
+     */
     public function annulerRdv(string $rdv_id):RdvDTO{
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
