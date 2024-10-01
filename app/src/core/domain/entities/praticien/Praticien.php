@@ -21,7 +21,6 @@ class Praticien extends Entity
         $this->tel = $tel;
     }
 
-
     public function setSpecialite(Specialite $specialite): void
     {
         $this->specialite = $specialite;
@@ -31,4 +30,6 @@ class Praticien extends Entity
     {
         return new PraticienDTO($this);
     }
+
+
 }
