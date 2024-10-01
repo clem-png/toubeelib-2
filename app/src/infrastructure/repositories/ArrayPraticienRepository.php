@@ -80,4 +80,23 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
 
         return $praticien;
     }
+
+    public function getPraticienByTel(string $tel): Praticien
+    {
+        $praticien = $this->praticiens[$tel] ??
+            throw new RepositoryEntityNotFoundException("Praticien $tel not found");
+        return $praticien;
+    }
+
+    public function existPraticienByTel(string $tel): bool{
+        $praticien = $this->praticiens[$tel] ?? null;
+
+        $res = false;
+
+        if($praticien !== null){
+            $res = true;
+        }
+
+        return $res;
+    }
 }

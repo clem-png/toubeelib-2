@@ -2,9 +2,12 @@
 
 namespace toubeelib\core\services\praticien;
 
+use Monolog\Level;
+use PHPUnit\Exception;
 use Psr\Log\LoggerInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
 use toubeelib\core\domain\entities\praticien\Praticien;
+use toubeelib\core\domain\entities\praticien\Specialite;
 use toubeelib\core\dto\InputPraticienDTO;
 use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\SpecialiteDTO;
@@ -23,12 +26,37 @@ class ServicePraticien implements ServicePraticienInterface
         $this->logger = $logger;
     }
 
-    public function createPraticien(InputPraticienDTO $p): PraticienDTO
-    {
-        // TODO : valider les données et créer l'entité
+    public function createPraticien(InputPraticienDTO $p): PraticienDTO{
+        try{
+
+        $praticienExist = $this->praticienRepository->existPraticienByTel($p->tel);
+
+        if($praticienExist){
+            throw new ServicePraticienInvalidDataException("Praticien déjà existant");
+        }
+
+        if ($p->specialite !== null){
+            $specialite = $this->getSpecialiteById($p->specialite->id);
+            if (!$specialite) {
+                throw new ServicePraticienInvalidDataException("Specialite pas trouvé");
+            }
+        }
+
+        $praticien = new Praticien($p->nom,$p->prenom,$p->adresse,$p->tel);
+
+        if($p->specialite !== null){
+            $specialite = $this->getSpecialiteById($p->specialite->id);
+            $praticien->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
+        }
+
+        $id = $this->praticienRepository->save($praticien);
+        $praticien->setID($id);
+        $this->logger->log(Level::Info, "Creation Praticien : " . $id);
+
+        }catch (Exception $e){
+            throw new ServicePraticienInvalidDataException($e);
+        }
         return new PraticienDTO($praticien);
-
-
     }
 
     public function getPraticienById(string $id): PraticienDTO
@@ -38,6 +66,16 @@ class ServicePraticien implements ServicePraticienInterface
             return new PraticienDTO($praticien);
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServicePraticienInvalidDataException('invalid Praticien ID');
+        }
+    }
+
+    public function getPraticienByTel(string $tel): PraticienDTO
+    {
+        try {
+            $praticien = $this->praticienRepository->getPraticienByTel($tel);
+            return new PraticienDTO($praticien);
+        } catch(RepositoryEntityNotFoundException $e) {
+            throw new ServicePraticienInvalidDataException('invalid Praticien TEL');
         }
     }
 

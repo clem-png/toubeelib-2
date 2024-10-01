@@ -11,5 +11,7 @@ interface PraticienRepositoryInterface
     public function getSpecialiteById(string $id): Specialite;
     public function save(Praticien $praticien): string;
     public function getPraticienById(string $id): Praticien;
+    public function getPraticienByTel(string $tel): Praticien;
+    public function existPraticienByTel(string $tel): bool;
 
 }

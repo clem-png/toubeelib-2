@@ -8,10 +8,10 @@ class InputPraticienDTO extends DTO
     protected string $prenom;
     protected string $adresse;
     protected string $tel;
-    protected string $specialite;
+    protected ?InputSpecialiteDTO $specialite;
 
 
-    public function __construct(string $nom, string $prenom, string $adresse, string $tel, string $specialite) {
+    public function __construct(string $nom, string $prenom, string $adresse, string $tel, ?InputSpecialiteDTO $specialite = null) {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->adresse = $adresse;
