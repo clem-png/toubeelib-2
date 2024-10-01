@@ -46,7 +46,7 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
         $this->praticiens['p1']->setSpecialite(new Specialite('A', 'Dentiste', 'Spécialiste des dents'));
         $this->praticiens['p1']->setID('p1');
 
-        $this->praticiens['p2'] = new Praticien( 'Durand', 'Pierre', 'vandeuve', '0123456789');
+        $this->praticiens['p2'] = new Praticien( 'Durand', 'Pierre', 'vandeuve', '9876543210');
         $this->praticiens['p2']->setSpecialite(new Specialite('B', 'Ophtalmologue', 'Spécialiste des yeux'));
         $this->praticiens['p2']->setID('p2');
 
@@ -83,20 +83,20 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
 
     public function getPraticienByTel(string $tel): Praticien
     {
-        $praticien = $this->praticiens[$tel] ??
-            throw new RepositoryEntityNotFoundException("Praticien $tel not found");
-        return $praticien;
+        foreach ($this->praticiens as $praticien) {
+            if ($praticien->tel === $tel) {
+                return $praticien;
+            }
+        }
+        throw new RepositoryEntityNotFoundException("Praticien with tel $tel not found");
     }
 
     public function existPraticienByTel(string $tel): bool{
-        $praticien = $this->praticiens[$tel] ?? null;
-
-        $res = false;
-
-        if($praticien !== null){
-            $res = true;
+        foreach ($this->praticiens as $praticien) {
+            if ($praticien->tel === $tel) {
+                return true;
+            }
         }
-
-        return $res;
+        return false;
     }
 }
