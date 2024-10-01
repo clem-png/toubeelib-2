@@ -45,7 +45,7 @@ class ServiceRdvTest extends TestCase
 
     public function testCreerRdv()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",), "A");
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",));
         $result = $this->serviceRdv->creerRdv($DTO);
 
         $this->assertInstanceOf(RdvDTO::class, $result);
@@ -54,11 +54,10 @@ class ServiceRdvTest extends TestCase
         $this->assertSame($DTO->idPatient, $savedRdv->idPatient);
         $this->assertSame($DTO->idPraticien, $savedRdv->idPraticien);
         $this->assertSame($DTO->dateDebut, $savedRdv->dateDebut);
-        $this->assertSame($DTO->status, $savedRdv->status);
 
         //test création d'un RDV avec une spécialité
         $specialite = new InputSpecialiteDTO('A');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
         $this->assertInstanceOf(RdvDTO::class, $result);
@@ -67,21 +66,20 @@ class ServiceRdvTest extends TestCase
         $this->assertSame($DTO->idPatient, $savedRdv->idPatient);
         $this->assertSame($DTO->idPraticien, $savedRdv->idPraticien);
         $this->assertSame($DTO->dateDebut, $savedRdv->dateDebut);
-        $this->assertSame($DTO->status, $savedRdv->status);
 
         // Test exception si le praticien n'existe pas
-        $DTO = new InputRdvDTO("testid", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",), "A");
+        $DTO = new InputRdvDTO("testid", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",));
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
 
         // Test exception si le créneau n'est pas disponible
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 09:00",), "A");
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 09:00",));
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
 
         // Test exception si la spécialité n'est pas valide
         $specialite = new InputSpecialiteDTO('B');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
     }
@@ -115,17 +113,17 @@ class ServiceRdvTest extends TestCase
 
     public function testAnnulerRdv()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A");
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
         $rdv = $this->serviceRdv->consulterRdv($result->id);
-        $this->assertSame('A', $rdv->status);
+        $this->assertSame('prevu', $rdv->status);
 
         // Test annulation du RDV
         $this->serviceRdv->annulerRdv($result->id);
         $rdv = $this->serviceRdv->consulterRdv($result->id);
-        $this->assertSame('Cancelled', $rdv->status);
+        $this->assertSame('annule', $rdv->status);
 
         // Test exception si le RDV est déjà annulé
         $this->expectException(RdvServiceException::class);
@@ -138,12 +136,12 @@ class ServiceRdvTest extends TestCase
 
     public function testModifierPatientRdv()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A");
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
         $rdv = $this->serviceRdv->consulterRdv($result->id);
-        $this->assertSame('A', $rdv->status);
+        $this->assertSame('prevu', $rdv->status);
         $this->assertSame('pa1', $rdv->idPatient);
 
         // Test modification du patient
@@ -159,7 +157,7 @@ class ServiceRdvTest extends TestCase
     public function testModifierSpecialiteRdv()
     {
         $specialite = new InputSpecialiteDTO('A');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
@@ -180,7 +178,7 @@ class ServiceRdvTest extends TestCase
 
     public function testModifierSpecialiteEtPatientRdv(){
         $specialite = new InputSpecialiteDTO('A');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), "A", $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
@@ -199,5 +197,82 @@ class ServiceRdvTest extends TestCase
         // Test exception si le RDV n'existe pas
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->modifierPatientOuSpecialiteRdv('testid', 'pa2', $specialite);
+    }
+
+    public function testMarquerRdvHonore()
+    {
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Test marqué le RDV comme honoré
+        $rdv = $this->serviceRdv->marquerRdvHonore($result->id);
+        $this->assertSame('honore', $rdv->status);
+
+        // Test exception si le RDV n'est pas en statut 'prevu'
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->marquerRdvHonore($result->id);
+
+        // Test exception si le RDV n'existe pas
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->marquerRdvHonore('testid');
+    }
+
+    public function testMarquerRdvNonHonore()
+    {
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Test marquer le RDV comme non honoré
+        $rdv = $this->serviceRdv->marquerRdvNonHonore($result->id);
+        $this->assertSame('non_honore', $rdv->status);
+
+        // Test exception si le RDV n'est pas en statut 'prevu'
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->marquerRdvNonHonore($result->id);
+
+        // Test exception si le RDV n'existe pas
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->marquerRdvNonHonore('testid');
+    }
+
+    public function testAnnulerRdvDejaHonoreOuNonHonore()
+    {
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Marqué le RDV comme honoré
+        $this->serviceRdv->marquerRdvHonore($result->id);
+
+        // Test exception si éssayer d'annuler un RDV déjà honoré
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->annulerRdv($result->id);
+
+        // marqué le RDV comme non honoré
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 14:30",));
+        $result = $this->serviceRdv->creerRdv($DTO);
+        $this->serviceRdv->marquerRdvNonHonore($result->id);
+
+        // Test exception si éssayer d'annuler un RDV déjà non honoré
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->annulerRdv($result->id);
+    }
+
+    public function testMarquerHonoreOuNonHonoreRdvDejaAnnule()
+    {
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $result = $this->serviceRdv->creerRdv($DTO);
+
+        // Test annuler le RDV
+        $this->serviceRdv->annulerRdv($result->id);
+        $rdv = $this->serviceRdv->consulterRdv($result->id);
+        $this->assertSame('annule', $rdv->status);
+
+        // Test exception si éssayer de marquer un RDV déjà annulé comme honoré
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->marquerRdvHonore($result->id);
+
+        // Test exception si éssayer de marquer un RDV déjà annulé comme non honoré
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->marquerRdvNonHonore($result->id);
     }
 }

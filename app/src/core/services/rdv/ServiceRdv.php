@@ -35,32 +35,28 @@ class ServiceRdv implements ServiceRDVInterface{
         $this->logger = $logger;
     }
 
-    /**
-     * @throws RdvServiceException
-     */
-    public function consulterRdv(string $rdv_id): RdvDTO
-    {
+    public function consulterRdv(string $rdv_id){
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
-        }catch (Exception $e){
+        }catch (\Exception $e){
             throw new RdvServiceException($e);
         }
 
-        return $rdv->toDTO();
+        $rdvDTO = $rdv->toDTO();
+        return $rdvDTO;
     }
 
-    /**
-     * @throws \DateMalformedStringException
-     * @throws RdvServiceException
-     */
     public function listerDisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id): array {
 
         try {
             $praticien = $this->praticienService->getPraticienById($id);
+            if (!$praticien) {
+                throw new RdvServiceException("Practitioner not found");
+            }
             if ($dateDebut > $dateFin) {
                 throw new RdvServiceException("Invalid date range");
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
 
@@ -90,14 +86,14 @@ class ServiceRdv implements ServiceRDVInterface{
         return array_values($disponibilites);
     }
 
-    /**
-     * @throws RdvServiceException
-     */
     public function creerRdv(InputRdvDTO $DTO): RdvDTO{
         try{
             // Vérifier si le praticien existe
             $praticien = $this->praticienService->getPraticienById($DTO->idPraticien);
-
+            if (!$praticien) {
+                throw new RdvServiceException("Praticien pas trouvé");
+            }
+            
             //vérifier si la spécialité est la même que celle du praticien
             if($DTO->specialite !== null){
                 $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
@@ -118,7 +114,7 @@ class ServiceRdv implements ServiceRDVInterface{
                 throw new RdvServiceException("Créneau non disponible");
             }
 
-            $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, $DTO->status, $DTO->dateDebut);
+            $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, "prevu", $DTO->dateDebut);
 
             if($DTO->specialite !== null){
                 $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
@@ -134,20 +130,17 @@ class ServiceRdv implements ServiceRDVInterface{
         return new RdvDTO($rdv);
     }
 
-    /**
-     * @throws RdvServiceException
-     */
     public function annulerRdv(string $rdv_id):RdvDTO{
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
-            if ($rdv->status === 'Cancelled') {
-                throw new RdvServiceException('Rdv already cancelled');
+            if ($rdv->status !== "prevu") {
+                throw new RdvServiceException('Pas possible d\'annuler le RDV');
             }
-            $rdv->setStatus("Cancelled");
+            $rdv->setStatus("annule");
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Annulation RDV : " . $rdv_id);
             return new RdvDTO($rdv);
-        } catch (Exception $e){
+        } catch (\Exception $e){
             throw new RdvServiceException($e);
         }
     }
@@ -171,7 +164,37 @@ class ServiceRdv implements ServiceRDVInterface{
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " -".$logAction);
             return new RdvDTO($rdv);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function marquerRdvHonore(string $rdv_id): RdvDTO {
+        try {
+            $rdv = $this->rdvRepository->getRdvById($rdv_id);
+            if ($rdv->status !== 'prevu') {
+                throw new RdvServiceException('Rdv ne peux pas être marqué comme honoré');
+            }
+            $rdv->setStatus("honore");
+            $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Rdv honoré : " . $rdv_id);
+            return new RdvDTO($rdv);
+        } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function marquerRdvNonHonore(string $rdv_id): RdvDTO {
+        try {
+            $rdv = $this->rdvRepository->getRdvById($rdv_id);
+            if ($rdv->status !== 'prevu') {
+                throw new RdvServiceException('Rdv ne peux pas être marqué comme non honoré');
+            }
+            $rdv->setStatus("non_honore");
+            $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Rdv non honoré : " . $rdv_id);
+            return new RdvDTO($rdv);
+        } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
     }
