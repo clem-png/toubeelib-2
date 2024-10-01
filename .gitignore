@@ -9,6 +9,7 @@
 /app/logs/*
 test.log
 /var/*
+*.log
 !/app/logs/README.md
 # Cache
 /var/cache/*
@@ -18,4 +19,3 @@ cache.properties
 # Composer
 composer.phar
 composer.lock
-
