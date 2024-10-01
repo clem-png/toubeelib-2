@@ -15,7 +15,7 @@ class Cors{
             New HttpUnauthorizedException ($rq, "missing Origin Header (cors)");
         $response = $next->handle($rq);
         $response = $response
-            ->withHeader('Access-Control-Allow-Origin', 'http://toobeelib.fr')
+            ->withHeader('Access-Control-Allow-Origin', 'http://localhost:6080')
             ->withHeader('Access-Control-Allow-Methods', 'POST, PUT, GET' )
             ->withHeader('Access-Control-Allow-Headers','Authorization' )
             ->withHeader('Access-Control-Max-Age', 3600)
