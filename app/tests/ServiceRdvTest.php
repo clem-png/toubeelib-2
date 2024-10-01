@@ -275,4 +275,19 @@ class ServiceRdvTest extends TestCase
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->marquerRdvNonHonore($result->id);
     }
+
+    public function testListerRdvPatient()
+    {
+        // Test lister les RDVs pour un patient
+        $result = $this->serviceRdv->listerRdvPatient('pa1');
+        $this->assertCount(3, $result);
+
+        // Test lister les RDVs pour un autre patient
+        $result = $this->serviceRdv->listerRdvPatient('pa2');
+        $this->assertCount(1, $result);
+
+        // Test lister les RDVs pour un patient qui n'a pas de RDV
+        $result = $this->serviceRdv->listerRdvPatient('pa3');
+        $this->assertCount(0, $result);
+    }
 }

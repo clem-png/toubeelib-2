@@ -35,7 +35,7 @@ class ServiceRdv implements ServiceRDVInterface{
         $this->logger = $logger;
     }
 
-    public function consulterRdv(string $rdv_id){
+    public function consulterRdv(string $rdv_id): RdvDTO{
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
         }catch (\Exception $e){
@@ -194,6 +194,19 @@ class ServiceRdv implements ServiceRDVInterface{
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Non Honoré");
             return new RdvDTO($rdv);
+        } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function listerRdvPatient(string $patient_id): array {
+        try {
+            $rdvs = $this->rdvRepository->getRdvByPatientId($patient_id);
+            $rdvsDTO = [];
+            foreach ($rdvs as $rdv) {
+                $rdvsDTO[] = new RdvDTO($rdv);
+            }
+            return $rdvsDTO;
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }

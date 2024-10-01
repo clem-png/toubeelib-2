@@ -20,8 +20,10 @@ class ArrayRdvRepository implements RdvRepositoryInterface
             $r2->setID('r2');
             $r3 = new Rdv('p2', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:30'));
             $r3->setID('r3');
+            $r4 = new Rdv('p2', 'pa2', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:30'));
+            $r4->setID('r4');
 
-        $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3 ];
+        $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3, 'r4'=>$r4];
     }
 
 
@@ -58,5 +60,16 @@ class ArrayRdvRepository implements RdvRepositoryInterface
             throw new RepositoryEntityNotFoundException('Rdv not found');
         }
         $this->rdvs[$rdv->getID()] = $rdv;
+    }
+
+    public function getRdvByPatientId(string $id): array
+    {
+        $rdvs = [];
+        foreach ($this->rdvs as $rdv) {
+            if ($rdv->idPatient === $id) {
+                $rdvs[] = $rdv;
+            }
+        }
+        return $rdvs;
     }
 }
