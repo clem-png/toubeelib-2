@@ -138,7 +138,7 @@ class ServiceRdv implements ServiceRDVInterface{
             }
             $rdv->setStatus("annule");
             $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Annulation RDV : " . $rdv_id);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Annulé");
             return new RdvDTO($rdv);
         } catch (\Exception $e){
             throw new RdvServiceException($e);
@@ -177,7 +177,7 @@ class ServiceRdv implements ServiceRDVInterface{
             }
             $rdv->setStatus("honore");
             $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Rdv honoré : " . $rdv_id);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Honoré");
             return new RdvDTO($rdv);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
@@ -192,7 +192,7 @@ class ServiceRdv implements ServiceRDVInterface{
             }
             $rdv->setStatus("non_honore");
             $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Rdv non honoré : " . $rdv_id);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Non Honoré");
             return new RdvDTO($rdv);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
