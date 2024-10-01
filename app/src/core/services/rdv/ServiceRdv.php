@@ -35,28 +35,32 @@ class ServiceRdv implements ServiceRDVInterface{
         $this->logger = $logger;
     }
 
-    public function consulterRdv(string $rdv_id){
+    /**
+     * @throws RdvServiceException
+     */
+    public function consulterRdv(string $rdv_id): RdvDTO
+    {
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
-        }catch (\Exception $e){
+        }catch (Exception $e){
             throw new RdvServiceException($e);
         }
 
-        $rdvDTO = $rdv->toDTO();
-        return $rdvDTO;
+        return $rdv->toDTO();
     }
 
+    /**
+     * @throws \DateMalformedStringException
+     * @throws RdvServiceException
+     */
     public function listerDisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id): array {
 
         try {
             $praticien = $this->praticienService->getPraticienById($id);
-            if (!$praticien) {
-                throw new RdvServiceException("Practitioner not found");
-            }
             if ($dateDebut > $dateFin) {
                 throw new RdvServiceException("Invalid date range");
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new RdvServiceException($e);
         }
 
@@ -90,10 +94,7 @@ class ServiceRdv implements ServiceRDVInterface{
         try{
             // Vérifier si le praticien existe
             $praticien = $this->praticienService->getPraticienById($DTO->idPraticien);
-            if (!$praticien) {
-                throw new RdvServiceException("Praticien pas trouvé");
-            }
-            
+
             //vérifier si la spécialité est la même que celle du praticien
             if($DTO->specialite !== null){
                 $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
@@ -140,7 +141,7 @@ class ServiceRdv implements ServiceRDVInterface{
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Annulation RDV : " . $rdv_id);
             return new RdvDTO($rdv);
-        } catch (\Exception $e){
+        } catch (Exception $e){
             throw new RdvServiceException($e);
         }
     }
@@ -164,7 +165,7 @@ class ServiceRdv implements ServiceRDVInterface{
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " -".$logAction);
             return new RdvDTO($rdv);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new RdvServiceException($e);
         }
     }

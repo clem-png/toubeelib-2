@@ -2,6 +2,9 @@
 
 namespace toubeelib\application\actions;
 
+use DateMalformedStringException;
+use DateTimeImmutable;
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
@@ -20,7 +23,7 @@ class PostRdvsAction extends AbstractAction
     }
 
     /**
-     * @throws \DateMalformedStringException
+     * @throws DateMalformedStringException
      */
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
@@ -34,7 +37,7 @@ class PostRdvsAction extends AbstractAction
 
         try {
             $rdvsInputValidator->check($params);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
 
@@ -42,11 +45,11 @@ class PostRdvsAction extends AbstractAction
             throw new HttpBadRequestException($rq, 'Mauvais format de données');
         }
 
-        $rdvDTO = new InputRdvDTO($params['idPraticien'], $params['idPatient'], new \DateTimeImmutable($params['date']), $params['status'], new InputSpecialiteDTO($params['specialite']) ?? null);
+        $rdvDTO = new InputRdvDTO($params['idPraticien'], $params['idPatient'], new DateTimeImmutable($params['date']), $params['status'], new InputSpecialiteDTO($params['specialite']) ?? null);
         try {
             $res = $this->serviceRdv->creerRdv($rdvDTO);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
 

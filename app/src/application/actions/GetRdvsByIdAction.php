@@ -6,7 +6,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use toubeelib\core\services\rdv\RdvServiceException;
-use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 
 

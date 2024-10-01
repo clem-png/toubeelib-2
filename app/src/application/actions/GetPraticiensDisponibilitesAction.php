@@ -2,14 +2,12 @@
 
 namespace toubeelib\application\actions;
 
+use DateTime;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
-use toubeelib\core\domain\entities\praticien\Praticien;
-use toubeelib\core\services\praticien\ServicePraticien;
-use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 
 class GetPraticiensDisponibilitesAction  extends AbstractAction {
@@ -34,8 +32,8 @@ class GetPraticiensDisponibilitesAction  extends AbstractAction {
             throw new HttpBadRequestException($rq,$e->getMessage());
         }
 
-        $dateDeb = \DateTime::createFromFormat('Y-m-d H:i', $params['dateDeb']);
-        $dateFin = \DateTime::createFromFormat('Y-m-d H:i', $params['dateFin']);
+        $dateDeb = DateTime::createFromFormat('Y-m-d H:i', $params['dateDeb']);
+        $dateFin = DateTime::createFromFormat('Y-m-d H:i', $params['dateFin']);
         $disponibilites = $this->serviceRdv->listerDisponibilitePraticien($dateDeb, $dateFin, $id);
         $response = [
             "type"=> "ressource",
