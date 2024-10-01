@@ -9,8 +9,17 @@ use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
+use toubeelib\application\middlewares\Cors;
 
 return function( \Slim\App $app):\Slim\App {
+
+    $app->add(Cors::class);
+
+    $app->options('/{routes:.+}',
+        function( Request $rq,
+                  Response $rs, array $args) : Response {
+            return $rs;
+        });
 
     $app->get('/', HomeAction::class);
 
