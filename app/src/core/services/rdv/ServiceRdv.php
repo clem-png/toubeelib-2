@@ -145,7 +145,10 @@ class ServiceRdv implements ServiceRDVInterface{
         }
     }
 
-    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?InputSpecialiteDTO $specialiteInput = null): void {
+    /**
+     * @throws RdvServiceException
+     */
+    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?InputSpecialiteDTO $specialiteInput = null): RdvDTO {
         try {
             $logAction = "";
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
@@ -160,6 +163,7 @@ class ServiceRdv implements ServiceRDVInterface{
             }
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " -".$logAction);
+            return new RdvDTO($rdv);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }

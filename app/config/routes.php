@@ -22,7 +22,6 @@ return function( \Slim\App $app):\Slim\App {
 
     $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)->setName('rdvsEditPatient');
 
-
     $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)->setName('praticiensDispo');
     return $app;
 };

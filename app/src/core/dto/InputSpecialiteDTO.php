@@ -2,7 +2,7 @@
 
 namespace toubeelib\core\dto;
 
-use toubeelib\core\dto\DTO;
+use Exception;
 
 class InputSpecialiteDTO extends DTO
 {
@@ -13,6 +13,9 @@ class InputSpecialiteDTO extends DTO
         $this->id = $id;
     }
 
+    /**
+     * @throws Exception
+     */
     public function __get(string $name): mixed{
         return parent::__get($name);
     }

@@ -3,6 +3,7 @@
 use Psr\Container\ContainerInterface;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
+use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
@@ -47,5 +48,9 @@ return [
 
     GetPraticiensDisponibilitesAction::class => function(ContainerInterface $c){
         return new GetPraticiensDisponibilitesAction($c->get(ServiceRDVInterface::class));
+    },
+
+    PatchRdvsPatientAction::class => function(ContainerInterface $c){
+        return new PatchRdvsPatientAction($c->get(ServiceRDVInterface::class));
     }
 ];

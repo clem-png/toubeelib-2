@@ -4,6 +4,7 @@ namespace toubeelib\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
 use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
@@ -24,7 +25,12 @@ class GetRdvsByIdAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         $id = $args['ID-RDV'];
-        $rdv = $this->serviceRdv->consulterRdv($id);
+        try {
+            $rdv = $this->serviceRdv->consulterRdv($id);
+        }
+        catch (RdvServiceException $e) {
+            throw new HttpBadRequestException($rq, $e->getMessage());
+        }
         $response = [
             "type"=> "ressource",
             "rdv" => $rdv

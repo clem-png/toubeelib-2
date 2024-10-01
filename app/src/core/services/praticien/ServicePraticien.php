@@ -41,6 +41,9 @@ class ServicePraticien implements ServicePraticienInterface
         }
     }
 
+    /**
+     * @throws ServicePraticienInvalidDataException
+     */
     public function getSpecialiteById(string $id): SpecialiteDTO
     {
         try {
