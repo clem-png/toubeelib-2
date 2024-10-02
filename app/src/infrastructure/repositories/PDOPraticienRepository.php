@@ -19,7 +19,6 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
     public function getSpecialiteById(string $id): Specialite
     {
         $stmt = $this->pdo->prepare('SELECT * FROM specialite WHERE ID = ?');
-        //bind param
         $stmt->bindParam(1, $id, PDO::PARAM_STR);
         $specialite = $stmt->fetch();
         return new Specialite($specialite['ID'], $specialite['label'], $specialite['description']);
@@ -28,7 +27,6 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
     public function save(Praticien $praticien): string
     {
         $ID = Uuid::uuid4()->toString();
-        $praticien->setID($ID);
         $nom = $praticien->nom;
         $prenom = $praticien->prenom;
         $adresse = $praticien->adresse;
