@@ -3,43 +3,56 @@ networks:
     driver: bridge
 
 services:
-
-  # service api.toubeelib : api pour la prise de rdv
-  #
+  # Service: api.toubeelib (API for appointment scheduling)
   api.toubeelib:
-  #  image: 'canals/php:8.3-cli'
+    # Build context and Dockerfile for customization
     build:
       context: build
       dockerfile: 8.3-cli.Dockerfile
+    # Environment variables from toubeelib.env
     env_file: ./toubeelib.env
+    # Expose port 6080 for external access
     ports:
       - '6080:80'
+    # Mount application code from ./app directory
     volumes:
       - ./app:/var/php
+    # Working directory within the container
     working_dir: /var/php
+    # Connect to toubeelib.net network
     networks:
       - toubeelib.net
+    # Ensure database is ready before starting the API
     depends_on:
       - toubeelib.db
+    # Recommended command for development:
     command: php -S 0.0.0.0:80 -t /var/php/public
 
-    # service toubeelib.db : base de données postgresql
+  # Service: toubeelib.db (PostgreSQL database)
   toubeelib.db:
-    image: 'postgres:latest'
+    # Use a specific PostgreSQL version for stability (e.g., postgres:14)
+    image: 'postgres:latest'  # Consider using a specific version
+    # Environment variables from toubeelibdb.env (e.g., for database configuration)
     env_file: ./toubeelibdb.env
+    # Expose port 5432 for database access
     ports:
       - '5432:5432'
+    # Connect to toubeelib.net network
     networks:
       - toubeelib.net
+    # Correct volume mounting for SQL dump and data:
     volumes:
-      - ./app/sql:/var/sql'
-  #
-  # service administration des bases sql
-  #
+      - ./app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
+      - ./sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
+    # Optionally, consider persistence volumes for database data
+
+  # Service: adminer (Database administration tool)
   adminer:
-    image: adminer
+    # Use a specific version for security (e.g., adminer:latest-alpine)
+    image: 'adminer:latest'  # Consider using a specific version
+    # Expose port 8080 for adminer access
     ports:
       - '8080:8080'
+    # Connect to toubeelib.net network
     networks:
       - toubeelib.net
-
