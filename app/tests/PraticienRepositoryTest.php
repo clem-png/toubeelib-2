@@ -27,16 +27,17 @@ class PraticienRepositoryTest extends TestCase
 
     public function testGetSpecialiteById()
     {
-        $specialite = $this->praticienRepository->getSpecialiteById('A');
-        $this->assertSame('A', $specialite->ID);
-        $this->assertSame('Generaliste', $specialite->label);
-        $this->assertSame('Medecin generaliste', $specialite->description);
+        $specialite = $this->praticienRepository->getSpecialiteById('1d6f853e-f7fe-497f-abdd-7ee1430d14ed');
+        $this->assertSame('1d6f853e-f7fe-497f-abdd-7ee1430d14ed', $specialite->ID);
+        $this->assertSame('Généraliste', $specialite->label);
+        $this->assertSame('Médecin généraliste', $specialite->description);
     }
 
     public function testSave()
     {
-        $specialite = new Specialite('A', 'Generaliste', 'Medecin generaliste');
-        $praticien = new Praticien('Martin', 'Marie', '123 rue', '1234567890');
+        $idSpe = 'Test';
+        $specialite = new Specialite($idSpe, 'test_label', 'test_desc');
+        $praticien = new Praticien('Martin_test', 'Marie_test', 'adresse_test', '1234567890');
         $praticien->setSpecialite($specialite);
         $id = $this->praticienRepository->save($praticien);
         $this->assertIsString($id);
@@ -46,20 +47,27 @@ class PraticienRepositoryTest extends TestCase
         $stmt->execute();
         $praticienRes = $stmt->fetch();
         $this->assertNotNull($praticienRes);
-        $this->assertSame('Martin', $praticienRes['nom']);
-        $this->assertSame('Marie', $praticienRes['prenom']);
-        $this->assertSame('123 rue', $praticienRes['adresse']);
+        $this->assertSame('Martin_test', $praticienRes['nom']);
+        $this->assertSame('Marie_test', $praticienRes['prenom']);
+        $this->assertSame('adresse_test', $praticienRes['adresse']);
+        $this->assertSame('1234567890', $praticienRes['tel']);
+        $stmt = $this->pdo->prepare('SELECT * FROM praticien_spe WHERE idPraticien = ? AND idSpe = ?');
+        $stmt->bindParam(1, $id, PDO::PARAM_STR);
+        $stmt->bindParam(2, $idSpe, PDO::PARAM_STR);
+        $stmt->execute();
+        $praticienSpeRes = $stmt->fetch();
+        $this->assertNotNull($praticienSpeRes);
     }
 
     public function testGetPraticienById()
     {
-        $praticien = $this->praticienRepository->getPraticienById('p1');
-        $this->assertSame('p1', $praticien->getID());
+        $praticien = $this->praticienRepository->getPraticienById('ce5b05aa-714e-486a-ae25-1bc6801403d1');
+        $this->assertSame('ce5b05aa-714e-486a-ae25-1bc6801403d1', $praticien->getID());
         $this->assertSame('Martin', $praticien->nom);
         $this->assertSame('Marie', $praticien->prenom);
-        $this->assertSame('123 rue', $praticien->adresse);
-        $this->assertSame('1234567890', $praticien->tel);
-        $this->assertSame('A', $praticien->specialite->ID);
+        $this->assertSame('3lassou', $praticien->adresse);
+        $this->assertSame('0123456789', $praticien->tel);
+        $this->assertSame('1d6f853e-f7fe-497f-abdd-7ee1430d14ed', $praticien->specialite->ID);
     }
 
 
