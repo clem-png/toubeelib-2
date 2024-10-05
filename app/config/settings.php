@@ -16,6 +16,31 @@ return  [
             new StreamHandler($c->get('logs.dir'),
                 $c->get('logs.level')));
         return $log;
+    },
+
+    'praticien.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file('./iniconf/praticien.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+    },
+
+    'rdv.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file('./iniconf/rdv.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+    },
+
+    'patient.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file('./iniconf/patient.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     }
+
 
     ] ;

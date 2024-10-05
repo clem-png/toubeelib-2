@@ -14,15 +14,17 @@ use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
+use toubeelib\infrastructure\repositories\PDOPraticienRepository;
+use toubeelib\infrastructure\repositories\PDORdvRepository;
 
 return [
 
     RdvRepositoryInterface::class => function (ContainerInterface $c){
-        return new ArrayRdvRepository();
+        return new PDORdvRepository($c->get('rdv.pdo'));
     },
 
     PraticienRepositoryInterface::class => function (ContainerInterface $c){
-        return new ArrayPraticienRepository();
+        return new PDOPraticienRepository($c->get('praticien.pdo'));
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
