@@ -27,7 +27,9 @@ class PDORdvRepository implements RdvRepositoryInterface
         if (!$rdv) {
             throw new RepositoryEntityNotFoundException('Rdv not found');
         }
-        return new Rdv($rdv['idPraticien'], $rdv['idPatient'], $rdv['status'], $rdv['dateDebut']);
+        $rdvReturn = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']));
+        $rdvReturn->setID($rdv['id']);
+        return $rdvReturn;
     }
 
     public function save(Rdv $rdv): string
@@ -37,12 +39,14 @@ class PDORdvRepository implements RdvRepositoryInterface
         $idPatient = $rdv->idPatient;
         $status = $rdv->status;
         $dateDebut = $rdv->dateDebut->format('Y-m-d H:i:s');
-        $stmt = $this->pdo->prepare('INSERT INTO rdv (id, idPraticien, idPatient, status, dateDebut) VALUES (:id, :idPraticien, :idPatient, :status, :dateDebut)');
-        $stmt->bindParam(':id', $ID);
-        $stmt->bindParam(':idPraticien', $idPraticien);
-        $stmt->bindParam(':idPatient', $idPatient);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':dateDebut', $dateDebut);
+        $idSpe = $rdv->specialite->ID;
+        $stmt = $this->pdo->prepare('INSERT INTO rdv (id, "idPraticien", "IdPatient", status,"idSpe", "dateDebut" ) VALUES (?, ?, ?,?, ?, ?)');
+        $stmt->bindParam(1, $ID);
+        $stmt->bindParam(2, $idPraticien);
+        $stmt->bindParam(3, $idPatient);
+        $stmt->bindParam(4, $status);
+        $stmt->bindParam(5, $idSpe);
+        $stmt->bindParam(6, $dateDebut);
         $stmt->execute();
         return $ID;
     }
@@ -50,34 +54,37 @@ class PDORdvRepository implements RdvRepositoryInterface
     public function getRdvByPatientId(string $id): array
     {
         $rdvs = [];
-        $stmt = $this->pdo->prepare('SELECT * FROM rdv');
+        $stmt = $this->pdo->prepare('SELECT * FROM rdv where "IdPatient" = ?');
+        $stmt->bindParam(1, $id);
         $stmt->execute();
         $rdvsRes = $stmt->fetchAll();
         foreach ($rdvsRes as $rdv) {
-            if ($rdv['idPatient'] === $id) {
-                $rdvs[] = new Rdv($rdv['idPraticien'], $rdv['idPatient'], $rdv['status'], $rdv['dateDebut']);
-            }
+            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']));
+            $rdvObj->setID($rdv['id']);
+            //rajouter l'element dans le tableau
+            $rdvs[] = $rdvObj;
         }
         return $rdvs;
     }
 
     public function update(Rdv $rdv): void
     {
-        //transforme en pdo
         $ID = $rdv->getID();
         $stmt = $this->pdo->prepare('Select * from rdv where id = ?');
-        $stmt->bindParam('1', $ID);
-        $rdv = $stmt->fetch();
+        $stmt->bindParam(1, $ID);
+        $stmt->execute();
+        $rdvExist = $stmt->fetch();
 
-        if (!$rdv) {
+        if (!$rdvExist) {
             throw new RepositoryEntityNotFoundException('Rdv not found');
         }
-
         $idPraticien = $rdv->idPraticien;
         $idPatient = $rdv->idPatient;
         $status = $rdv->status;
         $dateDebut = $rdv->dateDebut->format('Y-m-d H:i:s');
-        $stmt = $this->pdo->prepare('UPDATE rdv SET idPraticien = ?, idPatient = ?, status = ?, dateDebut = ? WHERE id = ?');
+
+
+        $stmt = $this->pdo->prepare('UPDATE rdv SET "idPraticien" = ?, "IdPatient" = ?, status = ?, "dateDebut" = ? WHERE id = ?');
         $stmt->bindParam(1, $idPraticien);
         $stmt->bindParam(2, $idPatient);
         $stmt->bindParam(3, $status);
@@ -89,13 +96,14 @@ class PDORdvRepository implements RdvRepositoryInterface
     public function getRdvByPraticienId(string $id): array
     {
         $rdvs = [];
-        $stmt = $this->pdo->prepare('SELECT * FROM rdv');
+        $stmt = $this->pdo->prepare('SELECT * FROM rdv WHERE "idPraticien" = ?');
+        $stmt->bindParam(1, $id);
         $stmt->execute();
         $rdvsRes = $stmt->fetchAll();
         foreach ($rdvsRes as $rdv) {
-            if ($rdv['idPraticien'] === $id) {
-                $rdvs[] = new Rdv($rdv['idPraticien'], $rdv['idPatient'], $rdv['status'], $rdv['dateDebut']);
-            }
+            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']));
+            $rdvObj->setID($rdv['id']);
+            $rdvs[] = $rdvObj;
         }
         return $rdvs;
     }

@@ -20,8 +20,9 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
     {
         $stmt = $this->pdo->prepare('SELECT * FROM specialite WHERE ID = ?');
         $stmt->bindParam(1, $id, PDO::PARAM_STR);
+        $stmt->execute();
         $specialite = $stmt->fetch();
-        return new Specialite($specialite['ID'], $specialite['label'], $specialite['description']);
+        return new Specialite($specialite['id'], $specialite['label'], $specialite['desc']);
     }
 
     public function save(Praticien $praticien): string
@@ -32,35 +33,44 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         $adresse = $praticien->adresse;
         $tel = $praticien->tel;
         $specialite = $praticien->specialite->ID;
-        $stmt = $this->pdo->prepare('INSERT INTO praticien (ID, nom, prenom, adresse, tel, specialite) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt = $this->pdo->prepare('INSERT INTO praticien (ID, nom, prenom, adresse, tel) VALUES (?, ?, ?, ?, ?)');
         $stmt->bindParam(1, $ID, PDO::PARAM_STR);
         $stmt->bindParam(2, $nom, PDO::PARAM_STR);
         $stmt->bindParam(3, $prenom, PDO::PARAM_STR);
         $stmt->bindParam(4, $adresse, PDO::PARAM_STR);
         $stmt->bindParam(5, $tel, PDO::PARAM_STR);
-        $stmt->bindParam(6, $specialite, PDO::PARAM_STR);
+        $stmt->execute();
+        $stmt = $this->pdo->prepare('INSERT INTO praticien_spe ("idPraticien", "idSpe") VALUES (?, ?)');
+        $stmt->bindParam(1, $ID, PDO::PARAM_STR);
+        $stmt->bindParam(2, $specialite, PDO::PARAM_STR);
         $stmt->execute();
         return $ID;
     }
 
     public function getPraticienById(string $id): Praticien
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM praticien WHERE ID = ?');
+        $stmt = $this->pdo->prepare('SELECT * FROM praticien inner join praticien_spe on praticien.id = praticien_spe."idPraticien" WHERE praticien.id = ?');
         $stmt->bindParam(1, $id, PDO::PARAM_STR);
-        $praticien = $stmt->fetch();
-        $specialite = $this->getSpecialiteById($praticien['specialite']);
-        $praticien = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel']);
+        $stmt->execute();
+        $praticienRes = $stmt->fetch();
+        $specialite = $this->getSpecialiteById($praticienRes['idSpe']);
+        $praticien = new Praticien($praticienRes['nom'], $praticienRes['prenom'], $praticienRes['adresse'], $praticienRes['tel']);
+        $praticien->setID($praticienRes['id']);
         $praticien->setSpecialite($specialite);
         return $praticien;
     }
 
+
+    //ne marche pas à cause des données de la base de données où des numéros de téléphones sont identiques
     public function getPraticienByTel(string $tel): Praticien
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM praticien WHERE tel = ?');
+        $stmt = $this->pdo->prepare('SELECT * FROM praticien  inner join praticien_spe on praticien.id = praticien_spe."idPraticien" WHERE tel = ?');
         $stmt->bindParam(1, $tel, PDO::PARAM_STR);
-        $praticien = $stmt->fetch();
-        $specialite = $this->getSpecialiteById($praticien['specialite']);
-        $praticien = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel']);
+        $stmt->execute();
+        $praticienRes = $stmt->fetch();
+        $specialite = $this->getSpecialiteById($praticienRes['idSpe']);
+        $praticien = new Praticien($praticienRes['nom'], $praticienRes['prenom'], $praticienRes['adresse'], $praticienRes['tel']);
+        $praticien->setID($praticienRes['id']);
         $praticien->setSpecialite($specialite);
         return $praticien;
     }
