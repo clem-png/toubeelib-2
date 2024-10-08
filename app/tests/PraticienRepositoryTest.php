@@ -76,4 +76,10 @@ class PraticienRepositoryTest extends TestCase
         $this->assertSame('0123456789', $praticien->tel);
         $this->assertSame('1d6f853e-f7fe-497f-abdd-7ee1430d14ed', $praticien->specialite->ID);
     }
+
+    protected function tearDown(): void
+    {
+        $this->pdo->exec('DELETE FROM praticien WHERE nom = \'Martin_test\' AND prenom = \'Marie_test\' AND adresse = \'adresse_test\' AND tel = \'1234567890\'');
+        $this->pdo->exec('DELETE FROM praticien_spe WHERE "idPraticien" = (SELECT ID FROM praticien WHERE nom = \'Martin_test\' AND prenom = \'Marie_test\' AND adresse = \'adresse_test\' AND tel = \'1234567890\')');
+    }
 }
