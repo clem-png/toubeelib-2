@@ -42,7 +42,8 @@ return  [
         $user = $config['username'];
         $password = $config['password'];
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
-    }
+    },
 
+    'SECRET_KEY' => getenv('LJWT_SECRET_KEY'),
 
-    ] ;
+    ];
