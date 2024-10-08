@@ -36,7 +36,7 @@ INSERT INTO rdv (id, "idPraticien", "IdPatient", "idSpe", "dateDebut", status) V
     ('51d3ce98-4951-4ae0-827b-c436da776d33', '8a619ff7-7eb3-4d3e-8bb8-43fea421ea7c', 'd8bfdec3-ca7c-4e72-98f2-749e5f775c86', '6542592f-8aaf-4ba5-9859-2169a686e9ae', '2021-01-01 08:00:00', 'prevu'),
     ('4ab01147-adca-4326-92e4-7e02bdab12f4', 'ce5b05aa-714e-486a-ae25-1bc6801403d1', '326592e0-bf1f-4dda-8c51-7f4d6384491d', '1d6f853e-f7fe-497f-abdd-7ee1430d14ed', '2021-01-01 08:00:00', 'prevu');
 
-\connect "user";
+\connect "users";
 
 INSERT INTO "users" ("id", "email", "password", "role") VALUES
     ('118a9bca-b30e-360a-9acb-0f44498fa9cb',	'munoz.theophile@laposte.net',	'$2y$10$jdB9eypmLmifN5i5n5IwrOi9G6tySqYhsFAfJhHSgYmldTmuaKd3u',	0),
@@ -188,4 +188,5 @@ INSERT INTO "users" ("id", "email", "password", "role") VALUES
     ('679eaab9-c6a8-3a51-9ebb-8f5a073709d1',	'simone.jacquet@blot.com',	'$2y$10$uA5TwXkF.tKEZEVrgVOZx.0LWG.L4yTAVv0nYDVCz9GDk0pf0p2Ja',	5),
     ('0a6c75ca-4d2a-3786-92c9-1d5629cc23e2',	'aime92@leclerc.com',	'$2y$10$DkXd5n8ow07ZMQkbCdVS.e76KW8jJefhaFeThsASljLGh702rBbDy',	5),
     ('a115c355-fc49-3f16-93a9-275ea42ed489',	'bweiss@yahoo.fr',	'$2y$10$6PlgoWDGd2IUdsLxrAObheiTtQyhSIKaDEqapmb/9X1/a1uEiFTfm',	5),
-    ('1016324e-7a32-3fca-9844-6ed51debaefb',	'guillaume.costa@dbmail.com',	'$2y$10$UwhIEYM7.W8YfnmA.R8yHuJIFg1OhRmQldh/XRLIB9oJ865dLP3ly',	5);
+    ('1016324e-7a32-3fca-9844-6ed51debaefb',	'guillaume.costa@dbmail.com',	'$2y$10$UwhIEYM7.W8YfnmA.R8yHuJIFg1OhRmQldh/XRLIB9oJ865dLP3ly',	5),
+    ('cb771755-26f4-4e6c-b327-a1217f5b09cd', 'test@test.fr', '$2y$10$XDb0AIvZnYWB/KjpC4CnFOPdnPKHbb7WwiIvY11enK1x0BX2xWGq.',0);
