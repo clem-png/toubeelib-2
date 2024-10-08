@@ -52,10 +52,20 @@ class PatchRdvsPatientAction extends AbstractAction
         } catch (Exception $e) {
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
-
-        if ((filter_var($params['idPatient'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPatient'] || filter_var($params['specialite'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['specialite'])) {
-            throw new HttpBadRequestException($rq, 'Mauvais format de données');
+        if (isset($params['idPatient']) && isset($params['specialite'])) {
+            if ((filter_var($params['idPatient'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPatient'] || filter_var($params['specialite'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['specialite'])) {
+                throw new HttpBadRequestException($rq, 'Mauvais format de données');
+            }
+        }elseif (isset($params['idPatient'])) {
+            if (filter_var($params['idPatient'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPatient']) {
+                throw new HttpBadRequestException($rq, 'Mauvais format de données');
+            }
+        }else {
+            if (filter_var($params['specialite'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['specialite']) {
+                throw new HttpBadRequestException($rq, 'Mauvais format de données');
+            }
         }
+
         $res = null;
         switch ($type) {
             case 0:
