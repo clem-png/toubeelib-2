@@ -19,7 +19,7 @@ return  [
     },
 
     'praticien.pdo' => function (ContainerInterface $c) {
-        $config = parse_ini_file('./iniconf/praticien.db.ini');
+        $config = parse_ini_file('iniconf/praticien.db.ini');
         $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
         $user = $config['username'];
         $password = $config['password'];
@@ -27,7 +27,7 @@ return  [
     },
 
     'rdv.pdo' => function (ContainerInterface $c) {
-        $config = parse_ini_file('./iniconf/rdv.db.ini');
+        $config = parse_ini_file('iniconf/rdv.db.ini');
         $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
         $user = $config['username'];
         $password = $config['password'];
@@ -35,7 +35,7 @@ return  [
     },
 
     'patient.pdo' => function (ContainerInterface $c) {
-        $config = parse_ini_file('./iniconf/patient.db.ini');
+        $config = parse_ini_file('iniconf/patient.db.ini');
         $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
         $user = $config['username'];
         $password = $config['password'];
