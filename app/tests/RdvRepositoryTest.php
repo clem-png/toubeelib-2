@@ -15,7 +15,7 @@ class RdvRepositoryTest extends TestCase
     protected function setUp(): void
     {
         $config = parse_ini_file(__DIR__.'/../config/iniconf/rdv.db.ini');
-        $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']}";
+        $dsn = "{$config['driver']}:host=localhost;port={$config['port']};dbname={$config['database']}";
         $user = $config['username'];
         $password = $config['password'];
         $this->pdo = new \PDO($dsn, $user, $password);
