@@ -3,7 +3,7 @@
 create database patient;
 create database praticien;
 create database rdv;
-create database user;
+create database users;
 
 \connect "patient";
 
@@ -79,7 +79,7 @@ CREATE TABLE "public"."rdv" (
 
 TRUNCATE "rdv";
 
-\connect "user";
+\connect "users";
 
 DROP TABLE IF EXISTS "users";
 CREATE TABLE "public"."users" (
