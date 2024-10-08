@@ -22,7 +22,7 @@ return  [
 
     'praticien.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file('iniconf/praticien.db.ini');
-        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']};";
         $user = $config['username'];
         $password = $config['password'];
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
@@ -30,7 +30,7 @@ return  [
 
     'rdv.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file('iniconf/rdv.db.ini');
-        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']};";
         $user = $config['username'];
         $password = $config['password'];
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
@@ -38,7 +38,7 @@ return  [
 
     'patient.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file('iniconf/patient.db.ini');
-        $dsn = "{$config['driver']}:host={$config['host']};dbname={$config['database']}";
+        $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']};";
         $user = $config['username'];
         $password = $config['password'];
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
