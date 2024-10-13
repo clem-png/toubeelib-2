@@ -6,14 +6,21 @@ use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
+use toubeelib\application\actions\SignInAction;
+use toubeelib\application\providers\auth\AuthProvider;
+use toubeelib\application\providers\auth\AuthProviderInterface;
+use toubeelib\application\providers\auth\JWTManager;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\auth\AuthService;
+use toubeelib\core\services\auth\AuthServiceInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
+use toubeelib\infrastructure\repositories\PDOAuthRepository;
 use toubeelib\infrastructure\repositories\PDOPraticienRepository;
 use toubeelib\infrastructure\repositories\PDORdvRepository;
 
@@ -54,5 +61,28 @@ return [
 
     PatchRdvsPatientAction::class => function(ContainerInterface $c){
         return new PatchRdvsPatientAction($c->get(ServiceRDVInterface::class));
-    }
+    },
+
+
+    //pour jwt
+
+    PDOAuthRepository::class => function(ContainerInterface $c){
+        return new PDOAuthRepository($c->get('auth.pdo'));
+    },
+
+    AuthServiceInterface::class => function(ContainerInterface $c){
+        return new AuthService($c->get(PDOAuthRepository::class),$c->get('logger'));
+    },
+
+    JWTManager::class => function(ContainerInterface $c){
+        return new JWTManager($c->get('SECRET_KEY'));
+    },
+
+    AuthProviderInterface::class => function(ContainerInterface $c){
+        return new AuthProvider($c->get(AuthServiceInterface::class),$c->get(JWTManager::class));
+    },
+
+    SignInAction::class => function(ContainerInterface $c){
+        return new SignInAction($c->get(AuthProviderInterface::class));
+    },
 ];

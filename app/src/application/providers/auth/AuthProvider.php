@@ -3,6 +3,7 @@ namespace toubeelib\application\providers\auth;
 
 use toubeelib\core\dto\AuthDTO;
 use toubeelib\core\dto\InputAuthDTO;
+use toubeelib\core\services\auth\AuthServiceException;
 use toubeelib\core\services\auth\AuthServiceInterface;
 use toubeelib\application\providers\auth\JWTManager;
 

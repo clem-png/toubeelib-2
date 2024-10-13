@@ -7,6 +7,9 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
+use toubeelib\application\providers\auth\AuthProviderInterface;
+use toubeelib\core\dto\InputAuthDTO;
+use toubeelib\core\services\auth\AuthServiceException;
 
 class SignInAction extends AbstractAction
 {
@@ -29,30 +32,16 @@ class SignInAction extends AbstractAction
 
         $user = $credentials[0];
         $password = $credentials[1];
-        $authRes = $this->authProvider->verifyCrendentials($user, $password);
-        if ($authRes === false) {
+        try {
+            $authRes = $this->authProvider->signIn(new InputAuthDTO($user, $password));
+        }catch (AuthServiceException $e){
             throw new HttpUnauthorizedException($rq, 'Identifiants incorrects');
         }
 
-
-        /* truc pour le token
-        $payload = [
-            'iat'=>time(),
-            'exp'=>time()+3600,
-            'sub' => $authRes['id'],
-            'data' => [
-                'role' => $authRes['role'],
-                'user' => $authRes['user']
-            ]
-        ] ;
-
-        $secret = ContainerInterface::class->get('SECRET_KEY');
-        $token = JWT::encode($payload, $secret, 'HS512');
-        */
         $response = [
             'type' => 'ressource',
-            'atoken' => $authRes['atoken'],
-            'rtoken' => $authRes['rtoken']
+            'atoken' => $authRes['accessToken'],
+            'rtoken' => $authRes['refreshToken']
         ];
 
         $rs->getBody()->write(json_encode($response));
