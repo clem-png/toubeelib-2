@@ -62,19 +62,18 @@ class PraticienRepositoryTest extends TestCase
         $this->assertSame('Martin', $praticien->nom);
         $this->assertSame('Marie', $praticien->prenom);
         $this->assertSame('3lassou', $praticien->adresse);
-        $this->assertSame('0123456789', $praticien->tel);
+        $this->assertSame('0123456787', $praticien->tel);
         $this->assertSame('1d6f853e-f7fe-497f-abdd-7ee1430d14ed', $praticien->specialite->ID);
     }
 
     public function testGetPraticienByTel()
     {
-        throw new SkippedTestSuiteError('Test skipped because of a bug in the method getPraticienByTel');
-        $praticien = $this->praticienRepository->getPraticienByTel('0123456789');
+        $praticien = $this->praticienRepository->getPraticienByTel('0123456787');
         $this->assertSame('ce5b05aa-714e-486a-ae25-1bc6801403d1', $praticien->getID());
         $this->assertSame('Martin', $praticien->nom);
         $this->assertSame('Marie', $praticien->prenom);
         $this->assertSame('3lassou', $praticien->adresse);
-        $this->assertSame('0123456789', $praticien->tel);
+        $this->assertSame('0123456787', $praticien->tel);
         $this->assertSame('1d6f853e-f7fe-497f-abdd-7ee1430d14ed', $praticien->specialite->ID);
     }
 

@@ -35,6 +35,79 @@ class ServiceRdv implements ServiceRDVInterface{
         $this->logger = $logger;
     }
 
+    // Création et modification des RDV
+     
+    public function creerRdv(InputRdvDTO $DTO): RdvDTO{
+        try{
+            // Vérifier si le praticien existe
+            $praticien = $this->praticienService->getPraticienById($DTO->idPraticien);
+            if (!$praticien) {
+                throw new RdvServiceException("Praticien pas trouvé");
+            }
+            
+            //vérifier si la spécialité est la même que celle du praticien
+            if($DTO->specialite !== null){
+                $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
+                if (!$specialite) {
+                    throw new RdvServiceException("Specialite pas trouvé");
+                }
+
+                if ($specialite->label !== $praticien->specialite_label) {
+                    throw new RdvServiceException("Specialite non valide");
+                }
+            }
+
+            // Vérifier si le créneau est disponible
+            $date = DateTime::createFromImmutable($DTO->dateDebut);
+            $dateFin = (clone $date)->modify('+' . self::DUREE_RDV . ' minutes'); 
+            $disponibilites = $this->listerDisponibilitePraticien($date, $dateFin, $DTO->idPraticien);
+            if (!in_array($date, $disponibilites)) {
+                throw new RdvServiceException("Créneau non disponible");
+            }
+
+            $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, "prevu", $DTO->dateDebut);
+
+            if($DTO->specialite !== null){
+                $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
+                $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
+            }
+
+            $id = $this->rdvRepository->save($rdv);
+            $rdv->setID($id);
+            $this->logger->log(Level::Info, "Creation RDV : " . $id);
+        } catch (Exception $e){
+            throw new RdvServiceException($e);
+        }
+        return new RdvDTO($rdv);
+    }
+
+    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?InputSpecialiteDTO $specialiteInput = null): RdvDTO {
+        try {
+            $logAction = "";
+            $rdv = $this->rdvRepository->getRdvById($rdv_id);
+            if ($patient_id !== null) {
+                $rdv->setPatientId($patient_id);
+                $logAction.= " Nouveau Patient : ".$patient_id;
+            }
+            if ($specialiteInput !== null) {
+                $specialite = $this->praticienService->getSpecialiteById($specialiteInput->id);
+                $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
+                $logAction.= " Nouvelle spécialité  : ".$specialite->label;
+            }
+            $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " -".$logAction);
+            return new RdvDTO($rdv);
+        } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+    }
+    
+    public function indisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id):void{
+        //TODO : faire des rdv sur la periode avec un id de patient null et un status "indisponible"
+    }
+    
+    // Consultations sur les RDV
+
     public function consulterRdv(string $rdv_id): RdvDTO{
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
@@ -86,88 +159,20 @@ class ServiceRdv implements ServiceRDVInterface{
         return array_values($disponibilites);
     }
 
-    public function creerRdv(InputRdvDTO $DTO): RdvDTO{
-        try{
-            // Vérifier si le praticien existe
-            $praticien = $this->praticienService->getPraticienById($DTO->idPraticien);
-            if (!$praticien) {
-                throw new RdvServiceException("Praticien pas trouvé");
-            }
-            
-            //vérifier si la spécialité est la même que celle du praticien
-            if($DTO->specialite !== null){
-                $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
-                if (!$specialite) {
-                    throw new RdvServiceException("Specialite pas trouvé");
-                }
-
-                if ($specialite->label !== $praticien->specialite_label) {
-                    throw new RdvServiceException("Specialite non valide");
-                }
-            }
-
-            // Vérifier si le créneau est disponible
-            $date = DateTime::createFromImmutable($DTO->dateDebut);
-            $dateFin = (clone $date)->modify('+' . self::DUREE_RDV . ' minutes'); 
-            $disponibilites = $this->listerDisponibilitePraticien($date, $dateFin, $DTO->idPraticien);
-            if (!in_array($date, $disponibilites)) {
-                throw new RdvServiceException("Créneau non disponible");
-            }
-
-            $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, "prevu", $DTO->dateDebut);
-
-            if($DTO->specialite !== null){
-                $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
-                $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
-            }
-
-            $id = $this->rdvRepository->save($rdv);
-            $rdv->setID($id);
-            $this->logger->log(Level::Info, "Creation RDV : " . $id);
-        } catch (Exception $e){
-            throw new RdvServiceException($e);
-        }
-        return new RdvDTO($rdv);
-    }
-
-    public function annulerRdv(string $rdv_id):RdvDTO{
+    public function listerRdvPatient(string $patient_id): array {
         try {
-            $rdv = $this->rdvRepository->getRdvById($rdv_id);
-            if ($rdv->status !== "prevu") {
-                throw new RdvServiceException('Pas possible d\'annuler le RDV');
+            $rdvs = $this->rdvRepository->getRdvByPatientId($patient_id);
+            $rdvsDTO = [];
+            foreach ($rdvs as $rdv) {
+                $rdvsDTO[] = new RdvDTO($rdv);
             }
-            $rdv->setStatus("annule");
-            $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Annulé");
-            return new RdvDTO($rdv);
-        } catch (\Exception $e){
-            throw new RdvServiceException($e);
-        }
-    }
-
-    /**
-     * @throws RdvServiceException
-     */
-    public function modifierPatientOuSpecialiteRdv(string $rdv_id, ?string $patient_id = null, ?InputSpecialiteDTO $specialiteInput = null): RdvDTO {
-        try {
-            $logAction = "";
-            $rdv = $this->rdvRepository->getRdvById($rdv_id);
-            if ($patient_id !== null) {
-                $rdv->setPatientId($patient_id);
-                $logAction.= " Nouveau Patient : ".$patient_id;
-            }
-            if ($specialiteInput !== null) {
-                $specialite = $this->praticienService->getSpecialiteById($specialiteInput->id);
-                $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
-                $logAction.= " Nouvelle spécialité  : ".$specialite->label;
-            }
-            $this->rdvRepository->update($rdv);
-            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id . " -".$logAction);
-            return new RdvDTO($rdv);
+            return $rdvsDTO;
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
     }
+
+    // Cycle de vie du RDV
 
     public function marquerRdvHonore(string $rdv_id): RdvDTO {
         try {
@@ -199,15 +204,32 @@ class ServiceRdv implements ServiceRDVInterface{
         }
     }
 
-    public function listerRdvPatient(string $patient_id): array {
+    public function payerRdv(string $rdv_id): RdvDTO {
         try {
-            $rdvs = $this->rdvRepository->getRdvByPatientId($patient_id);
-            $rdvsDTO = [];
-            foreach ($rdvs as $rdv) {
-                $rdvsDTO[] = new RdvDTO($rdv);
+            $rdv = $this->rdvRepository->getRdvById($rdv_id);
+            if ($rdv->status !== 'honore') {
+                throw new RdvServiceException('Rdv ne peux pas être payé car il n\'est pas honoré');
             }
-            return $rdvsDTO;
+            $rdv->setStatus("paye");
+            $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Payé");
+            return new RdvDTO($rdv);
         } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function annulerRdv(string $rdv_id):RdvDTO{
+        try {
+            $rdv = $this->rdvRepository->getRdvById($rdv_id);
+            if ($rdv->status !== "prevu") {
+                throw new RdvServiceException('Pas possible d\'annuler le RDV');
+            }
+            $rdv->setStatus("annule");
+            $this->rdvRepository->update($rdv);
+            $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Annulé");
+            return new RdvDTO($rdv);
+        } catch (\Exception $e){
             throw new RdvServiceException($e);
         }
     }

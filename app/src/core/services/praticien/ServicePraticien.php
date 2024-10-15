@@ -79,9 +79,6 @@ class ServicePraticien implements ServicePraticienInterface
         }
     }
 
-    /**
-     * @throws ServicePraticienInvalidDataException
-     */
     public function getSpecialiteById(string $id): SpecialiteDTO
     {
         try {
@@ -89,6 +86,16 @@ class ServicePraticien implements ServicePraticienInterface
             return $specialite->toDTO();
         } catch(RepositoryEntityNotFoundException $e) {
             throw new ServicePraticienInvalidDataException('invalid Specialite ID');
+        }
+    }
+
+    public function listPraticiens(): array
+    {
+        try {
+            $praticiens = $this->praticienRepository->getAllPraticiens();
+            return array_map(fn($praticien) => new PraticienDTO($praticien), $praticiens);
+        } catch (Exception $e) {
+            throw new ServicePraticienInvalidDataException('Error fetching praticiens list');
         }
     }
 }

@@ -60,8 +60,6 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         return $praticien;
     }
 
-
-    //ne marche pas à cause des données de la base de données où des numéros de téléphones sont identiques
     public function getPraticienByTel(string $tel): Praticien
     {
         $stmt = $this->pdo->prepare('SELECT * FROM praticien  inner join praticien_spe on praticien.id = praticien_spe."idPraticien" WHERE tel = ?');
@@ -73,5 +71,18 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         $praticien->setID($praticienRes['id']);
         $praticien->setSpecialite($specialite);
         return $praticien;
+    }
+
+    public function getAllPraticiens(): array
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM praticien inner join praticien_spe on praticien.id = praticien_spe."idPraticien"');
+        $stmt->execute();
+        $praticiens = $stmt->fetchAll();
+        $praticiensRes = [];
+        foreach ($praticiens as $praticien) {
+            $specialite = $this->getSpecialiteById($praticien['idSpe']);
+            $praticiensRes[] = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel'], $specialite);
+        }
+        return $praticiensRes;
     }
 }
