@@ -68,7 +68,14 @@ class PostPraticiensAction extends AbstractAction
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
 
-        $res->jsonSerialize();
+        $res = [
+            "id" => $res->ID,
+            "nom" => $res->nom,
+            "prenom" => $res->prenom,
+            "adresse" => $res->adresse,
+            "tel" => $res->tel,
+            "specialite" => $res->specialite_label
+        ];
 
         $response = [
             "type" => "ressource",
