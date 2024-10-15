@@ -87,7 +87,7 @@ CREATE TABLE "public"."rdv" (
                                 "idSpe" uuid NOT NULL,
                                 "dateDebut" timestamp NOT NULL,
                                 "status" character varying NOT NULL,
-                                "type" character varying NOT NULL
+                                "type" character varying NULL
 ) WITH (oids = false);
 
 TRUNCATE "rdv";
