@@ -129,6 +129,14 @@ class ServicePraticienPDOTest extends TestCase
         $this->assertSame('Durand', $results[1]->nom);
         $this->assertSame('Pierre', $results[1]->prenom);
 
+        // Test search avec aucun parametre
+        $inputSearchDTO = new InputSearchDTO(null, null, null, null);
+        $results = $this->praticienService->searchPraticiens($inputSearchDTO);
+
+        $this->assertCount(3, $results);
+        $this->assertSame('Dupont', $results[0]->nom);
+        $this->assertSame('Durand', $results[1]->nom);
+        $this->assertSame('Martin', $results[2]->nom);
 
         // Test si aucun praticien n'est trouve
         $inputSearchDTO = new InputSearchDTO('NonExistent', 'Praticien', 'Unknown Address', '0000000000');

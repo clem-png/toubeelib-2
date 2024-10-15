@@ -107,23 +107,23 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
             $params = [];
 
             if ($input->prenom !== null) {
-                $query .= ' AND prenom LIKE :prenom';
-                $params[':prenom'] = '%' . $input->prenom . '%';
+            $query .= ' AND LOWER(prenom) LIKE LOWER(:prenom)';
+            $params[':prenom'] = '%' . strtolower($input->prenom) . '%';
             }
 
             if ($input->nom !== null) {
-                $query .= ' AND nom LIKE :nom';
-                $params[':nom'] = '%' . $input->nom . '%';
+            $query .= ' AND LOWER(nom) LIKE LOWER(:nom)';
+            $params[':nom'] = '%' . strtolower($input->nom) . '%';
             }
 
             if ($input->tel !== null) {
-                $query .= ' AND tel LIKE :tel';
-                $params[':tel'] = '%' . $input->tel . '%';
+            $query .= ' AND LOWER(tel) LIKE LOWER(:tel)';
+            $params[':tel'] = '%' . strtolower($input->tel) . '%';
             }
 
             if ($input->adresse !== null) {
-                $query .= ' AND adresse LIKE :adresse';
-                $params[':adresse'] = '%' . $input->adresse . '%';
+            $query .= ' AND LOWER(adresse) LIKE LOWER(:adresse)';
+            $params[':adresse'] = '%' . strtolower($input->adresse) . '%';
             }
 
             $stmt = $this->pdo->prepare($query);
