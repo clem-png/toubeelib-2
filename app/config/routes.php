@@ -10,6 +10,7 @@ use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostPatientAction;
+use toubeelib\application\actions\PutPayerRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\middlewares\Cors;
@@ -28,13 +29,16 @@ return function( \Slim\App $app):\Slim\App {
 
     //rdvs
 
-    $app->put('/rdvs/{ID-RDV}/annuler', PutRdvsAnnulerAction::class)->setName('rdvsAnnuler');
+    $app->put('/rdvs/{ID-RDV}/annuler[/]', PutRdvsAnnulerAction::class)->setName('rdvsAnnuler');
 
     $app->get('/rdvs/{ID-RDV}[/]', GetRdvsByIdAction::class)->setName('rdvsId');
 
     $app->post('/rdvs[/]', PostRdvsAction::class)->setName('rdvsAdd');
 
     $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)->setName('rdvsEditPatient');
+
+    $app->put('/rdvs/{ID-RDV}/payer[/]', PutPayerRdvsAction::class)->setName('rdvsPayer');
+
 
     //praticiens
 

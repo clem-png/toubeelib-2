@@ -7,6 +7,7 @@ use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostPatientAction;
 use toubeelib\application\actions\PostRdvsAction;
+use toubeelib\application\actions\PutPayerRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\providers\auth\AuthProvider;
@@ -78,6 +79,10 @@ return [
 
     GetPraticiensByIdAction::class => function(ContainerInterface $c){
         return new GetPraticiensByIdAction($c->get(ServicePraticienInterface::class));
+    },
+
+    PutPayerRdvsAction::class => function(ContainerInterface $c){
+        return new PutPayerRdvsAction($c->get(ServiceRDVInterface::class));
     },
 
 
