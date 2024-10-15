@@ -12,6 +12,8 @@ use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostPatientAction;
 use toubeelib\application\actions\PutPayerRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
+use toubeelib\application\actions\PutRdvsHonorerAction;
+use toubeelib\application\actions\PutRdvsnonHonorerAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\middlewares\Cors;
 
@@ -38,6 +40,10 @@ return function( \Slim\App $app):\Slim\App {
     $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)->setName('rdvsEditPatient');
 
     $app->put('/rdvs/{ID-RDV}/payer[/]', PutPayerRdvsAction::class)->setName('rdvsPayer');
+
+    $app->put('/rdvs/{ID-RDV}/honorer[/]', PutRdvsHonorerAction::class)->setName('rdvsHonorer');
+
+    $app->put('/rdvs/{ID-RDV}/non-honorer[/]', PutRdvsNonHonorerAction::class)->setName('rdvsNonHonorer');
 
 
     //praticiens
