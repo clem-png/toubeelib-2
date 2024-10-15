@@ -9,6 +9,7 @@ use Respect\Validation\Exceptions\NestedValidationException;
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\domain\entities\praticien\Specialite;
 use toubeelib\core\dto\InputPraticienDTO;
+use toubeelib\core\dto\InputSearchDTO;
 use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\SpecialiteDTO;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
@@ -89,10 +90,10 @@ class ServicePraticien implements ServicePraticienInterface
         }
     }
 
-    public function searchPraticiens(?string $prenom = null, ?string $nom = null, ?string $tel = null, ?string $adresse = null): array
+    public function searchPraticiens(InputSearchDTO $input): array
     {
         try {
-            $praticiens = $this->praticienRepository->searchPraticiens($prenom, $nom, $tel, $adresse);
+            $praticiens = $this->praticienRepository->searchPraticiens($input);
 
             return array_map(fn($praticien) => new PraticienDTO($praticien), $praticiens);
         } catch (Exception $e) {

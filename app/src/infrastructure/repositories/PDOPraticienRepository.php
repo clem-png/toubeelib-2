@@ -6,6 +6,7 @@ use PDO;
 use Ramsey\Uuid\Uuid;
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\domain\entities\praticien\Specialite;
+use toubeelib\core\dto\InputSearchDTO;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
@@ -99,30 +100,30 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         }
     }
 
-    public function searchPraticiens(?string $prenom, ?string $nom, ?string $tel, ?string $adresse): array
+    public function searchPraticiens(InputSearchDTO $input): array
     {
         try {
             $query = 'SELECT * FROM praticien INNER JOIN praticien_spe ON praticien.id = praticien_spe."idPraticien" WHERE 1=1';
             $params = [];
 
-            if ($prenom !== null) {
+            if ($input->prenom !== null) {
                 $query .= ' AND prenom LIKE :prenom';
-                $params[':prenom'] = '%' . $prenom . '%';
+                $params[':prenom'] = '%' . $input->prenom . '%';
             }
 
-            if ($nom !== null) {
+            if ($input->nom !== null) {
                 $query .= ' AND nom LIKE :nom';
-                $params[':nom'] = '%' . $nom . '%';
+                $params[':nom'] = '%' . $input->nom . '%';
             }
 
-            if ($tel !== null) {
+            if ($input->tel !== null) {
                 $query .= ' AND tel LIKE :tel';
-                $params[':tel'] = '%' . $tel . '%';
+                $params[':tel'] = '%' . $input->tel . '%';
             }
 
-            if ($adresse !== null) {
+            if ($input->adresse !== null) {
                 $query .= ' AND adresse LIKE :adresse';
-                $params[':adresse'] = '%' . $adresse . '%';
+                $params[':adresse'] = '%' . $input->adresse . '%';
             }
 
             $stmt = $this->pdo->prepare($query);
