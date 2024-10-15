@@ -8,6 +8,7 @@ use toubeelib\application\actions\HomeAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
+use toubeelib\application\actions\PostPatientAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\middlewares\Cors;
 
@@ -32,6 +33,8 @@ return function( \Slim\App $app):\Slim\App {
     $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)->setName('rdvsEditPatient');
 
     $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)->setName('praticiensDispo');
+
+    $app->post('/patient[/]', PostPatientAction::class)->setName('patientAdd');
 
     $app->post('/users/signin[/]', SignInAction::class)->setName('usersSignIn');
     return $app;

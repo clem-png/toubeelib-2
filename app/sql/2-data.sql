@@ -2,8 +2,8 @@
 
 INSERT INTO "praticien" ("id", "nom", "prenom", "adresse", "tel") VALUES
     ('cb771755-26f4-4e6c-b327-a1217f5b09cd',	'Dupont',	'Jean',	'nancy',	'0123456789'),
-    ('8a619ff7-7eb3-4d3e-8bb8-43fea421ea7c',	'Durand',	'Pierre',	'vandeuve',	'0123456789'),
-    ('ce5b05aa-714e-486a-ae25-1bc6801403d1',	'Martin',	'Marie',	'3lassou',	'0123456789');
+    ('8a619ff7-7eb3-4d3e-8bb8-43fea421ea7c',	'Durand',	'Pierre',	'vandeuve',	'0123456788'),
+    ('ce5b05aa-714e-486a-ae25-1bc6801403d1',	'Martin',	'Marie',	'3lassou',	'0123456787');
 
 INSERT INTO "specialite" ("id", "label", "desc") VALUES
     ('dd3cac4c-c175-427c-b2aa-8fcc54f250b5', 'Dentiste', 'Spécialiste des dents'),
@@ -25,9 +25,9 @@ INSERT INTO "patient" (id, num_secu, date_naissance, nom, prenom, adresse, mail)
     ('326592e0-bf1f-4dda-8c51-7f4d6384491d', '1234567890125', '1990-01-01', 'Martin', 'Marie', '3lassou', 'martin.marie@mail.fr');
 
 INSERT INTO num_patient ("idPatient", numero) VALUES
-    ('d4ac898d-0d47-48d6-b354-8282bec927ba', '1234567890123'),
-    ('d8bfdec3-ca7c-4e72-98f2-749e5f775c86', '1234567890124'),
-    ('326592e0-bf1f-4dda-8c51-7f4d6384491d', '1234567890125');
+    ('d4ac898d-0d47-48d6-b354-8282bec927ba', '0644281281'),
+    ('d8bfdec3-ca7c-4e72-98f2-749e5f775c86', '0644281282'),
+    ('326592e0-bf1f-4dda-8c51-7f4d6384491d', '0644281283');
 
 \connect "rdv";
 

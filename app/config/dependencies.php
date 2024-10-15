@@ -4,14 +4,17 @@ use Psr\Container\ContainerInterface;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
+use toubeelib\application\actions\PostPatientAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\providers\auth\AuthProvider;
 use toubeelib\application\providers\auth\AuthProviderInterface;
 use toubeelib\application\providers\auth\JWTManager;
+use toubeelib\core\repositoryInterfaces\PatientRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\patient\ServicePatientInterface;
 use toubeelib\core\services\auth\AuthService;
 use toubeelib\core\services\auth\AuthServiceInterface;
 use toubeelib\core\services\praticien\ServicePraticien;
@@ -20,6 +23,7 @@ use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\infrastructure\repositories\ArrayRdvRepository;
+use toubeelib\infrastructure\repositories\PDOPatientRepository;
 use toubeelib\infrastructure\repositories\PDOAuthRepository;
 use toubeelib\infrastructure\repositories\PDOPraticienRepository;
 use toubeelib\infrastructure\repositories\PDORdvRepository;
@@ -32,6 +36,10 @@ return [
 
     PraticienRepositoryInterface::class => function (ContainerInterface $c){
         return new PDOPraticienRepository($c->get('praticien.pdo'));
+    },
+
+    PatientRepositoryInterface::class => function (ContainerInterface $c){
+        return new PDOPatientRepository($c->get('patient.pdo'));
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
@@ -61,6 +69,10 @@ return [
 
     PatchRdvsPatientAction::class => function(ContainerInterface $c){
         return new PatchRdvsPatientAction($c->get(ServiceRDVInterface::class));
+    },
+
+    PostPatientAction::class => function(ContainerInterface $c){
+        return new PostPatientAction($c->get(ServicePatientInterface::class));
     },
 
 
