@@ -1,6 +1,7 @@
 <?php
 
 use Psr\Container\ContainerInterface;
+use toubeelib\application\actions\GetPraticiensByIdAction;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
@@ -73,6 +74,10 @@ return [
 
     PostPatientAction::class => function(ContainerInterface $c){
         return new PostPatientAction($c->get(ServicePatientInterface::class));
+    },
+
+    GetPraticiensByIdAction::class => function(ContainerInterface $c){
+        return new GetPraticiensByIdAction($c->get(ServicePraticienInterface::class));
     },
 
 
