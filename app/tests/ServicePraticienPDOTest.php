@@ -13,11 +13,12 @@ class ServicePraticienPDOTest extends TestCase
 {
     private $praticienRepository;
     private $praticienService;
+    private $pdo;
 
     protected function setUp(): void
     {
         $logger = new \Monolog\Logger('test.log');
-        $logger->pushHandler(new StreamHandler(__DIR__.'/test.log',\Monolog\Level::Info));
+        $logger->pushHandler(new StreamHandler(__DIR__.'/test.log', \Monolog\Level::Info));
         $config = parse_ini_file(__DIR__.'/../config/iniconf/praticien.db.ini');
         $dsn = "{$config['driver']}:host=localhost;port={$config['port']};dbname={$config['database']}";
         $user = $config['username'];
@@ -42,15 +43,15 @@ class ServicePraticienPDOTest extends TestCase
     public function testCreerPraticien()
     {
         // Test creation d'un nouveau praticien
-        $specialite = new InputSpecialiteDTO('A');
-        $inputPraticienDTO = new InputPraticienDTO('Martin', 'Marie', '123 rue', '1234567890', $specialite);
+        $specialite = new InputSpecialiteDTO('dd3cac4c-c175-427c-b2aa-8fcc54f250b5');
+        $inputPraticienDTO = new InputPraticienDTO('Martin_test', 'Marie_test', 'adresse_test', 'tel_test', $specialite);
         $result = $this->praticienService->createPraticien($inputPraticienDTO);
 
         $this->assertInstanceOf(PraticienDTO::class, $result);
-        $this->assertSame('Martin', $result->nom);
-        $this->assertSame('Marie', $result->prenom);
-        $this->assertSame('123 rue', $result->adresse);
-        $this->assertSame('1234567890', $result->tel);
+        $this->assertSame('Martin_test', $result->nom);
+        $this->assertSame('Marie_test', $result->prenom);
+        $this->assertSame('adresse_test', $result->adresse);
+        $this->assertSame('tel_test', $result->tel);
 
         // Test exception si creation d'un praticien existants
         $this->expectException(ServicePraticienInvalidDataException::class);
@@ -71,11 +72,11 @@ class ServicePraticienPDOTest extends TestCase
     }
 
     public function testGetPraticienParTel(){
-        $tel = '9876543210';
+        $tel = '0123456789';
         $result = $this->praticienService->getPraticienByTel($tel);
 
         // Test si le praticien est bien trouve
-        $this->assertSame('p2', $result->ID);
+        $this->assertSame('cb771755-26f4-4e6c-b327-a1217f5b09cd', $result->ID);
 
         // Test si le praticien n'est pas trouve
         $tel = '9999999999';
@@ -84,16 +85,22 @@ class ServicePraticienPDOTest extends TestCase
     }
 
     public function testGetSpecialiteParId(){
-        $id = 'A';
+        $id = 'dd3cac4c-c175-427c-b2aa-8fcc54f250b5';
         $result = $this->praticienService->getSpecialiteById($id);
 
         // Test si la specialite est bien trouvee
-        $this->assertSame('A', $result->ID);
+        $this->assertSame('dd3cac4c-c175-427c-b2aa-8fcc54f250b5', $result->ID);
         $this->assertSame('Dentiste', $result->label);
 
         // Test si la specialite n'est pas trouvee
         $id = 'testId';
         $this->expectException(ServicePraticienInvalidDataException::class);
         $this->praticienService->getSpecialiteById($id);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->pdo->exec('DELETE FROM praticien WHERE nom = \'Martin_test\' AND prenom = \'Marie_test\' AND adresse = \'adresse_test\' AND tel = \'tel_test\'');
+        $this->pdo->exec('DELETE FROM praticien_spe WHERE "idPraticien" = (SELECT ID FROM praticien WHERE nom = \'Martin_test\' AND prenom = \'Marie_test\' AND adresse = \'adresse_test\' AND tel = \'tel_test\')');
     }
 }

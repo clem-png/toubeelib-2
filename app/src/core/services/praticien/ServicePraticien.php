@@ -64,7 +64,7 @@ class ServicePraticien implements ServicePraticienInterface
         try {
             $praticien = $this->praticienRepository->getPraticienById($id);
             return new PraticienDTO($praticien);
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             throw new ServicePraticienInvalidDataException('invalid Praticien ID');
         }
     }
