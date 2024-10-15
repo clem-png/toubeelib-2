@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Slim\App;
 use toubeelib\application\actions\GetPraticiensAction;
 use toubeelib\application\actions\GetPraticiensByIdAction;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\HomeAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
+use toubeelib\application\actions\PostPraticiensAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostPatientAction;
@@ -19,7 +21,7 @@ use toubeelib\application\actions\SignInAction;
 use toubeelib\application\middlewares\AuthMiddleware;
 use toubeelib\application\middlewares\Cors;
 
-return function( \Slim\App $app):\Slim\App {
+return function( App $app): App {
 
     $app->add(Cors::class);
 
@@ -75,6 +77,10 @@ return function( \Slim\App $app):\Slim\App {
         ->setName('praticiensId')
         ->add(AuthMiddleware::class);
 
+    $app->post('/praticiens[/]', PostPraticiensAction::class)
+        ->setName('praticiensAdd')
+        ->add(AuthMiddleware::class);
+
     //patients
 
     $app->post('/patient[/]', PostPatientAction::class)
@@ -84,8 +90,7 @@ return function( \Slim\App $app):\Slim\App {
     //users
 
     $app->post('/users/signin[/]', SignInAction::class)
-        ->setName('usersSignIn')
-        ->add(AuthMiddleware::class);
+        ->setName('usersSignIn');
 
     return $app;
 };

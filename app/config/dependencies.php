@@ -6,6 +6,7 @@ use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PostPatientAction;
+use toubeelib\application\actions\PostPraticiensAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PutPayerRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
@@ -96,6 +97,10 @@ return [
 
     PutRdvsnonHonorerAction::class => function(ContainerInterface $c){
         return new PutRdvsnonHonorerAction($c->get(ServiceRDVInterface::class));
+    },
+
+    PostPraticiensAction::class => function(ContainerInterface $c){
+        return new PostPraticiensAction($c->get(ServicePraticienInterface::class));
     },
 
 

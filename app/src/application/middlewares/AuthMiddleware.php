@@ -33,9 +33,6 @@ class AuthMiddleware{
         if (! $rq->hasHeader("Authorization")){
             New HttpUnauthorizedException ($rq, "missing Authorization Header (auth)");
         }
-        if($rq->getHeader('Authorization')[0] == null){
-            throw new HttpUnauthorizedException($rq,"no auth, try /users/signin");
-        }
         if(strlen($rq->getHeader('Authorization')[0]) == 6){
             throw new HttpUnauthorizedException($rq,"no auth, try /users/signin");
         }
