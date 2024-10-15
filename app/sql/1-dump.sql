@@ -63,6 +63,16 @@ CREATE TABLE "public"."specialite" (
 
 TRUNCATE "specialite";
 
+DROP TABLE IF EXISTS "disponibilite";
+CREATE TABLE "public"."disponibilite" (
+                                          "id" uuid DEFAULT uuid_generate_v4() NOT NULL,
+                                          "idPraticien" uuid NOT NULL,
+                                          "jour" integer NOT NULL,
+                                          "heureDebut" time NOT NULL,
+                                          "heureFin" time NOT NULL,
+                                          "dureeRdv" integer NOT NULL
+) WITH (oids = false);
+
 \connect "rdv";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

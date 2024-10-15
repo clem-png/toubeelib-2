@@ -12,12 +12,12 @@ class Patient extends Entity
     protected string $prenom;
     protected string $adresse;
     protected string $mail;
-    protected Date $dateNaissance;
+    protected string $dateNaissance;
     protected string $numSecu;
 
-    protected [] $numerosTel;
+    protected string $numeroTel;
 
-    public function __construct(string $nom, string $prenom, string $adresse, string $mail, Date $dateNaissance, string $numSecu, [] $numerosTel = [], string $numeroTel = null)
+    public function __construct(string $nom, string $prenom, string $adresse, string $mail, string $dateNaissance, string $numSecu, string $numeroTel)
     {
         $this->nom = $nom;
         $this->prenom = $prenom;
@@ -25,15 +25,7 @@ class Patient extends Entity
         $this->mail = $mail;
         $this->dateNaissance = $dateNaissance;
         $this->numSecu = $numSecu;
-        $this->numerosTel = $numerosTel;
-        if ($numeroTel !== null) {
-            $this->numerosTel[] = $numeroTel;
-        }
-    }
-
-    public function ajouterNumeroTel(string $numeroTel): void
-    {
-        $this->numerosTel[] = $numeroTel;
+        $this->numeroTel = $numeroTel;
     }
 
     public function toDTO(): PatientDTO

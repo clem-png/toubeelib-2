@@ -2,6 +2,8 @@
 
 namespace toubeelib\core\services\patient;
 
+use Exception;
+
 class PatientServiceException
 {
 

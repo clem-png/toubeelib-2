@@ -37,7 +37,7 @@ class ServicePatient implements ServicePatientInterface
             $adresse = $DTO->adresse;
             $mail = $DTO->mail;
             $numSecu = $DTO->numSecu;
-            $tel[] = $DTO->numerosTel;
+            $tel = $DTO->numeroTel;
             $patient = new Patient($nom, $prenom, $adresse, $mail, $dateNaissance, $numSecu, $tel);
             $id = $this->patientRepository->save($patient);
             $patient->setID($id);

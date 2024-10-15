@@ -28,7 +28,7 @@ class PDOPatientRepository implements PatientRepositoryInterface
             $nom = $patient->nom;
             $prenom = $patient->prenom;
             $adresse = $patient->adresse;
-            $dateNaissance = $patient->dateNaissance->format('Y-m-d');
+            $dateNaissance = $patient->dateNaissance;
             $mail = $patient->mail;
             $numSecu = $patient->numSecu;
             $stmt = $this->pdo->prepare('INSERT INTO patient (id, "num_secu", "date_naissance", nom, prenom, adresse, mail) VALUES (?, ?, ?, ?, ?, ?, ?)');
@@ -40,23 +40,24 @@ class PDOPatientRepository implements PatientRepositoryInterface
             $stmt->bindParam(6, $adresse);
             $stmt->bindParam(7, $mail);
             $stmt->execute();
+        } catch (Exception $e) {
+            throw new RepositoryEntityNotFoundException($e->getMessage());
+        }
 
-            $tel[] = $patient->numerosTel;
-            foreach ($tel as $num) {
-                // vérifier si le numéro est déjà dans la base
-                $stmt = $this->pdo->prepare('SELECT * FROM "num_patient" WHERE numero = ?');
-                $stmt->bindParam(1, $num);
-                $stmt->execute();
-                $num = $stmt->fetch();
-                if ($num != null) {
-                    throw new RepositoryEntityNotFoundException('Le numéro de téléphone {$num} est déjà utilisé');
-
-                }
-                $stmt = $this->pdo->prepare('INSERT INTO "num_patient" ("idPatient", numero) VALUES (?, ?)');
-                $stmt->bindParam(1, $ID);
-                $stmt->bindParam(2, $num);
-                $stmt->execute();
+        $num = $patient->numeroTel;
+        try {
+            // vérifier si le numéro est déjà dans la base
+            $stmt = $this->pdo->prepare('SELECT * FROM "num_patient" WHERE numero = ?');
+            $stmt->bindParam(1, $num);
+            $stmt->execute();
+            $existingNum = $stmt->fetch();
+            if ($existingNum != null) {
+                throw new RepositoryEntityNotFoundException("Le numéro de téléphone {$num} est déjà utilisé");
             }
+            $stmt = $this->pdo->prepare('INSERT INTO "num_patient" ("idPatient", numero) VALUES (?, ?)');
+            $stmt->bindParam(1, $ID);
+            $stmt->bindParam(2, $num);
+            $stmt->execute();
         } catch (Exception $e) {
             throw new RepositoryEntityNotFoundException($e->getMessage());
         }

@@ -16,6 +16,7 @@ use toubeelib\application\providers\auth\JWTManager;
 use toubeelib\core\repositoryInterfaces\PatientRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\patient\ServicePatient;
 use toubeelib\core\services\patient\ServicePatientInterface;
 use toubeelib\core\services\auth\AuthService;
 use toubeelib\core\services\auth\AuthServiceInterface;
@@ -23,8 +24,6 @@ use toubeelib\core\services\praticien\ServicePraticien;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 use toubeelib\core\services\rdv\ServiceRdv;
 use toubeelib\core\services\rdv\ServiceRDVInterface;
-use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
-use toubeelib\infrastructure\repositories\ArrayRdvRepository;
 use toubeelib\infrastructure\repositories\PDOPatientRepository;
 use toubeelib\infrastructure\repositories\PDOAuthRepository;
 use toubeelib\infrastructure\repositories\PDOPraticienRepository;
@@ -51,6 +50,10 @@ return [
 
     ServiceRDVInterface::class => function (ContainerInterface $c) {
         return new ServiceRdv($c->get(RdvRepositoryInterface::class),$c->get(ServicePraticienInterface::class),$c->get('logger'));
+    },
+
+    ServicePatientInterface::class => function (ContainerInterface $c) {
+        return new ServicePatient($c->get(PatientRepositoryInterface::class),$c->get('logger'));
     },
 
     GetRdvsByIdAction::class => function(ContainerInterface $c){

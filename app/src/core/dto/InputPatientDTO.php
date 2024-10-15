@@ -11,21 +11,19 @@ class InputPatientDTO extends DTO
     protected string $nom;
     protected string $prenom;
     protected string $adresse;
-    protected string $tel;
     protected string $mail;
-    protected Date $dateNaissance;
+    protected string $dateNaissance;
     protected string $numSecu;
 
-    protected [] $numerosTel;
+    protected string $numeroTel;
 
-    public function __construct(string $nom, string $prenom, string $adresse, string $tel, string $mail, string $dateNaissance, string $numSecu, [] $numerosTel = []) {
+    public function __construct(string $nom, string $prenom, string $adresse, string $tel, string $mail, string $dateNaissance, string $numSecu) {
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->adresse = $adresse;
-        $this->tel = $tel;
         $this->mail = $mail;
         $this->dateNaissance = $dateNaissance;
         $this->numSecu = $numSecu;
-        $this->numerosTel = $numerosTel;
+        $this->numeroTel = $tel;
     }
 }
