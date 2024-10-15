@@ -14,13 +14,13 @@ class ArrayRdvRepository implements RdvRepositoryInterface
     private array $rdvs = [];
 
     public function __construct() {
-            $r1 = new Rdv('p1', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00') );
+            $r1 = new Rdv('p1', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:00'), 'presentiel');
             $r1->setID('r1');
-            $r2 = new Rdv('p1', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:00'));
+            $r2 = new Rdv('p1', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:00'), 'teleconsultation');
             $r2->setID('r2');
-            $r3 = new Rdv('p2', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:30'));
+            $r3 = new Rdv('p2', 'pa1', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 09:30'), 'presentiel');
             $r3->setID('r3');
-            $r4 = new Rdv('p2', 'pa2', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:30'));
+            $r4 = new Rdv('p2', 'pa2', 'prevu', \DateTimeImmutable::createFromFormat('Y-m-d H:i','2024-09-02 10:30'), 'presentiel');
             $r4->setID('r4');
 
         $this->rdvs  = ['r1'=> $r1, 'r2'=>$r2, 'r3'=> $r3, 'r4'=>$r4];

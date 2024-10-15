@@ -35,7 +35,7 @@ class RdvRepositoryTest extends TestCase
         $uuid_praticien =  Uuid::uuid4()->toString();
         $uuid_patient =  Uuid::uuid4()->toString();
         $specialite = new Specialite('1d6f853e-f7fe-497f-abdd-7ee1430d14ed', 'Généraliste', 'Médecin généraliste');
-        $rdv = new Rdv($uuid_praticien, $uuid_patient, 'prevu', dateDebut: new DateTimeImmutable('2021-01-01 00:00:00'));
+        $rdv = new Rdv($uuid_praticien, $uuid_patient, 'prevu', dateDebut: new DateTimeImmutable('2021-01-01 00:00:00'), type:'presentiel');
         $rdv->setSpecialite($specialite);
         $id = $this->rdvRepository->save($rdv);
         $this->assertIsString($id);
@@ -65,7 +65,7 @@ class RdvRepositoryTest extends TestCase
     public function testUpdate() {
         $uuid_praticien =  Uuid::uuid4()->toString();
         $uuid_patient =  Uuid::uuid4()->toString();
-        $rdv = new Rdv($uuid_praticien, $uuid_patient, 'prevu(changer)', new DateTimeImmutable('2021-01-01 00:00:00'));
+        $rdv = new Rdv($uuid_praticien, $uuid_patient, 'prevu(changer)', new DateTimeImmutable('2021-01-01 00:00:00'), 'presentiel');
         $id = '4ab01147-adca-4326-92e4-7e02bdab12f4';
         $rdv->setID($id);
         $this->rdvRepository->update($rdv);

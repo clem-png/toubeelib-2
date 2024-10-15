@@ -84,10 +84,10 @@ CREATE TABLE "public"."rdv" (
                                 "id" uuid DEFAULT uuid_generate_v4() NOT NULL,
                                 "idPraticien" uuid NOT NULL,
                                 "IdPatient" uuid NOT NULL,
-                                "idSpe" uuid NOT NULL,
+                                "idSpe" uuid NULL,
                                 "dateDebut" timestamp NOT NULL,
                                 "status" character varying NOT NULL,
-                                "type" character varying NULL
+                                "type" character varying NOT NULL
 ) WITH (oids = false);
 
 TRUNCATE "rdv";

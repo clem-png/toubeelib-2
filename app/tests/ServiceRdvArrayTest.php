@@ -45,7 +45,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testCreerRdv()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         $this->assertInstanceOf(RdvDTO::class, $result);
@@ -57,7 +57,7 @@ class ServiceRdvArrayTest extends TestCase
 
         //test création d'un RDV avec une spécialité
         $specialite = new InputSpecialiteDTO('A');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel', $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
         $this->assertInstanceOf(RdvDTO::class, $result);
@@ -68,18 +68,18 @@ class ServiceRdvArrayTest extends TestCase
         $this->assertSame($DTO->dateDebut, $savedRdv->dateDebut);
 
         // Test exception si le praticien n'existe pas
-        $DTO = new InputRdvDTO("testid", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",));
+        $DTO = new InputRdvDTO("testid", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 12:00",), 'presentiel');
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
 
         // Test exception si le créneau n'est pas disponible
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 09:00",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 09:00",), 'presentiel');
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
 
         // Test exception si la spécialité n'est pas valide
         $specialite = new InputSpecialiteDTO('B');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel', $specialite);
         $this->expectException(RdvServiceException::class);
         $this->serviceRdv->creerRdv($DTO);
     }
@@ -113,7 +113,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testAnnulerRdv()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
@@ -136,7 +136,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testModifierPatientRdv()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
@@ -157,7 +157,7 @@ class ServiceRdvArrayTest extends TestCase
     public function testModifierSpecialiteRdv()
     {
         $specialite = new InputSpecialiteDTO('A');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel', $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
@@ -178,7 +178,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testModifierSpecialiteEtPatientRdv(){
         $specialite = new InputSpecialiteDTO('A');
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), $specialite);
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel', $specialite);
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test existence du RDV
@@ -201,7 +201,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testMarquerRdvHonore()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test marqué le RDV comme honoré
@@ -219,7 +219,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testMarquerRdvNonHonore()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test marquer le RDV comme non honoré
@@ -237,7 +237,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testAnnulerRdvDejaHonoreOuNonHonore()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Marqué le RDV comme honoré
@@ -259,7 +259,7 @@ class ServiceRdvArrayTest extends TestCase
 
     public function testMarquerHonoreOuNonHonoreRdvDejaAnnule()
     {
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
 
         // Test annuler le RDV
@@ -294,7 +294,7 @@ class ServiceRdvArrayTest extends TestCase
     public function testPayerRdv()
     {
         // Test payer un RDV honoré
-        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",), 'presentiel');
         $result = $this->serviceRdv->creerRdv($DTO);
         $this->serviceRdv->marquerRdvHonore($result->id);
         $rdv = $this->serviceRdv->payerRdv($result->id);

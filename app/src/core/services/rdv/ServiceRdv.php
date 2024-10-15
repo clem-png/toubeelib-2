@@ -65,7 +65,7 @@ class ServiceRdv implements ServiceRDVInterface{
                 throw new RdvServiceException("Créneau non disponible");
             }
 
-            $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, "prevu", $DTO->dateDebut);
+            $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, "prevu", $DTO->dateDebut, $DTO->type);
 
             if($DTO->specialite !== null){
                 $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);

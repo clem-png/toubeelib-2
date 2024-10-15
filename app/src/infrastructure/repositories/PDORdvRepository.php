@@ -27,7 +27,7 @@ class PDORdvRepository implements RdvRepositoryInterface
         if (!$rdv) {
             throw new RepositoryEntityNotFoundException('Rdv not found');
         }
-        $rdvReturn = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']));
+        $rdvReturn = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']), $rdv['type']);
         $rdvReturn->setID($rdv['id']);
         return $rdvReturn;
     }
@@ -40,13 +40,15 @@ class PDORdvRepository implements RdvRepositoryInterface
         $status = $rdv->status;
         $dateDebut = $rdv->dateDebut->format('Y-m-d H:i:s');
         $idSpe = $rdv->specialite->ID;
-        $stmt = $this->pdo->prepare('INSERT INTO rdv (id, "idPraticien", "IdPatient", status,"idSpe", "dateDebut" ) VALUES (?, ?, ?,?, ?, ?)');
+        $type = $rdv->type;
+        $stmt = $this->pdo->prepare('INSERT INTO rdv (id, "idPraticien", "IdPatient", status,"idSpe", "dateDebut",type ) VALUES (?, ?, ?,?, ?, ?, ?)');
         $stmt->bindParam(1, $ID);
         $stmt->bindParam(2, $idPraticien);
         $stmt->bindParam(3, $idPatient);
         $stmt->bindParam(4, $status);
         $stmt->bindParam(5, $idSpe);
         $stmt->bindParam(6, $dateDebut);
+        $stmt->bindParam(7, $type);
         $stmt->execute();
         return $ID;
     }
@@ -59,7 +61,7 @@ class PDORdvRepository implements RdvRepositoryInterface
         $stmt->execute();
         $rdvsRes = $stmt->fetchAll();
         foreach ($rdvsRes as $rdv) {
-            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']));
+            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']), $rdv['type']);
             $rdvObj->setID($rdv['id']);
             //rajouter l'element dans le tableau
             $rdvs[] = $rdvObj;
@@ -101,7 +103,7 @@ class PDORdvRepository implements RdvRepositoryInterface
         $stmt->execute();
         $rdvsRes = $stmt->fetchAll();
         foreach ($rdvsRes as $rdv) {
-            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']));
+            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']), $rdv['type']);
             $rdvObj->setID($rdv['id']);
             $rdvs[] = $rdvObj;
         }

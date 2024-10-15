@@ -14,6 +14,7 @@ class RdvDTO extends DTO
     protected \DateTimeImmutable $dateDebut;
     protected string $specialite_label;
     protected string $status;
+    protected string $type;
 
     public function __construct(Rdv $r)
     {
@@ -23,6 +24,7 @@ class RdvDTO extends DTO
         $this->dateDebut = $r->dateDebut;
         $this->specialite_label = $r->specialite->label??'';
         $this->status = $r->status;
+        $this->type = $r->type;
     }
 
     public function jsonSerialize(): array
@@ -33,7 +35,8 @@ class RdvDTO extends DTO
             'idPraticien' => $this->idPraticien,
             'dateDebut' => $this->dateDebut->format('Y-m-d H:i:s'),
             'specialite_label' => $this->specialite_label,
-            'status' => $this->status
+            'status' => $this->status,
+            'type' => $this->type
         ];
     }
 
