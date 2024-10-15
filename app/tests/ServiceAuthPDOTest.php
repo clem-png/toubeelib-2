@@ -8,7 +8,7 @@ use toubeelib\core\services\auth\AuthService;
 use toubeelib\core\dto\InputAuthDTO;
 use toubeelib\core\services\auth\AuthServiceException;
 
-class ServiceAuthTest extends TestCase
+class ServiceAuthPDOTest extends TestCase
 {
     private $authRepository;
     private $authService;

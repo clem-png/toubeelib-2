@@ -9,7 +9,7 @@ use toubeelib\core\services\praticien\ServicePraticienInvalidDataException;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\core\services\praticien\ServicePraticien;
 
-class ServicePraticienTest extends TestCase
+class ServicePraticienArrayTest extends TestCase
 {
     private $praticienRepository;
     private $praticienService;

@@ -73,16 +73,52 @@ class PDOPraticienRepository implements PraticienRepositoryInterface
         return $praticien;
     }
 
-    public function getAllPraticiens(): array
+    public function searchPraticiens(?string $prenom, ?string $nom, ?string $tel, ?string $adresse): array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM praticien inner join praticien_spe on praticien.id = praticien_spe."idPraticien"');
-        $stmt->execute();
-        $praticiens = $stmt->fetchAll();
-        $praticiensRes = [];
-        foreach ($praticiens as $praticien) {
-            $specialite = $this->getSpecialiteById($praticien['idSpe']);
-            $praticiensRes[] = new Praticien($praticien['nom'], $praticien['prenom'], $praticien['adresse'], $praticien['tel'], $specialite);
+        $query = 'SELECT * FROM praticien INNER JOIN praticien_spe ON praticien.id = praticien_spe."idPraticien" WHERE 1=1';
+        $params = [];
+
+        if ($prenom !== null) {
+            $query .= ' AND prenom LIKE :prenom';
+            $params[':prenom'] = '%' . $prenom . '%';
         }
-        return $praticiensRes;
+
+        if ($nom !== null) {
+            $query .= ' AND nom LIKE :nom';
+            $params[':nom'] = '%' . $nom . '%';
+        }
+
+        if ($tel !== null) {
+            $query .= ' AND tel LIKE :tel';
+            $params[':tel'] = '%' . $tel . '%';
+        }
+
+        if ($adresse !== null) {
+            $query .= ' AND adresse LIKE :adresse';
+            $params[':adresse'] = '%' . $adresse . '%';
+        }
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute($params);
+        $results = $stmt->fetchAll();
+
+        $praticiens = [];
+        foreach ($results as $praticienRes) {
+            $specialite = $this->getSpecialiteById($praticienRes['idSpe']);
+            $praticien = new Praticien($praticienRes['nom'], $praticienRes['prenom'], $praticienRes['adresse'], $praticienRes['tel']);
+            $praticien->setID($praticienRes['id']);
+            $praticien->setSpecialite($specialite);
+            $praticiens[] = $praticien;
+        }
+
+        return $praticiens;
+    }
+
+    public function existPraticienByTel(string $tel): bool
+    {
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM praticien WHERE tel = ?');
+        $stmt->bindParam(1, $tel, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
     }
 }

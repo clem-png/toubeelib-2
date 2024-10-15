@@ -64,7 +64,7 @@ class ServicePraticien implements ServicePraticienInterface
         try {
             $praticien = $this->praticienRepository->getPraticienById($id);
             return new PraticienDTO($praticien);
-        } catch(RepositoryEntityNotFoundException $e) {
+        } catch(Exception $e) {
             throw new ServicePraticienInvalidDataException('invalid Praticien ID');
         }
     }
@@ -89,13 +89,14 @@ class ServicePraticien implements ServicePraticienInterface
         }
     }
 
-    public function listPraticiens(): array
+    public function searchPraticiens(?string $prenom = null, ?string $nom = null, ?string $tel = null, ?string $adresse = null): array
     {
         try {
-            $praticiens = $this->praticienRepository->getAllPraticiens();
+            $praticiens = $this->praticienRepository->searchPraticiens($prenom, $nom, $tel, $adresse);
+
             return array_map(fn($praticien) => new PraticienDTO($praticien), $praticiens);
         } catch (Exception $e) {
-            throw new ServicePraticienInvalidDataException('Error fetching praticiens list');
+            throw new ServicePraticienInvalidDataException($e);
         }
     }
 }

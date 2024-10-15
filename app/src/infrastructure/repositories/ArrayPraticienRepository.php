@@ -99,4 +99,8 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
         }
         return false;
     }
+
+    public function searchPraticiens(?string $prenom, ?string $nom, ?string $tel, ?string $adresse): array{
+        return []; // TODO
+    }
 }

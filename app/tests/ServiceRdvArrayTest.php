@@ -11,7 +11,7 @@ use toubeelib\core\services\rdv\RdvServiceException;
 use toubeelib\infrastructure\repositories\ArrayPraticienRepository;
 use toubeelib\core\services\praticien\ServicePraticien;
 
-class ServiceRdvTest extends TestCase
+class ServiceRdvArrayTest extends TestCase
 {
     private $rdvRepository;
     private $praticienRepository;
@@ -289,5 +289,24 @@ class ServiceRdvTest extends TestCase
         // Test lister les RDVs pour un patient qui n'a pas de RDV
         $result = $this->serviceRdv->listerRdvPatient('pa3');
         $this->assertCount(0, $result);
+    }
+
+    public function testPayerRdv()
+    {
+        // Test payer un RDV honoré
+        $DTO = new InputRdvDTO("p1", "pa1", \DateTimeImmutable::createFromFormat('Y-m-d H:i',  "2024-09-02 13:30",));
+        $result = $this->serviceRdv->creerRdv($DTO);
+        $this->serviceRdv->marquerRdvHonore($result->id);
+        $rdv = $this->serviceRdv->payerRdv($result->id);
+
+        $this->assertSame('paye', $rdv->status);
+
+        // Test exception payer un RDV déjà payé
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->payerRdv($result->id);
+
+        // Test exception payer un RDV qui n'éxiste pas
+        $this->expectException(RdvServiceException::class);
+        $this->serviceRdv->payerRdv('testid');
     }
 }
