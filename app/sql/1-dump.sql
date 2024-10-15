@@ -73,6 +73,8 @@ CREATE TABLE "public"."disponibilite" (
                                           "dureeRdv" integer NOT NULL
 ) WITH (oids = false);
 
+TRUNCATE "disponibilite";
+
 \connect "rdv";
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
