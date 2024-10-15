@@ -1,6 +1,7 @@
 <?php
 
 use Psr\Container\ContainerInterface;
+use toubeelib\application\actions\GetPraticiensAction;
 use toubeelib\application\actions\GetPraticiensByIdAction;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
@@ -86,6 +87,10 @@ return [
 
     PutPayerRdvsAction::class => function(ContainerInterface $c){
         return new PutPayerRdvsAction($c->get(ServiceRDVInterface::class));
+    },
+
+    GetPraticiensAction::class => function(ContainerInterface $c){
+        return new GetPraticiensAction($c->get(ServicePraticienInterface::class));
     },
 
 

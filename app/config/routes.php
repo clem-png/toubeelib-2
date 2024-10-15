@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use toubeelib\application\actions\GetPraticiensAction;
 use toubeelib\application\actions\GetPraticiensByIdAction;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\HomeAction;
@@ -42,6 +43,7 @@ return function( \Slim\App $app):\Slim\App {
 
     //praticiens
 
+    $app->get('/praticiens[/]', GetPraticiensAction::class)->setName('praticiens');
     $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)->setName('praticiensDispo');
     $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)->setName('praticiensId');
 
@@ -53,5 +55,7 @@ return function( \Slim\App $app):\Slim\App {
     //users
 
     $app->post('/users/signin[/]', SignInAction::class)->setName('usersSignIn');
+
+
     return $app;
 };
