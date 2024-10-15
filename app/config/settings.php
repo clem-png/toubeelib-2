@@ -52,6 +52,6 @@ return  [
         return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
     },
 
-    'SECRET_KEY' => getenv('LJWT_SECRET_KEY'),
+    'SECRET_KEY' => getenv('lJWT_SECRET_KEY'),
 
     ];

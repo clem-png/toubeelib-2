@@ -7,4 +7,6 @@ use toubeelib\core\dto\InputAuthDTO;
 interface AuthProviderInterface
 {
     public function signIn(InputAuthDTO $credentials): AuthDTO;
+
+    public function getSignIn(string $token): AuthDTO;
 }

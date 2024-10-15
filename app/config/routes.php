@@ -16,6 +16,7 @@ use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\PutRdvsHonorerAction;
 use toubeelib\application\actions\PutRdvsnonHonorerAction;
 use toubeelib\application\actions\SignInAction;
+use toubeelib\application\middlewares\AuthMiddleware;
 use toubeelib\application\middlewares\Cors;
 
 return function( \Slim\App $app):\Slim\App {
@@ -32,36 +33,59 @@ return function( \Slim\App $app):\Slim\App {
 
     //rdvs
 
-    $app->put('/rdvs/{ID-RDV}/annuler[/]', PutRdvsAnnulerAction::class)->setName('rdvsAnnuler');
+    $app->put('/rdvs/{ID-RDV}/annuler[/]', PutRdvsAnnulerAction::class)
+        ->setName('rdvsAnnuler')
+        ->add(AuthMiddleware::class);
 
-    $app->get('/rdvs/{ID-RDV}[/]', GetRdvsByIdAction::class)->setName('rdvsId');
+    $app->get('/rdvs/{ID-RDV}[/]', GetRdvsByIdAction::class)
+        ->setName('rdvsId')
+        ->add(AuthMiddleware::class);
 
-    $app->post('/rdvs[/]', PostRdvsAction::class)->setName('rdvsAdd');
+    $app->post('/rdvs[/]', PostRdvsAction::class)
+        ->setName('rdvsAdd')
+        ->add(AuthMiddleware::class);
 
-    $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)->setName('rdvsEditPatient');
+    $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)
+        ->setName('rdvsEditPatient')
+        ->add(AuthMiddleware::class);
 
-    $app->put('/rdvs/{ID-RDV}/payer[/]', PutPayerRdvsAction::class)->setName('rdvsPayer');
+    $app->put('/rdvs/{ID-RDV}/payer[/]', PutPayerRdvsAction::class)
+        ->setName('rdvsPayer')
+        ->add(AuthMiddleware::class);
 
-    $app->put('/rdvs/{ID-RDV}/honorer[/]', PutRdvsHonorerAction::class)->setName('rdvsHonorer');
+    $app->put('/rdvs/{ID-RDV}/honorer[/]', PutRdvsHonorerAction::class)
+        ->setName('rdvsHonorer')
+        ->add(AuthMiddleware::class);
 
-    $app->put('/rdvs/{ID-RDV}/non-honorer[/]', PutRdvsNonHonorerAction::class)->setName('rdvsNonHonorer');
-
+    $app->put('/rdvs/{ID-RDV}/non-honorer[/]', PutRdvsNonHonorerAction::class)
+        ->setName('rdvsNonHonorer')
+        ->add(AuthMiddleware::class);
 
     //praticiens
 
-    $app->get('/praticiens[/]', GetPraticiensAction::class)->setName('praticiens');
-    $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)->setName('praticiensDispo');
-    $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)->setName('praticiensId');
+    $app->get('/praticiens[/]', GetPraticiensAction::class)
+        ->setName('praticiens')
+        ->add(AuthMiddleware::class);
 
+    $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
+        ->setName('praticiensDispo')
+        ->add(AuthMiddleware::class);
+
+    $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)
+        ->setName('praticiensId')
+        ->add(AuthMiddleware::class);
 
     //patients
 
-    $app->post('/patient[/]', PostPatientAction::class)->setName('patientAdd');
+    $app->post('/patient[/]', PostPatientAction::class)
+        ->setName('patientAdd')
+        ->add(AuthMiddleware::class);
 
     //users
 
-    $app->post('/users/signin[/]', SignInAction::class)->setName('usersSignIn');
-
+    $app->post('/users/signin[/]', SignInAction::class)
+        ->setName('usersSignIn')
+        ->add(AuthMiddleware::class);
 
     return $app;
 };

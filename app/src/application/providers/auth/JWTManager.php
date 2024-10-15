@@ -20,14 +20,13 @@ class JWTManager
         return JWT::encode($payload, $this->secretKey, $this->algorithm);
     }
 
-    public function createRefreshToken(array $payload){
+    public function createRefreshToken(array $payload): string{
         $payload['exp'] = time() + 3600 * 24 * 7;
         return JWT::encode($payload, $this->secretKey, $this->algorithm);
     }
 
-
     public function decodeToken(string $token): array{
-        return (array) JWT::decode($token, $this->secretKey, [$this->algorithm]);
+        return (array) JWT::decode($token,new Key( $this->secretKey, $this->algorithm));
     }
 
 }

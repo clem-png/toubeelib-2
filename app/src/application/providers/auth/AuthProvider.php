@@ -50,7 +50,18 @@ class AuthProvider implements AuthProviderInterface
                 $refreshToken
             );
         }catch(\Exception $e){
-            throw new AuthServiceException('Erreur de connexion');
+            throw new AuthServiceException("erreur auth");
         }
+    }
+
+    public function getSignIn(string $token): AuthDTO{
+        $arrayToken = $this->jwtManager->decodeToken($token);
+
+        return new AuthDTO(
+            $arrayToken['sub'],
+            $arrayToken['data']->email,
+            $arrayToken['data']->role
+        );
+
     }
 }

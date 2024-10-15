@@ -26,7 +26,7 @@ class SignInAction extends AbstractAction
         if ($authHeaderTab[0] !== 'Basic') {
             throw new HttpUnauthorizedException($rq, 'Authorization header absent ou mal formé');
         }
-        $encodedCredentials = $authHeader[1];
+        $encodedCredentials = $authHeaderTab[1];
         $decodedCredentials = base64_decode($encodedCredentials);
         $credentials = explode(':', $decodedCredentials);
 
@@ -35,16 +35,17 @@ class SignInAction extends AbstractAction
         try {
             $authRes = $this->authProvider->signIn(new InputAuthDTO($user, $password));
         }catch (AuthServiceException $e){
-            throw new HttpUnauthorizedException($rq, 'Identifiants incorrects');
+            throw new HttpUnauthorizedException($rq, 'Identifiants incorrects ' . $e);
         }
 
         $response = [
             'type' => 'ressource',
-            'atoken' => $authRes['accessToken'],
-            'rtoken' => $authRes['refreshToken']
+            'atoken' => $authRes->accessToken,
+            'rtoken' => $authRes->refreshToken
         ];
 
         $rs->getBody()->write(json_encode($response));
+
         return $rs->withHeader('Content-Type', 'application/json');
     }
 }
