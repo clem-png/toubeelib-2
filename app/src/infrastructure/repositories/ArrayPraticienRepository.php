@@ -5,6 +5,7 @@ namespace toubeelib\infrastructure\repositories;
 use Ramsey\Uuid\Uuid;
 use toubeelib\core\domain\entities\praticien\Praticien;
 use toubeelib\core\domain\entities\praticien\Specialite;
+use toubeelib\core\dto\InputSearchDTO;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RepositoryEntityNotFoundException;
 
@@ -100,7 +101,7 @@ class ArrayPraticienRepository implements PraticienRepositoryInterface
         return false;
     }
 
-    public function searchPraticiens(?string $prenom, ?string $nom, ?string $tel, ?string $adresse): array{
+    public function searchPraticiens(InputSearchDTO $input): array{
         return []; // TODO
     }
 }

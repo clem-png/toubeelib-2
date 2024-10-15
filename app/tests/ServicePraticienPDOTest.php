@@ -3,6 +3,7 @@
 use Monolog\Handler\StreamHandler;
 use PHPUnit\Framework\TestCase;
 use toubeelib\core\dto\InputPraticienDTO;
+use toubeelib\core\dto\InputSearchDTO;
 use toubeelib\core\dto\PraticienDTO;
 use toubeelib\core\dto\InputSpecialiteDTO;
 use toubeelib\core\services\praticien\ServicePraticienInvalidDataException;
@@ -96,6 +97,43 @@ class ServicePraticienPDOTest extends TestCase
         $id = 'testId';
         $this->expectException(ServicePraticienInvalidDataException::class);
         $this->praticienService->getSpecialiteById($id);
+    }
+
+    public function testSearchPraticien(){
+        $inputSearchDTO = new InputSearchDTO('Dupont', 'Jean', null, null);
+        $results = $this->praticienService->searchPraticiens($inputSearchDTO);
+
+        $this->assertCount(1, $results);
+        $this->assertSame('Dupont', $results[0]->nom);
+        $this->assertSame('Jean', $results[0]->prenom);
+        $this->assertSame('nancy', $results[0]->adresse);
+        $this->assertSame('0123456789', $results[0]->tel);
+
+        // Test seach avec telephone
+        $inputSearchDTO = new InputSearchDTO(null, null, null, '0123456789');
+        $results = $this->praticienService->searchPraticiens($inputSearchDTO);
+
+        $this->assertCount(1, $results);
+        $this->assertSame('Dupont', $results[0]->nom);
+        $this->assertSame('Jean', $results[0]->prenom);
+        $this->assertSame('nancy', $results[0]->adresse);
+        $this->assertSame('0123456789', $results[0]->tel);
+
+        // Test search avec nom partiel
+        $inputSearchDTO = new InputSearchDTO('Du', null, null, null);
+        $results = $this->praticienService->searchPraticiens($inputSearchDTO);
+
+        $this->assertCount(2, $results);
+        $this->assertSame('Dupont', $results[0]->nom);
+        $this->assertSame('Jean', $results[0]->prenom);
+        $this->assertSame('Durand', $results[1]->nom);
+        $this->assertSame('Pierre', $results[1]->prenom);
+
+
+        // Test si aucun praticien n'est trouve
+        $inputSearchDTO = new InputSearchDTO('NonExistent', 'Praticien', 'Unknown Address', '0000000000');
+        $results = $this->praticienService->searchPraticiens($inputSearchDTO);
+        $this->assertCount(0, $results);
     }
 
     protected function tearDown(): void
