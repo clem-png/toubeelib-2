@@ -33,7 +33,7 @@ class PostRdvsAction extends AbstractAction
                 ->key('idPraticien', Validator::stringType()->notEmpty())
                 ->key('date', Validator::stringType()->notEmpty()->dateTime('Y-m-d H:i'))
                 ->key('specialite', Validator::optional(Validator::stringType()->notEmpty()))
-                ->key('status', Validator::stringType()->notEmpty());
+            ->key('type', Validator::stringType()->notEmpty());
 
         try {
             $rdvsInputValidator->check($params);
@@ -41,11 +41,15 @@ class PostRdvsAction extends AbstractAction
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
 
-        if ((filter_var($params['idPatient'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPatient'] || filter_var($params['idPraticien'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPraticien'] || filter_var($params['status'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['status'] || filter_var($params['specialite'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['specialite'])) {
+        if ((filter_var($params['idPatient'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPatient']
+                || filter_var($params['idPraticien'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPraticien']
+                || filter_var($params['status'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['status']
+                || filter_var($params['specialite'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['specialite'])
+                || filter_var($params['type'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['type']) {
             throw new HttpBadRequestException($rq, 'Mauvais format de données');
         }
 
-        $rdvDTO = new InputRdvDTO($params['idPraticien'], $params['idPatient'], new DateTimeImmutable($params['date']), $params['status'], new InputSpecialiteDTO($params['specialite']) ?? null);
+        $rdvDTO = new InputRdvDTO($params['idPraticien'], $params['idPatient'], new DateTimeImmutable($params['date']), $params['type'], new InputSpecialiteDTO($params['specialite']) ?? null);
         try {
             $res = $this->serviceRdv->creerRdv($rdvDTO);
         }
