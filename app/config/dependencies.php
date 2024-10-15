@@ -10,6 +10,7 @@ use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PutPayerRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\PutRdvsHonorerAction;
+use toubeelib\application\actions\PutRdvsnonHonorerAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\providers\auth\AuthProvider;
 use toubeelib\application\providers\auth\AuthProviderInterface;
@@ -93,8 +94,8 @@ return [
         return new PutRdvsHonorerAction($c->get(ServiceRDVInterface::class));
     },
 
-    \toubeelib\application\actions\PutRdvsnonHonorerAction::class => function(ContainerInterface $c){
-        return new \toubeelib\application\actions\PutRdvsnonHonorerAction($c->get(ServiceRDVInterface::class));
+    PutRdvsnonHonorerAction::class => function(ContainerInterface $c){
+        return new PutRdvsnonHonorerAction($c->get(ServiceRDVInterface::class));
     },
 
 
