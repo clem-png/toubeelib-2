@@ -20,4 +20,5 @@ interface ServiceRDVInterface{
     public function marquerRdvHonore(string $rdv_id): RdvDTO;
     public function marquerRdvNonHonore(string $rdv_id): RdvDTO;
     public function listerRdvPatient(string $patient_id): array;
+    public function afficherPlanningPraticien(DateTime $dateDebut, DateTime $dateFin, string $id, string $idSpe, string $type): array;
 }
