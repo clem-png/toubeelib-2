@@ -7,6 +7,7 @@ use Slim\App;
 use toubeelib\application\actions\GetPraticiensAction;
 use toubeelib\application\actions\GetPraticiensByIdAction;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
+use toubeelib\application\actions\GetPraticiensPlanningAction;
 use toubeelib\application\actions\HomeAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
 use toubeelib\application\actions\PostPraticiensAction;
@@ -73,6 +74,10 @@ return function( App $app): App {
 
     $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
         ->setName('praticiensDispo')
+        ->add(AuthMiddleware::class);
+
+    $app->get('/praticiens/{ID-PRATICIEN}/planning', GetPraticiensPlanningAction::class)
+        ->setName('praticiensPlanning')
         ->add(AuthMiddleware::class);
 
     $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)

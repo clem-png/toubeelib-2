@@ -198,7 +198,7 @@ class ServiceRdv implements ServiceRDVInterface{
             $rdvsDTO = [];
             foreach ($rdvs as $rdv) {
                 $rdvDTO = new RdvDTO($rdv);
-                $rdvDTO->specialite = new SpecialiteDTO($specialite->ID, $specialite->label, $specialite->description);
+                $rdvDTO->setSpecialiteLabel($specialite->label);
                 $rdvsDTO[] = $rdvDTO;
             }
             return $rdvsDTO;

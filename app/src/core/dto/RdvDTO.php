@@ -40,4 +40,9 @@ class RdvDTO extends DTO
         ];
     }
 
+    public function setSpecialiteLabel(string $label): void
+    {
+        $this->specialite_label = $label;
+    }
+
 }
