@@ -36,7 +36,7 @@ class GetPraticiensDisponibilitesAction  extends AbstractAction {
         $dateFin = DateTime::createFromFormat('Y-m-d H:i', $params['dateFin']);
         $disponibilites = $this->serviceRdv->listerDisponibilitePraticien($dateDeb, $dateFin, $id);
         $response = [
-            "type"=> "ressource",
+            "type"=> "collection",
             "disponibilites" => $disponibilites
         ];
         $rs->getBody()->write(json_encode($response));

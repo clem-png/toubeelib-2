@@ -189,4 +189,6 @@ INSERT INTO "users" ("id", "email", "password", "role") VALUES
     ('0a6c75ca-4d2a-3786-92c9-1d5629cc23e2',	'aime92@leclerc.com',	'$2y$10$DkXd5n8ow07ZMQkbCdVS.e76KW8jJefhaFeThsASljLGh702rBbDy',	5),
     ('a115c355-fc49-3f16-93a9-275ea42ed489',	'bweiss@yahoo.fr',	'$2y$10$6PlgoWDGd2IUdsLxrAObheiTtQyhSIKaDEqapmb/9X1/a1uEiFTfm',	5),
     ('1016324e-7a32-3fca-9844-6ed51debaefb',	'guillaume.costa@dbmail.com',	'$2y$10$UwhIEYM7.W8YfnmA.R8yHuJIFg1OhRmQldh/XRLIB9oJ865dLP3ly',	5),
-    ('cb771755-26f4-4e6c-b327-a1217f5b09cd', 'test@test.fr', '$2y$10$XDb0AIvZnYWB/KjpC4CnFOPdnPKHbb7WwiIvY11enK1x0BX2xWGq.',0);
+    ('cb771755-26f4-4e6c-b327-a1217f5b09cd',    'patient@test.fr', '$2y$10$XDb0AIvZnYWB/KjpC4CnFOPdnPKHbb7WwiIvY11enK1x0BX2xWGq.',0),
+    ('cb778959-2474-4ffc-b385-4821486529cd',    'praticien@test.fr', '$2y$10$XDb0AIvZnYWB/KjpC4CnFOPdnPKHbb7WwiIvY11enK1x0BX2xWGq.',5),
+    ('d3b07384-d9a0-4f7e-8b8d-7f2e6d7e0b8a',    'admin@test.fr', '$2y$10$XDb0AIvZnYWB/KjpC4CnFOPdnPKHbb7WwiIvY11enK1x0BX2xWGq.', 100);

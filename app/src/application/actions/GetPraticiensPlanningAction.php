@@ -57,7 +57,7 @@ class GetPraticiensPlanningAction extends AbstractAction {
         }
         
         $response = [
-            "type" => "ressource",
+            "type" => "collection",
             "planning" => $planningArray
         ];
 
