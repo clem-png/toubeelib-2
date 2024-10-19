@@ -19,6 +19,7 @@ use toubeelib\application\actions\PutRdvsHonorerAction;
 use toubeelib\application\actions\PutRdvsnonHonorerAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\middlewares\AuthMiddleware;
+use toubeelib\application\middlewares\AuthorisationMiddleware;
 use toubeelib\application\middlewares\Cors;
 
 return function( App $app): App {
@@ -67,6 +68,7 @@ return function( App $app): App {
 
     $app->get('/praticiens[/]', GetPraticiensAction::class)
         ->setName('praticiens')
+        ->add(AuthorisationMiddleware::class)
         ->add(AuthMiddleware::class);
 
     $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
@@ -75,10 +77,13 @@ return function( App $app): App {
 
     $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)
         ->setName('praticiensId')
+        ->add(AuthorisationMiddleware::class)
         ->add(AuthMiddleware::class);
+
 
     $app->post('/praticiens[/]', PostPraticiensAction::class)
         ->setName('praticiensAdd')
+        ->add(AuthorisationMiddleware::class)
         ->add(AuthMiddleware::class);
 
     //patients

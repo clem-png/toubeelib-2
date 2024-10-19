@@ -13,12 +13,15 @@ use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\PutRdvsHonorerAction;
 use toubeelib\application\actions\PutRdvsnonHonorerAction;
 use toubeelib\application\actions\SignInAction;
+use toubeelib\application\middlewares\AuthorisationMiddleware;
 use toubeelib\application\providers\auth\AuthProvider;
 use toubeelib\application\providers\auth\AuthProviderInterface;
 use toubeelib\application\providers\auth\JWTManager;
 use toubeelib\core\repositoryInterfaces\PatientRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\PraticienRepositoryInterface;
 use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib\core\services\authorization\AuthorizationService;
+use toubeelib\core\services\authorization\AuthzPraticienServiceInterface;
 use toubeelib\core\services\patient\ServicePatient;
 use toubeelib\core\services\patient\ServicePatientInterface;
 use toubeelib\core\services\auth\AuthService;
@@ -57,6 +60,10 @@ return [
 
     ServicePatientInterface::class => function (ContainerInterface $c) {
         return new ServicePatient($c->get(PatientRepositoryInterface::class),$c->get('logger'));
+    },
+
+    AuthzPraticienServiceInterface::class => function (ContainerInterface $c) {
+        return new AuthorizationService($c->get(PraticienRepositoryInterface::class));
     },
 
     GetRdvsByIdAction::class => function(ContainerInterface $c){
@@ -125,4 +132,8 @@ return [
     SignInAction::class => function(ContainerInterface $c){
         return new SignInAction($c->get(AuthProviderInterface::class));
     },
+
+    AuthorisationMiddleware::class => function(ContainerInterface $c){
+        return new AuthorisationMiddleware($c->get(AuthzPraticienServiceInterface::class));
+    }
 ];

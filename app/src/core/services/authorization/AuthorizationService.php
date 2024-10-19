@@ -14,7 +14,7 @@ class AuthorizationService implements AuthzPraticienServiceInterface
         $this->praticienRepository = $praticienRepository;
     }
 
-    function isGranted(Uuid $user_id, int $role, int $operation, Uuid $ressource_id): bool
+    function isGranted(string $user_id, int $role, int $operation, string $ressource_id): bool
     {
         $retour = false;
 
