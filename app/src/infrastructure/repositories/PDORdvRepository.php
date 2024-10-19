@@ -109,4 +109,23 @@ class PDORdvRepository implements RdvRepositoryInterface
         }
         return $rdvs;
     }
+
+    public function getRdvPraticien(string $id, \DateTime $dateDebut, \DateTime $dateFin, string $idSpe, string $type): array
+    {
+        $rdvs = [];
+        $stmt = $this->pdo->prepare('SELECT * FROM rdv WHERE "idPraticien" = ? AND "dateDebut" >= ? AND "dateDebut" <= ? AND "idSpe" = ? AND "type" = ?');
+        $stmt->bindParam(1, $id);
+        $stmt->bindParam(2, $dateDebut->format('Y-m-d H:i:s'));
+        $stmt->bindParam(3, $dateFin->format('Y-m-d H:i:s'));
+        $stmt->bindParam(4, $idSpe);
+        $stmt->bindParam(5, $type);
+        $stmt->execute();
+        $rdvsRes = $stmt->fetchAll();
+        foreach ($rdvsRes as $rdv) {
+            $rdvObj = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']), $rdv['type']);
+            $rdvObj->setID($rdv['id']);
+            $rdvs[] = $rdvObj;
+        }
+        return $rdvs;
+    }
 }

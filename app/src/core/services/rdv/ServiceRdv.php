@@ -25,7 +25,7 @@ class ServiceRdv implements ServiceRDVInterface{
     private LoggerInterface $logger;
 
     const JOURS_CONSULTATION = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-    const HEURE_DEBUT = '09:00';
+    const HEURE_DEBUT = '07:00';
     const HEURE_FIN = '17:00';
     const DUREE_RDV = '30'; //minutes
 
@@ -37,45 +37,51 @@ class ServiceRdv implements ServiceRDVInterface{
 
     // Création et modification des RDV
      
-    public function creerRdv(InputRdvDTO $DTO): RdvDTO{
-        try{
+    public function creerRdv(InputRdvDTO $DTO): RdvDTO {
+        try {
             // Vérifier si le praticien existe
             $praticien = $this->praticienService->getPraticienById($DTO->idPraticien);
             if (!$praticien) {
                 throw new RdvServiceException("Praticien pas trouvé");
             }
-            
-            //vérifier si la spécialité est la même que celle du praticien
-            if($DTO->specialite !== null){
+    
+            // Vérifier si la spécialité est la même que celle du praticien
+            if ($DTO->specialite !== null) {
                 $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
                 if (!$specialite) {
                     throw new RdvServiceException("Specialite pas trouvé");
                 }
-
+    
                 if ($specialite->label !== $praticien->specialite_label) {
                     throw new RdvServiceException("Specialite non valide");
                 }
             }
-
+    
             // Vérifier si le créneau est disponible
             $date = DateTime::createFromImmutable($DTO->dateDebut);
-            $dateFin = (clone $date)->modify('+' . self::DUREE_RDV . ' minutes'); 
+            $dateFin = (clone $date)->modify('+' . self::DUREE_RDV . ' minutes');
             $disponibilites = $this->listerDisponibilitePraticien($date, $dateFin, $DTO->idPraticien);
             if (!in_array($date, $disponibilites)) {
                 throw new RdvServiceException("Créneau non disponible");
             }
-
+    
             $rdv = new Rdv($DTO->idPraticien, $DTO->idPatient, "prevu", $DTO->dateDebut, $DTO->type);
-
-            if($DTO->specialite !== null){
+    
+            if ($DTO->specialite !== null) {
                 $specialite = $this->praticienService->getSpecialiteById($DTO->specialite->id);
+                if ($specialite === null) {
+                    throw new RdvServiceException("Specialite pas trouvé lors de la création du RDV");
+                }
+                if ($specialite->ID === null) {
+                    throw new RdvServiceException("Specialite ID est null lors de la création du RDV");
+                }
                 $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
             }
-
+    
             $id = $this->rdvRepository->save($rdv);
             $rdv->setID($id);
             $this->logger->log(Level::Info, "Creation RDV : " . $id);
-        } catch (Exception $e){
+        } catch (Exception $e) {
             throw new RdvServiceException($e);
         }
         return new RdvDTO($rdv);
@@ -165,6 +171,35 @@ class ServiceRdv implements ServiceRDVInterface{
             $rdvsDTO = [];
             foreach ($rdvs as $rdv) {
                 $rdvsDTO[] = new RdvDTO($rdv);
+            }
+            return $rdvsDTO;
+        } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function afficherPlanningPraticien(DateTime $dateDebut, DateTime $dateFin, string $id, string $idSpe, string $type): array{
+        try {
+            $praticien = $this->praticienService->getPraticienById($id);
+            if (!$praticien) {
+            throw new RdvServiceException("Praticien pas trouvé");
+            }
+
+            $specialite = $this->praticienService->getSpecialiteById($idSpe);
+            if (!$specialite) {
+            throw new RdvServiceException("Specialité pas trouvée");
+            }
+
+            if ($dateDebut > $dateFin) {
+            throw new RdvServiceException("Plage de dates invalide");
+            }
+
+            $rdvs = $this->rdvRepository->getRdvPraticien($id, $dateDebut, $dateFin, $idSpe, $type);
+            $rdvsDTO = [];
+            foreach ($rdvs as $rdv) {
+                $rdvDTO = new RdvDTO($rdv);
+                $rdvDTO->specialite = new SpecialiteDTO($specialite->ID, $specialite->label, $specialite->description);
+                $rdvsDTO[] = $rdvDTO;
             }
             return $rdvsDTO;
         } catch (\Exception $e) {
