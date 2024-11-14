@@ -34,6 +34,7 @@ use toubeelib\infrastructure\repositories\PDOPatientRepository;
 use toubeelib\infrastructure\repositories\PDOAuthRepository;
 use toubeelib\infrastructure\repositories\PDOPraticienRepository;
 use toubeelib\infrastructure\repositories\PDORdvRepository;
+use toubeelib\application\actions\PostPraticiensIndisponibiliteAction;
 
 return [
 
@@ -108,6 +109,10 @@ return [
 
     PostPraticiensAction::class => function(ContainerInterface $c){
         return new PostPraticiensAction($c->get(ServicePraticienInterface::class));
+    },
+
+    PostPraticiensIndisponibiliteAction::class => function(ContainerInterface $c){
+        return new PostPraticiensIndisponibiliteAction($c->get(ServiceRDVInterface::class));
     },
 
 

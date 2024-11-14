@@ -108,8 +108,34 @@ class ServiceRdv implements ServiceRDVInterface{
         }
     }
     
-    public function indisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id):void{
-        //TODO : faire des rdv sur la periode avec un id de patient null et un status "indisponible"
+    public function indisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id): void {
+        try {
+            $praticien = $this->praticienService->getPraticienById($id);
+            if (!$praticien) {
+                throw new RdvServiceException("Praticien pas trouvé");
+            }
+    
+            if ($dateDebut > $dateFin) {
+                throw new RdvServiceException("Plage de dates invalide");
+            }
+    
+            for ($date = clone $dateDebut; $date <= $dateFin; $date->modify('+1 day')) {
+                if (in_array($date->format('l'), self::JOURS_CONSULTATION)) {
+                    $heureDebut = DateTime::createFromFormat('H:i', self::HEURE_DEBUT);
+                    $heureFin = DateTime::createFromFormat('H:i', self::HEURE_FIN);
+    
+                    while ($heureDebut < $heureFin) {
+                        $rdv = new Rdv($id, null, "indisponible", (clone $date)->setTime((int)$heureDebut->format('H'), (int)$heureDebut->format('i')), null);
+                        $this->rdvRepository->save($rdv);
+                        $heureDebut->modify('+' . self::DUREE_RDV . ' minutes');
+                    }
+                }
+            }
+    
+            $this->logger->log(Level::Info, "Indisponibilité créée pour le praticien : " . $id . " du " . $dateDebut->format('Y-m-d H:i') . " au " . $dateFin->format('Y-m-d H:i'));
+        } catch (Exception $e) {
+            throw new RdvServiceException($e);
+        }
     }
     
     // Consultations sur les RDV

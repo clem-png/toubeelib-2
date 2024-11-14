@@ -98,7 +98,7 @@ class PDORdvRepository implements RdvRepositoryInterface
     public function getRdvByPraticienId(string $id): array
     {
         $rdvs = [];
-        $stmt = $this->pdo->prepare('SELECT * FROM rdv WHERE "idPraticien" = ?');
+        $stmt = $this->pdo->prepare('SELECT * FROM rdv WHERE "idPraticien" = ? AND not status = "indisponible" ');
         $stmt->bindParam(1, $id);
         $stmt->execute();
         $rdvsRes = $stmt->fetchAll();

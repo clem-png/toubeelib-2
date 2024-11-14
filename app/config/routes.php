@@ -18,6 +18,7 @@ use toubeelib\application\actions\PutPayerRdvsAction;
 use toubeelib\application\actions\PutRdvsAnnulerAction;
 use toubeelib\application\actions\PutRdvsHonorerAction;
 use toubeelib\application\actions\PutRdvsnonHonorerAction;
+use toubeelib\application\actions\PostPraticiensIndisponibiliteAction;
 use toubeelib\application\actions\SignInAction;
 use toubeelib\application\middlewares\AuthMiddleware;
 use toubeelib\application\middlewares\AuthorisationMiddleware;
@@ -82,6 +83,11 @@ return function( App $app): App {
 
     $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)
         ->setName('praticiensId')
+        ->add(AuthorisationMiddleware::class)
+        ->add(AuthMiddleware::class);
+
+    $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', PostPraticiensIndisponibiliteAction::class)
+        ->setName('praticiensIndispo')
         ->add(AuthorisationMiddleware::class)
         ->add(AuthMiddleware::class);
 
