@@ -3,56 +3,47 @@ networks:
     driver: bridge
 
 services:
-  # Service: api.toubeelib (API for appointment scheduling)
-  api.toubeelib:
-    # Build context and Dockerfile for customization
+  gateway.toubeelib:
     build:
-      context: build
+      context: gateway/build
       dockerfile: 8.3-cli.Dockerfile
-    # Environment variables from toubeelib.env
-    env_file: ./toubeelib.env
-    # Expose port 6080 for external access
     ports:
-      - '6080:80'
-    # Mount application code from ./app directory
+      - '7080:80'
     volumes:
-      - ./app:/var/php
-    # Working directory within the container
+      - ./gateway/app:/var/php
     working_dir: /var/php
-    # Connect to toubeelib.net network
-    networks:
-      - toubeelib.net
-    # Ensure database is ready before starting the API
-    depends_on:
-      - toubeelib.db
-    # Recommended command for development:
     command: php -S 0.0.0.0:80 -t /var/php/public
 
-  # Service: toubeelib.db (PostgreSQL database)
-  toubeelib.db:
-    # Use a specific PostgreSQL version for stability (e.g., postgres:14)
-    image: 'postgres:latest'  # Consider using a specific version
-    # Environment variables from toubeelibdb.env (e.g., for database configuration)
-    env_file: ./toubeelibdb.env
-    # Expose port 5432 for database access
+  api.toubeelib:
+    build:
+      context: api-principale/build
+      dockerfile: 8.3-cli.Dockerfile
+    env_file: api-principale/toubeelib.env
     ports:
-      - '5432:5432'
-    # Connect to toubeelib.net network
+      - '6080:80'
+    volumes:
+      - ./api-principale/app:/var/php
+    working_dir: /var/php
     networks:
       - toubeelib.net
-    # Correct volume mounting for SQL dump and data:
-    volumes:
-      - ./app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
-      - ./sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
-    # Optionally, consider persistence volumes for database data
+    depends_on:
+      - toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
 
-  # Service: adminer (Database administration tool)
+  toubeelib.db:
+    image: 'postgres:latest'
+    env_file: api-principale/toubeelibdb.env
+    ports:
+      - '5432:5432'
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./api-principale/app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
+      - ./api-principale/sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
+
   adminer:
-    # Use a specific version for security (e.g., adminer:latest-alpine)
     image: 'adminer:latest'  # Consider using a specific version
-    # Expose port 8080 for adminer access
     ports:
       - '8080:8080'
-    # Connect to toubeelib.net network
     networks:
       - toubeelib.net
