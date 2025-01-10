@@ -40,8 +40,9 @@ class GeneriquePraticienAction extends AbstractAction
         }
 
         try {
-            $rs = $this->remote_api->request($method, $path, $options);
-        } catch (ConnectException | ServerException $e) {
+            
+            $rs = $this->remote_api->request($method, $path,$options);
+        } catch (ConnectException | ServerException $e) {   
             throw new HttpInternalServerErrorException($rq, "The remote server is not available");
         } catch (ClientException $e) {
             match($e->getCode()) {

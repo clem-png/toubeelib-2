@@ -6,12 +6,8 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
 return [
 
-    'client' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'localhost:6080']);
-    },
-
     'client_praticien' => function (ContainerInterface $c){
-        return new Client(['base_uri' => '']);
+        return new Client(['base_uri' => 'http://api.toubeelib:80']);
     },
 
     'client_rdv' => function (ContainerInterface $c){
