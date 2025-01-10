@@ -2,6 +2,7 @@
 
 namespace gateway\application\actions;
 
+use _PHPStan_2132cc0bd\Nette\Neon\Exception;
 use gateway\application\actions\AbstractAction;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -43,6 +44,7 @@ class GeneriquePraticienAction extends AbstractAction
             
             $rs = $this->remote_api->request($method, $path,$options);
         } catch (ConnectException | ServerException $e) {   
+            //throw new HttpInternalServerErrorException($rq, "The remote server is not available");
             throw new HttpInternalServerErrorException($rq, "The remote server is not available");
         } catch (ClientException $e) {
             match($e->getCode()) {

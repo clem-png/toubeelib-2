@@ -4,6 +4,7 @@ namespace toubeelib\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpNotFoundException;
 use toubeelib\core\services\praticien\ServicePraticienInterface;
 
 class GetPraticiensByIdAction extends AbstractAction
@@ -19,7 +20,11 @@ class GetPraticiensByIdAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         $id = $args['ID-PRATICIEN'];
-        $praticien = $this->servicePraticien->getPraticienById($id);
+        try {
+            $praticien = $this->servicePraticien->getPraticienById($id);
+        }catch (\Exception $e){
+            throw new HttpNotFoundException($rq, "Praticien not found");
+        }
 
         $response = [
             "type"=> "ressource",
