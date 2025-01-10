@@ -43,10 +43,10 @@ class GeneriquePraticienAction extends AbstractAction
         try {
             
             $rs = $this->remote_api->request($method, $path,$options);
-        } catch (ConnectException | ServerException $e) {   
+        } catch (ConnectException | ServerException $e) {
             //throw new HttpInternalServerErrorException($rq, "The remote server is not available");
-            throw new HttpInternalServerErrorException($rq, "The remote server is not available");
-        } catch (ClientException $e) {
+            throw new Exception($e->getMessage());
+        }catch (ClientException $e) {
             match($e->getCode()) {
                 401 => throw new HttpUnauthorizedException($rq, "You are not authorized to access this resource"),
                 403 => throw new HttpForbiddenException($rq, "You are not allowed to access this resource"),

@@ -77,7 +77,7 @@ return function( App $app): App {
         ->setName('praticiensDispo');
 
 
-    $app->get('/praticiens/{ID-PRATICIEN}/planning', GetPraticiensPlanningAction::class)
+    $app->post('/praticiens/{ID-PRATICIEN}/planning', GetPraticiensPlanningAction::class)
         ->setName('praticiensPlanning');
 
 

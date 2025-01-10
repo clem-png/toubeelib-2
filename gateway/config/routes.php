@@ -24,5 +24,8 @@ return function( App $app): App {
     $app->get('/praticiens/{id}[/]', GeneriquePraticienAction::class)
         ->setName('praticiens-id');
 
+    $app->post('/praticiens/{id}/planning[/]', GeneriquePraticienAction::class)
+        ->setName('praticiens-planning');
+
     return $app;
 };
