@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace toubeelib_rdv\application\actions;
 
 use DateTime;
 use Psr\Http\Message\ResponseInterface;
@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
-use toubeelib\core\services\rdv\ServiceRDVInterface;
+use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 
 class GetPraticiensPlanningAction extends AbstractAction {
 

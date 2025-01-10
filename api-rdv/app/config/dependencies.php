@@ -3,23 +3,23 @@
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
-use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
-use toubeelib\application\actions\GetPraticiensPlanningAction;
-use toubeelib\application\actions\GetRdvsByIdAction;
-use toubeelib\application\actions\PostRdvsAction;
-use toubeelib\application\actions\PatchRdvsPatientAction;
-use toubeelib\application\actions\PutPayerRdvsAction;
-use toubeelib\application\actions\PutRdvsAnnulerAction;
-use toubeelib\application\actions\PutRdvsHonorerAction;
-use toubeelib\application\actions\PutRdvsnonHonorerAction;
-use toubeelib\application\actions\PostPraticiensIndisponibiliteAction;
+use toubeelib_rdv\application\actions\GetPraticiensDisponibilitesAction;
+use toubeelib_rdv\application\actions\GetPraticiensPlanningAction;
+use toubeelib_rdv\application\actions\GetRdvsByIdAction;
+use toubeelib_rdv\application\actions\PostRdvsAction;
+use toubeelib_rdv\application\actions\PatchRdvsPatientAction;
+use toubeelib_rdv\application\actions\PutPayerRdvsAction;
+use toubeelib_rdv\application\actions\PutRdvsAnnulerAction;
+use toubeelib_rdv\application\actions\PutRdvsHonorerAction;
+use toubeelib_rdv\application\actions\PutRdvsnonHonorerAction;
+use toubeelib_rdv\application\actions\PostPraticiensIndisponibiliteAction;
 
-use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 
-use toubeelib\core\services\rdv\ServiceRdv;
-use toubeelib\core\services\rdv\ServiceRDVInterface;
+use toubeelib_rdv\core\services\rdv\ServiceRdv;
+use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 
-use toubeelib\infrastructure\repositories\PDORdvRepository;
+use toubeelib_rdv\infrastructure\repositories\PDORdvRepository;
 
 return [
 

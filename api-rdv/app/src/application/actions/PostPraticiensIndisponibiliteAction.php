@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace toubeelib_rdv\application\actions;
 
 use DateMalformedStringException;
 use Exception;
@@ -10,7 +10,7 @@ use Respect\Validation\Validator;
 use Respect\Validation\Exceptions\NestedValidationException;
 use Slim\Exception\HttpBadRequestException;
 use DateTime;
-use toubeelib\core\services\rdv\ServiceRDVInterface;
+use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 
 class PostPraticiensIndisponibiliteAction extends AbstractAction
 {
