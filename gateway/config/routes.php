@@ -12,5 +12,9 @@ return function( App $app): App {
     $app->get('/praticiens[/]', GeneriquePraticienAction::class)
         ->setName('praticiens');
 
+    $app->get('/praticiens/{id}[/]', GeneriquePraticienAction::class)
+        ->setName('praticiens-id');
+
+
     return $app;
 };
