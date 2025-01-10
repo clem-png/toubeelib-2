@@ -16,6 +16,7 @@ services:
       - toubeelib.net
     depends_on:
       - api.toubeelib
+      - api.praticiens.toubeelib
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   api.toubeelib:
@@ -33,6 +34,33 @@ services:
     depends_on:
       - toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
+
+  api.praticiens.toubeelib:
+    build:
+      context: api-praticiens/build
+      dockerfile: 8.3-cli.Dockerfile
+    env_file: api-praticiens/toubeelib.env
+    ports:
+      - '6081:80'
+    volumes:
+      - ./api-praticiens/app:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - praticiens.toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
+  praticiens.toubeelib.db:
+    image: 'postgres:latest'
+    env_file: api-praticiens/toubeelibdb.env
+    ports:
+      - '5433:5432'
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./api-praticiens/app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
+      - ./api-praticiens/sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
 
   toubeelib.db:
     image: 'postgres:latest'
