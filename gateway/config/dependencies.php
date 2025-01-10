@@ -1,5 +1,6 @@
 <?php
 
+use gateway\application\actions\GeneriquePraticienAction;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
@@ -20,5 +21,9 @@ return [
     'client_patient' => function (ContainerInterface $c){
         return new Client(['base_uri' => '']);
     },
+
+    GeneriquePraticienAction::class => function (ContainerInterface $c){
+        return new GeneriquePraticienAction($c->get('client_praticien'));
+    }
 
 ];

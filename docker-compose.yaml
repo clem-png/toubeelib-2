@@ -10,7 +10,7 @@ services:
     ports:
       - '7080:80'
     volumes:
-      - ./gateway/app:/var/php
+      - ./gateway:/var/php
     working_dir: /var/php
     depends_on:
       - api.toubeelib
