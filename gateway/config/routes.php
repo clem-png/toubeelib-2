@@ -8,5 +8,8 @@ use Slim\App;
 
 return function( App $app): App {
 
+    $app->get('/praticiens[/]', GenericGetPraticien::class)
+        ->setName('praticiens');
+
     return $app;
 };
