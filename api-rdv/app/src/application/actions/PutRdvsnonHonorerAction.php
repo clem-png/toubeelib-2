@@ -1,11 +1,11 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace toubeelib_rdv\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpForbiddenException;
-use toubeelib\core\services\rdv\ServiceRDVInterface;
+use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 
 class PutRdvsnonHonorerAction extends AbstractAction
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace toubeelib\application\actions;
+namespace toubeelib_rdv\application\actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
-use toubeelib\core\services\rdv\RdvServiceException;
-use toubeelib\core\services\rdv\ServiceRDVInterface;
+use toubeelib_rdv\core\services\rdv\RdvServiceException;
+use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 
 class PutPayerRdvsAction extends AbstractAction
 {

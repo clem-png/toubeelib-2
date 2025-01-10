@@ -1,9 +1,9 @@
 <?php
 
-namespace toubeelib\core\repositoryInterfaces;
+namespace toubeelib_rdv\core\repositoryInterfaces;
 
-use toubeelib\core\domain\entities\praticien\Specialite;
-use toubeelib\core\domain\entities\rdv\Rdv;
+use toubeelib_rdv\core\domain\entities\praticien\Specialite;
+use toubeelib_rdv\core\domain\entities\rdv\Rdv;
 
 interface RdvRepositoryInterface
 {
@@ -16,4 +16,6 @@ interface RdvRepositoryInterface
    public function update(Rdv $rdv): void;
 
    public function getRdvByPraticienId(string $id): array;
+   
+   public function getRdvPraticien(string $id, \DateTime $dateDebut, \DateTime $dateFin, string $idSpe, string $type): array;
 }

@@ -1,13 +1,10 @@
 <?php
 
-namespace toubeelib\core\services\rdv;
+namespace toubeelib_rdv\core\services\rdv;
 
-use toubeelib\core\dto\InputPraticienDTO;
-use toubeelib\core\dto\InputRdvDTO;
-use toubeelib\core\dto\PraticienDTO;
-use toubeelib\core\dto\RdvDTO;
-use toubeelib\core\dto\SpecialiteDTO;
-use toubeelib\core\dto\InputSpecialiteDTO;
+use toubeelib_rdv\core\dto\InputRdvDTO;
+use toubeelib_rdv\core\dto\RdvDTO;
+use toubeelib_rdv\core\dto\InputSpecialiteDTO;
 use DateTime;
 
 interface ServiceRDVInterface{

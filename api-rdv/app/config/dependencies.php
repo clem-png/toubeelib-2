@@ -6,7 +6,6 @@ use Psr\Container\ContainerInterface;
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
 use toubeelib\application\actions\GetPraticiensPlanningAction;
 use toubeelib\application\actions\GetRdvsByIdAction;
-use toubeelib\application\actions\PostPraticiensAction;
 use toubeelib\application\actions\PostRdvsAction;
 use toubeelib\application\actions\PatchRdvsPatientAction;
 use toubeelib\application\actions\PutPayerRdvsAction;
@@ -71,4 +70,8 @@ return [
     PostPraticiensIndisponibiliteAction::class => function(ContainerInterface $c){
         return new PostPraticiensIndisponibiliteAction($c->get(ServiceRDVInterface::class));
     },
+
+    GetPraticiensPlanningAction::class => function(ContainerInterface $c){
+        return new GetPraticiensPlanningAction($c->get(ServiceRDVInterface::class));
+    }
 ];

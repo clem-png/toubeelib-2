@@ -1,10 +1,10 @@
 <?php
 
-namespace toubeelib\core\domain\entities\patient;
+namespace toubeelib_rdv\core\domain\entities\patient;
 
 use Respect\Validation\Rules\Date;
-use toubeelib\core\domain\entities\Entity;
-use toubeelib\core\dto\PatientDTO;
+use toubeelib_rdv\core\domain\entities\Entity;
+use toubeelib_rdv\core\dto\PatientDTO;
 
 class Patient extends Entity
 {

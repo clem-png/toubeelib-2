@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\core\dto;
+namespace toubeelib_rdv\core\dto;
 
 use JsonSerializable;
 use Respect\Validation\Validatable;

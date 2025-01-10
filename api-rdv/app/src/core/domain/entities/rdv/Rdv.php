@@ -1,12 +1,12 @@
 <?php
 
-namespace toubeelib\core\domain\entities\rdv;
+namespace toubeelib_rdv\core\domain\entities\rdv;
 
 use DateTime;
 use DateTimeImmutable;
-use toubeelib\core\domain\entities\Entity;
-use toubeelib\core\domain\entities\praticien\Specialite;
-use toubeelib\core\dto\RdvDTO;
+use toubeelib_rdv\core\domain\entities\Entity;
+use toubeelib_rdv\core\domain\entities\praticien\Specialite;
+use toubeelib_rdv\core\dto\RdvDTO;
 
 class Rdv extends Entity
 {

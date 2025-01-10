@@ -1,20 +1,20 @@
 <?php
 
-namespace toubeelib\core\services\rdv;
+namespace toubeelib_rdv\core\services\rdv;
 
 use DateTime;
 use Exception;
 use Monolog\Level;
 use Psr\Log\LoggerInterface;
-use toubeelib\core\services\rdv\RdvServiceException;
-use toubeelib\core\dto\InputRdvDTO;
-use toubeelib\core\dto\RdvDTO;
-use toubeelib\core\dto\SpecialiteDTO;
-use toubeelib\core\dto\InputSpecialiteDTO;
-use toubeelib\core\repositoryInterfaces\RdvRepositoryInterface;
-use toubeelib\core\domain\entities\rdv\Rdv;
-use toubeelib\core\services\praticien\ServicePraticienInterface;
-use toubeelib\core\domain\entities\praticien\Specialite;
+use toubeelib_rdv\core\services\rdv\RdvServiceException;
+use toubeelib_rdv\core\dto\InputRdvDTO;
+use toubeelib_rdv\core\dto\RdvDTO;
+use toubeelib_rdv\core\dto\SpecialiteDTO;
+use toubeelib_rdv\core\dto\InputSpecialiteDTO;
+use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
+use toubeelib_rdv\core\domain\entities\rdv\Rdv;
+use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
+use toubeelib_rdv\core\domain\entities\praticien\Specialite;
 
 
 class ServiceRdv implements ServiceRDVInterface{
