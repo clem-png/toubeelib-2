@@ -12,6 +12,8 @@ services:
     volumes:
       - ./gateway/app:/var/php
     working_dir: /var/php
+    depends_on:
+      - api.toubeelib
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   api.toubeelib:
