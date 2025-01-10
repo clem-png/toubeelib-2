@@ -39,69 +39,69 @@ return function( App $app): App {
     //rdvs
 
     $app->put('/rdvs/{ID-RDV}/annuler[/]', PutRdvsAnnulerAction::class)
-        ->setName('rdvsAnnuler')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsAnnuler');
+
 
     $app->get('/rdvs/{ID-RDV}[/]', GetRdvsByIdAction::class)
-        ->setName('rdvsId')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsId');
+
 
     $app->post('/rdvs[/]', PostRdvsAction::class)
-        ->setName('rdvsAdd')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsAdd');
+
 
     $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)
-        ->setName('rdvsEditPatient')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsEditPatient');
+
 
     $app->put('/rdvs/{ID-RDV}/payer[/]', PutPayerRdvsAction::class)
-        ->setName('rdvsPayer')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsPayer');
+
 
     $app->put('/rdvs/{ID-RDV}/honorer[/]', PutRdvsHonorerAction::class)
-        ->setName('rdvsHonorer')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsHonorer');
+
 
     $app->put('/rdvs/{ID-RDV}/non-honorer[/]', PutRdvsNonHonorerAction::class)
-        ->setName('rdvsNonHonorer')
-        ->add(AuthMiddleware::class);
+        ->setName('rdvsNonHonorer');
+
 
     //praticiens
 
     $app->get('/praticiens[/]', GetPraticiensAction::class)
-        ->setName('praticiens')
-        ->add(AuthorisationMiddleware::class)
-        ->add(AuthMiddleware::class);
+        ->setName('praticiens');
+
+
 
     $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
-        ->setName('praticiensDispo')
-        ->add(AuthMiddleware::class);
+        ->setName('praticiensDispo');
+
 
     $app->get('/praticiens/{ID-PRATICIEN}/planning', GetPraticiensPlanningAction::class)
-        ->setName('praticiensPlanning')
-        ->add(AuthMiddleware::class);
+        ->setName('praticiensPlanning');
+
 
     $app->get('/praticiens/{ID-PRATICIEN}[/]', GetPraticiensByIdAction::class)
-        ->setName('praticiensId')
-        ->add(AuthorisationMiddleware::class)
-        ->add(AuthMiddleware::class);
+        ->setName('praticiensId');
+
+
 
     $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', PostPraticiensIndisponibiliteAction::class)
-        ->setName('praticiensIndispo')
-        ->add(AuthorisationMiddleware::class)
-        ->add(AuthMiddleware::class);
+        ->setName('praticiensIndispo');
+
+
 
 
     $app->post('/praticiens[/]', PostPraticiensAction::class)
-        ->setName('praticiensAdd')
-        ->add(AuthorisationMiddleware::class)
-        ->add(AuthMiddleware::class);
+        ->setName('praticiensAdd');
+
+
 
     //patients
 
     $app->post('/patient[/]', PostPatientAction::class)
-        ->setName('patientAdd')
-        ->add(AuthMiddleware::class);
+        ->setName('patientAdd');
+
 
     //users
 
