@@ -10,7 +10,8 @@
     "fakerphp/faker":"^1.23",
     "php-di/php-di": "^7.0",
     "php-di/slim-bridge": "^3.4",
-    "respect/validation": "^2.3.7"
+    "respect/validation": "^2.3.7",
+    "guzzlehttp/guzzle": "^7.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^11.0",
@@ -18,7 +19,7 @@
   },
   "autoload": {
     "psr-4" : {
-      "toubeelib\\" : "./src"
+      "toubeelib-rdv\\" : "./src"
     }
   }
 }

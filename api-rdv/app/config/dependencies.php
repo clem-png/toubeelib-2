@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 
 use toubeelib\application\actions\GetPraticiensDisponibilitesAction;
@@ -22,6 +23,10 @@ use toubeelib\core\services\rdv\ServiceRDVInterface;
 use toubeelib\infrastructure\repositories\PDORdvRepository;
 
 return [
+
+    'client_praticien' => function (ContainerInterface $c){
+        return new Client(['base_uri' => 'http://gateway.toubeelib:80']);
+    },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c){
         return new PDORdvRepository($c->get('rdv.pdo'));

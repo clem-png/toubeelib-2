@@ -7,7 +7,7 @@ use Psr\Http\Client\ClientInterface;
 return [
 
     'client_praticien' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.toubeelib:80']);
+        return new Client(['base_uri' => 'http://api.praticiens.toubeelib:80']);
     },
 
     'client_rdv' => function (ContainerInterface $c){
