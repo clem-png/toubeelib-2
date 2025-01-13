@@ -18,13 +18,19 @@ use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 
 use toubeelib_rdv\core\services\rdv\ServiceRdv;
 use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
+use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
 
 use toubeelib_rdv\infrastructure\repositories\PDORdvRepository;
+use toubeelib_rdv\infrastructure\repositories\PraticienServiceAdapter;
 
 return [
 
     'client_praticien' => function (ContainerInterface $c){
         return new Client(['base_uri' => 'http://gateway.toubeelib:80']);
+    },
+
+    ServicePraticienInterface::class => function (ContainerInterface $c) {
+        return new PraticienServiceAdapter($c->get('client_praticien'));
     },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c){

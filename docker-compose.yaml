@@ -51,6 +51,22 @@ services:
       - praticiens.toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  api.rdv.toubeelib:
+    build:
+      context: api-rdv/build
+      dockerfile: 8.3-cli.Dockerfile
+    env_file: api-rdv/toubeelib.env
+    ports:
+      - '6082:80'
+    volumes:
+      - ./api-rdv/app:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - rdv.toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
   praticiens.toubeelib.db:
     image: 'postgres:latest'
     env_file: api-praticiens/toubeelibdb.env
@@ -61,6 +77,17 @@ services:
     volumes:
       - ./api-praticiens/app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
       - ./api-praticiens/sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
+
+  rdv.toubeelib.db:
+    image: 'postgres:latest'
+    env_file: api-rdv/toubeelibdb.env
+    ports:
+      - '5434:5432'
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./api-rdv/app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
+      - ./api-rdv/sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
 
   toubeelib.db:
     image: 'postgres:latest'
