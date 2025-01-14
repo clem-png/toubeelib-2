@@ -11,9 +11,8 @@ class Auth extends Entity
     protected int $role;
     protected string $password;
 
-    public function __construct(string $ID, string $email, string $password, int $role)
+    public function __construct(string $email, string $password, int $role)
     {
-        $this->ID = $ID;
         $this->email = $email;
         $this->password = $password;
         $this->role = $role;

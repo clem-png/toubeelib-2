@@ -1,8 +1,8 @@
 <?php
 
-namespace toubeelib\core\services\auth;
+namespace toubeelib_auth\core\services\auth;
 
-class UsersServiceException extends \Exception
+class UserServiceException extends \Exception
 {
 
 }
