@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use gateway\application\actions\GeneriquePraticienAction;
 use gateway\application\actions\GeneriqueRDVAction;
+use gateway\application\actions\GeneriqueUsersAction;
 use gateway\application\middleware\Cors;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -69,6 +70,13 @@ return function( App $app): App {
 
     $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', GeneriqueRDVAction::class)
         ->setName('praticiensIndispo');
+
+    /*************************
+     * Routes de l'API RDV
+     *************************/
+
+    $app->post('/users/signin[/]', GeneriqueUsersAction::class)
+        ->setName('usersSignIn');
 
     return $app;
 };
