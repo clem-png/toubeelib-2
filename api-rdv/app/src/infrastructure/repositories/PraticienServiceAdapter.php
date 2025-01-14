@@ -3,6 +3,9 @@
 namespace toubeelib_rdv\infrastructure\repositories;
 
 use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
+use toubeelib_rdv\core\dto\PraticienDTO;
+use toubeelib_rdv\core\dto\SpecialiteDTO;
+
 use guzzlehttp\client;
 
 class PraticienServiceAdapter implements ServicePraticienInterface
