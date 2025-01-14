@@ -1,6 +1,7 @@
 <?php
 
 use gateway\application\actions\GeneriquePraticienAction;
+use gateway\application\actions\GeneriqueRDVAction;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
@@ -11,7 +12,7 @@ return [
     },
 
     'client_rdv' => function (ContainerInterface $c){
-        return new Client(['base_uri' => '']);
+        return new Client(['base_uri' => 'http://api.rdv.toubeelib:80']);
     },
 
     'client_patient' => function (ContainerInterface $c){
@@ -20,6 +21,10 @@ return [
 
     GeneriquePraticienAction::class => function (ContainerInterface $c){
         return new GeneriquePraticienAction($c->get('client_praticien'));
+    },
+
+    GeneriqueRDVAction::class => function (ContainerInterface $c){
+        return new GeneriqueRDVAction($c->get('client_rdv'));
     }
 
 ];

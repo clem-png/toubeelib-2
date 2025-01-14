@@ -18,7 +18,6 @@ use toubeelib_rdv\application\actions\PostPraticiensIndisponibiliteAction;
 return function( App $app): App {
 
     //rdvs
-
     $app->put('/rdvs/{ID-RDV}/annuler[/]', PutRdvsAnnulerAction::class)
         ->setName('rdvsAnnuler');
 
@@ -45,8 +44,7 @@ return function( App $app): App {
 
 
     //praticiens
-
-    $app->get('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
+    $app->post('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
         ->setName('praticiensDispo');
 
 
@@ -55,13 +53,6 @@ return function( App $app): App {
 
     $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', PostPraticiensIndisponibiliteAction::class)
         ->setName('praticiensIndispo');
-
-
-
-
-    $app->post('/praticiens[/]', PostPraticiensAction::class)
-        ->setName('praticiensAdd');
-
 
     return $app;
 };

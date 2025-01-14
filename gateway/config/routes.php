@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use gateway\application\actions\GeneriquePraticienAction;
+use gateway\application\actions\GeneriqueRDVAction;
 use gateway\application\middleware\Cors;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -18,6 +19,9 @@ return function( App $app): App {
             return $rs;
         });
 
+    /*************************
+    * Routes de l'API Praticien
+    *************************/
     $app->get('/praticiens[/]', GeneriquePraticienAction::class)
         ->setName('praticiens');
 
@@ -26,6 +30,48 @@ return function( App $app): App {
 
     $app->post('/praticiens/{id}/planning[/]', GeneriquePraticienAction::class)
         ->setName('praticiens-planning');
+
+    $app->get('/specialites/{is}[/]', GeneriquePraticienAction::class)
+        ->setName('specialites-id');
+
+    
+    /*************************
+     * Routes de l'API RDV
+     *************************/
+
+    $app->put('/rdvs/{ID-RDV}/annuler[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsAnnuler');
+
+    $app->get('/rdvs/{ID-RDV}[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsId');
+
+    $app->post('/rdvs[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsAdd');
+
+    $app->patch('/rdvs/{ID-RDV}[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsEditPatient');
+
+
+    $app->put('/rdvs/{ID-RDV}/payer[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsPayer');
+
+
+    $app->put('/rdvs/{ID-RDV}/honorer[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsHonorer');
+
+
+    $app->put('/rdvs/{ID-RDV}/non-honorer[/]', GeneriqueRDVAction::class)
+        ->setName('rdvsNonHonorer');
+
+    $app->post('/praticiens/{ID-PRATICIEN}/disponibilites', GeneriqueRDVAction::class)
+        ->setName('praticiensDispo');
+
+
+    $app->post('/praticiens/{ID-PRATICIEN}/planning', GeneriqueRDVAction::class)
+        ->setName('praticiensPlanning');
+
+    $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', GeneriqueRDVAction::class)
+        ->setName('praticiensIndispo');
 
     return $app;
 };

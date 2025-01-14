@@ -31,5 +31,8 @@ return function( App $app): App {
     $app->post('/praticiens[/]', PostPraticiensAction::class)
         ->setName('praticiensAdd');
 
+    $app->get('/specialites/{ID-SPECIALITE}[/]', GetSpecialiteByIdAction::class)
+        ->setName('specialiteId');
+
     return $app;
 };
