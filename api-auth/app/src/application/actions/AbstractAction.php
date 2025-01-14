@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib_praticiens\application\actions;
+namespace toubeelib_auth\application\actions;
 
 
 use Psr\Http\Message\ResponseInterface;
