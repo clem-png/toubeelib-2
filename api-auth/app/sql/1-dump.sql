@@ -4,9 +4,12 @@ create database users;
 
 \connect "users";
 
+-- Enable the uuid-ossp extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 DROP TABLE IF EXISTS "users";
 CREATE TABLE "public"."users" (
-                                  "id" uuid NOT NULL,
+                                  "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                                   "email" character varying(128) NOT NULL,
                                   "password" character varying(256) NOT NULL,
                                   "role" smallint DEFAULT '0' NOT NULL,
