@@ -4,6 +4,7 @@ declare(strict_types=1);
 use gateway\application\actions\GeneriquePraticienAction;
 use gateway\application\actions\GeneriqueRDVAction;
 use gateway\application\actions\GeneriqueUsersAction;
+use gateway\application\middleware\AuthMiddleware;
 use gateway\application\middleware\Cors;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -72,11 +73,18 @@ return function( App $app): App {
         ->setName('praticiensIndispo');
 
     /*************************
-     * Routes de l'API RDV
+     * Routes de l'API Auth
      *************************/
 
     $app->post('/users/signin[/]', GeneriqueUsersAction::class)
         ->setName('usersSignIn');
+
+    $app->post('/users/register[/]', GeneriqueUsersAction::class)
+        ->setName('usersRegister');
+
+    $app->post('/users/refresh[/]', GeneriqueUsersAction::class)
+        ->add(AuthMiddleware::class)
+        ->setName('usersRefresh');
 
     return $app;
 };

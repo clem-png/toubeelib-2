@@ -3,6 +3,7 @@
 use gateway\application\actions\GeneriquePraticienAction;
 use gateway\application\actions\GeneriqueRDVAction;
 use gateway\application\actions\GeneriqueUsersAction;
+use gateway\application\middleware\AuthMiddleware;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Client\ClientInterface;
@@ -34,6 +35,11 @@ return [
 
     GeneriqueUsersAction::class => function (ContainerInterface $c){
         return new GeneriqueUsersAction($c->get('client_auth'));
-    }
+    },
+
+    AuthMiddleware::class => function (ContainerInterface $c) {
+        return new AuthMiddleware($c->get($c->get('client_auth')));
+    },
+
 
 ];
