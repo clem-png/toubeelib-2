@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib_praticiens\core\domain\entities;
+namespace toubeelib_auth\core\domain\entities;
 
 abstract class Entity
 {
