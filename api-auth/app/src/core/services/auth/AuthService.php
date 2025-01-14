@@ -1,13 +1,13 @@
 <?php
-namespace toubeelib\core\services\auth;
+namespace toubeelib_auth\core\services\auth;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Level;
-use toubeelib\core\repositoryInterfaces\AuthRepositoryInterface;
-use toubeelib\core\services\auth\AuthServiceInterface;
-use toubeelib\core\services\auth\AuthServiceException;
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\InputAuthDTO;
+use toubeelib_auth\core\repositoryInterfaces\AuthRepositoryInterface;
+use toubeelib_auth\core\services\auth\AuthServiceInterface;
+use toubeelib_auth\core\services\auth\AuthServiceException;
+use toubeelib_auth\core\dto\AuthDTO;
+use toubeelib_auth\core\dto\InputAuthDTO;
 
 class AuthService implements AuthServiceInterface
 {

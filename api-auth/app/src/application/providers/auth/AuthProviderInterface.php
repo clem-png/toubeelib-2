@@ -1,8 +1,8 @@
 <?php
-namespace toubeelib\application\providers\auth;
+namespace toubeelib_auth\application\providers\auth;
 
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\AuthDTO;
+use toubeelib_auth\core\dto\InputAuthDTO;
 
 interface AuthProviderInterface
 {

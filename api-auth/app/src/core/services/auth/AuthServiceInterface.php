@@ -1,9 +1,9 @@
 <?php
 
-namespace toubeelib\core\services\auth;
+namespace toubeelib_auth\core\services\auth;
 
-use toubeelib\core\dto\AuthDTO;
-use toubeelib\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\AuthDTO;
+use toubeelib_auth\core\dto\InputAuthDTO;
 
 interface AuthServiceInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace toubeelib\core\services\auth;
+namespace toubeelib_auth\core\services\auth;
 
 class AuthServiceException extends \Exception
 {
