@@ -2,9 +2,12 @@
 
 namespace toubeelib_auth\application\actions;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
+use toubeelib_auth\application\providers\auth\AuthProviderInterface;
+use toubeelib_auth\core\dto\InputAuthDTO;
 
 class SignInAction extends AbstractAction
 {
@@ -17,7 +20,6 @@ class SignInAction extends AbstractAction
   public function __construct(AuthProviderInterface $authProvider) {
     $this->authProvider = $authProvider;
   }
-
 
   /**
    * RECUPERE UN TOKEN A PARTIR DES IDENTIFIANTS PASSER DANS LE BODY DE LA REQUETE ET LE RETOURNE DANS LE CORPS DE LA REPONSE AVEC UN REFRESH TOKEN
@@ -41,8 +43,8 @@ class SignInAction extends AbstractAction
     $mdp = $credentials[1];
 
     try {
-      $authRes = $this->authProvider->signIn(new UtilisateurInputDTO($email, $mdp));
-    }catch (UtilisateurException $e){
+      $authRes = $this->authProvider->signIn(new InputAuthDTO($email, $mdp));
+    }catch (Exception $e){
       throw new HttpUnauthorizedException($rq, 'Identifiants incorrects ' . $e->getMessage());
     }
 

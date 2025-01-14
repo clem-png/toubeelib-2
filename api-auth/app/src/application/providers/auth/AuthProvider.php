@@ -1,12 +1,11 @@
 <?php
 namespace toubeelib_auth\application\providers\auth;
 
-use toubeelib_auth\core\dto\AuthDTO;
 use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\AuthDTO;
 use toubeelib_auth\core\services\auth\AuthServiceException;
 use toubeelib_auth\core\services\auth\AuthServiceInterface;
 use toubeelib_auth\application\providers\auth\JWTManager;
-
 
 class AuthProvider implements AuthProviderInterface
 {

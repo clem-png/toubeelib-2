@@ -2,11 +2,14 @@
 
 namespace toubeelib_auth\application\actions;
 
+use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpUnauthorizedException;
 use toubeelib_auth\application\actions\AbstractAction;
+use toubeelib_auth\application\providers\auth\AuthProviderInterface;
+use toubeelib_auth\core\services\auth\UserServiceException;
 
 class RefreshAction extends AbstractAction
 {
@@ -32,13 +35,13 @@ class RefreshAction extends AbstractAction
     try {
       $h = $rq->getHeader('Authorization')[0];
       $tokenstring = sscanf($h, "Bearer %s")[0];
-    }catch (\Exception $e){
+    }catch (Exception $e){
       throw new HttpBadRequestException($rq, "erreur lors de la recuperation du token : ".$e->getMessage());
     }
 
     try {
       $authRes = $this->authProvider->refresh($tokenstring);
-    }catch (UtilisateurException $e){
+    }catch (Exception $e){
       throw new HttpUnauthorizedException($rq, 'Identifiants incorrects ' . $e->getMessage());
     }
 
