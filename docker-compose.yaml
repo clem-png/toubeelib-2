@@ -73,7 +73,7 @@ services:
       dockerfile: 8.3-cli.Dockerfile
     env_file: api-auth/toubeelib.env
     ports:
-      - '6082:80'
+      - '6083:80'
     volumes:
       - ./api-auth/app:/var/php
     working_dir: /var/php
@@ -109,7 +109,7 @@ services:
     image: 'postgres:latest'
     env_file: api-auth/toubeelibdb.env
     ports:
-      - '5434:5432'
+      - '5435:5432'
     networks:
       - toubeelib.net
     volumes:

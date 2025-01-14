@@ -13,12 +13,9 @@ class AuthService implements AuthServiceInterface
 {
     private AuthRepositoryInterface $authRepository;
 
-    private LoggerInterface $logger;
 
-    public function __construct(AuthRepositoryInterface $authRepository, LoggerInterface $logger)
-    {
+    public function __construct(AuthRepositoryInterface $authRepository){
         $this->authRepository = $authRepository;
-        $this->logger = $logger;
     }
 
     public function verifyCredentials(InputAuthDTO $input): AuthDTO
@@ -27,7 +24,6 @@ class AuthService implements AuthServiceInterface
             $user = $this->authRepository->findByEmail($input->email);
 
             if ($user && password_verify($input->password, $user->password)) {
-                $this->logger->log(Level::Info, 'Utilisateur Connecté : ', ['email' => $input->email]);
 
                 return new AuthDTO(
                     $user->ID,
@@ -35,7 +31,6 @@ class AuthService implements AuthServiceInterface
                     $user->role
                 );
             }else{
-                $this->logger->log(Level::Info, 'Connexion échouée : ', ['email' => $input->email]);
                 throw new AuthServiceException('Identifiants incorrects');
             }
         }catch(\Exception $e){

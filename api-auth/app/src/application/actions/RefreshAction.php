@@ -47,7 +47,7 @@ class RefreshAction extends AbstractAction
 
     $response = [
       'type' => 'ressource',
-      'atoken' => $authRes->accessToken,
+      'atoken' => $authRes,
     ];
 
     $rs->getBody()->write(json_encode($response));

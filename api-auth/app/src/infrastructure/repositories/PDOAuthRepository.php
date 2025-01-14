@@ -21,12 +21,14 @@ class PDOAuthRepository implements AuthRepositoryInterface
         $stmt->execute();
         $row = $stmt->fetch();
         if ($row) {
-            return new Auth(
-            $row['id'],
+            $auth = new Auth(
             $row['email'],
             $row['password'],
-            $row['role']
+            intval($row['role'])
             );
+            $auth->setID($row['id']);
+            return $auth;
+
         } else {
             throw new RepositoryEntityNotFoundException("Utilisateur non trouvé");
         }

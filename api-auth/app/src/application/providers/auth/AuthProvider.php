@@ -78,6 +78,6 @@ class AuthProvider implements AuthProviderInterface
 
         $accessToken = $this->jwtManager->createAccessToken($payload);
 
-        return new $accessToken;
+        return $accessToken;
     }
 }
