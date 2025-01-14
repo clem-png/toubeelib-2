@@ -64,4 +64,21 @@ class AuthProvider implements AuthProviderInterface
         );
 
     }
+
+    public function refresh(string $token): string {
+        $arrayToken = $this->jwtManager->decodeToken($token);
+        $payload = [
+            'iat'=>time(),
+            'exp'=>time()+3600,
+            'sub' => $arrayToken['sub'],
+            'data' => [
+                'role' => $arrayToken['data']->role,
+                'email' => $arrayToken['data']->email,
+            ]
+        ];
+
+        $accessToken = $this->jwtManager->createAccessToken($payload);
+
+        return new $accessToken;
+    }
 }
