@@ -8,12 +8,12 @@ use toubeelib_auth\application\actions\ValidateAction;
 use toubeelib_auth\application\providers\auth\AuthProvider;
 use toubeelib_auth\application\providers\auth\AuthProviderInterface;
 use toubeelib_auth\application\providers\auth\JWTManager;
-use toubeelib_auth\core\repositoryInterfaces\AuthRepositoryInterface;
+use toubeelib_auth\core\repositoryInterfaces\UserRepositoryInterface;
 use toubeelib_auth\core\services\auth\AuthService;
 use toubeelib_auth\core\services\auth\AuthServiceInterface;
 use toubeelib_auth\core\services\user\UserService;
 use toubeelib_auth\core\services\user\UserServiceInterface;
-use toubeelib_auth\infrastructure\repositories\PDOAuthRepository;
+use toubeelib_auth\infrastructure\repositories\PDOUserRepository;
 
 
 return [
@@ -26,16 +26,16 @@ return [
         return new AuthProvider($c->get(AuthServiceInterface::class),$c->get(JWTManager::class));
     },
 
-    AuthRepositoryInterface::class => function(ContainerInterface $c){
-        return new PDOAuthRepository($c->get('auth.pdo'));
+    UserRepositoryInterface::class => function(ContainerInterface $c){
+        return new PDOUserRepository($c->get('user.pdo'));
     },
 
     UserServiceInterface::class => function(ContainerInterface $c){
-        return new UserService($c->get(AuthRepositoryInterface::class));
+        return new UserService($c->get(UserRepositoryInterface::class));
     },
 
     AuthServiceInterface::class => function(ContainerInterface $c){
-        return new AuthService($c->get(AuthRepositoryInterface::class));
+        return new AuthService($c->get(UserRepositoryInterface::class));
     },
 
     SignInAction::class => function(ContainerInterface $c){

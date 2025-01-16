@@ -1,12 +1,12 @@
 <?php
 namespace toubeelib_auth\application\providers\auth;
 
-use toubeelib_auth\core\dto\AuthDTO;
-use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\UserDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
 
 interface AuthProviderInterface
 {
-    public function signIn(InputAuthDTO $credentials): AuthDTO;
+    public function signIn(InputUserDTO $credentials): UserDTO;
 
-    public function getSignIn(string $token): AuthDTO;
+    public function getSignIn(string $token): UserDTO;
 }

@@ -3,29 +3,29 @@ namespace toubeelib_auth\core\services\auth;
 
 use Psr\Log\LoggerInterface;
 use Monolog\Level;
-use toubeelib_auth\core\repositoryInterfaces\AuthRepositoryInterface;
+use toubeelib_auth\core\repositoryInterfaces\UserRepositoryInterface;
 use toubeelib_auth\core\services\auth\AuthServiceInterface;
 use toubeelib_auth\core\services\auth\AuthServiceException;
-use toubeelib_auth\core\dto\AuthDTO;
-use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\UserDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
 
 class AuthService implements AuthServiceInterface
 {
-    private AuthRepositoryInterface $authRepository;
+    private UserRepositoryInterface $authRepository;
 
 
-    public function __construct(AuthRepositoryInterface $authRepository){
+    public function __construct(UserRepositoryInterface $authRepository){
         $this->authRepository = $authRepository;
     }
 
-    public function verifyCredentials(InputAuthDTO $input): AuthDTO
+    public function verifyCredentials(InputUserDTO $input): UserDTO
     {
         try {
             $user = $this->authRepository->findByEmail($input->email);
 
             if ($user && password_verify($input->password, $user->password)) {
 
-                return new AuthDTO(
+                return new UserDTO(
                     $user->ID,
                     $user->email,
                     $user->role

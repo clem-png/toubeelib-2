@@ -7,7 +7,7 @@ use Slim\Exception\HttpException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
-use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
 use toubeelib_auth\core\services\user\UserServiceInterface;
 
 class RegisterAction extends AbstractAction
@@ -33,7 +33,7 @@ class RegisterAction extends AbstractAction
         $email = filter_var($params['email'], FILTER_SANITIZE_EMAIL);
 
         if($params['mdp'] === $params['mdp2']){
-          $this->utilisateurService->createUser(new InputAuthDTO($email, $params['mdp']));
+          $this->utilisateurService->createUser(new InputUserDTO($email, $params['mdp']));
           return $rs->withStatus(200);
         } else {
           throw new HttpException($rq,'les mots de passe ne sont pas identique');

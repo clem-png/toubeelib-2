@@ -1,11 +1,11 @@
 <?php
 
-namespace toubeelib_auth\core\domain\entities\auth;
+namespace toubeelib_auth\core\domain\entities\user;
 
 use toubeelib_auth\core\domain\entities\Entity;
-use toubeelib_auth\core\dto\AuthDTO;
+use toubeelib_auth\core\dto\UserDTO;
 
-class Auth extends Entity
+class User extends Entity
 {
     protected string $email;
     protected int $role;
@@ -18,8 +18,8 @@ class Auth extends Entity
         $this->role = $role;
     }
 
-    public function toDTO(): AuthDTO
+    public function toDTO(): UserDTO
     {
-        return new AuthDTO($this->ID, $this->email, $this->role);
+        return new UserDTO($this->ID, $this->email, $this->role);
     }
 }

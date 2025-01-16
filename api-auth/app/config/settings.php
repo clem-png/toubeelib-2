@@ -9,7 +9,7 @@ return  [
 
     'displayErrorDetails' => true,
 
-    'auth.pdo' => function (ContainerInterface $c) {
+    'user.pdo' => function (ContainerInterface $c) {
         $config = parse_ini_file('iniconf/users.db.ini');
         $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']};";
         $user = $config['username'];

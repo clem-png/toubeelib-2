@@ -6,8 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
 use toubeelib_auth\application\providers\auth\JWTManager;
-use toubeelib_auth\core\dto\AuthDTO;
-use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\UserDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
 use toubeelib_auth\core\services\auth\AuthServiceInterface;
 
 class ValidateAction extends AbstractAction
@@ -28,7 +28,7 @@ class ValidateAction extends AbstractAction
             $token_line = $rq->hasHeader('Authorization');
             list($token) = sscanf($token_line, "Bearer %s");
             $credentials = $this->jwtManager->decodeToken($token);
-            $inputAuthDTO = new InputAuthDTO($credentials['email'], $credentials['mdp']);
+            $inputAuthDTO = new InputUserDTO($credentials['email'], $credentials['mdp']);
             $authDTO = $this->authService->verifyCredentials($inputAuthDTO);
         }catch (\Exception $e){
             throw new HttpUnauthorizedException($rq, "erreur auth");

@@ -2,10 +2,10 @@
 
 namespace toubeelib_auth\core\services\auth;
 
-use toubeelib_auth\core\dto\AuthDTO;
-use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\UserDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
 
 interface AuthServiceInterface
 {
-    function verifyCredentials(InputAuthDTO $input): AuthDTO;
+    function verifyCredentials(InputUserDTO $input): UserDTO;
 }

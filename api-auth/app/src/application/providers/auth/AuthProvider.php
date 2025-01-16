@@ -1,8 +1,8 @@
 <?php
 namespace toubeelib_auth\application\providers\auth;
 
-use toubeelib_auth\core\dto\InputAuthDTO;
-use toubeelib_auth\core\dto\AuthDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
+use toubeelib_auth\core\dto\UserDTO;
 use toubeelib_auth\core\services\auth\AuthServiceException;
 use toubeelib_auth\core\services\auth\AuthServiceInterface;
 use toubeelib_auth\application\providers\auth\JWTManager;
@@ -19,7 +19,7 @@ class AuthProvider implements AuthProviderInterface
         $this->jwtManager = $jwtManager;
     }
 
-    public function signIn(InputAuthDTO $credentials): AuthDTO
+    public function signIn(InputUserDTO $credentials): UserDTO
     {
         try{
             // Verifier les credentials
@@ -41,7 +41,7 @@ class AuthProvider implements AuthProviderInterface
             $refreshToken = $this->jwtManager->createRefreshToken($payload);
 
             // Retourner le AuthDTO avec les tokens
-            return new AuthDTO(
+            return new UserDTO(
                 $authDTO->id,
                 $authDTO->email,
                 $authDTO->role,
@@ -53,10 +53,10 @@ class AuthProvider implements AuthProviderInterface
         }
     }
 
-    public function getSignIn(string $token): AuthDTO{
+    public function getSignIn(string $token): UserDTO{
         $arrayToken = $this->jwtManager->decodeToken($token);
 
-        return new AuthDTO(
+        return new UserDTO(
             $arrayToken['sub'],
             $arrayToken['data']->email,
             $arrayToken['data']->role

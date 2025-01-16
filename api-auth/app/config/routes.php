@@ -9,7 +9,6 @@ use toubeelib_auth\application\actions\RefreshAction;
 use toubeelib_auth\application\actions\RegisterAction;
 use toubeelib_auth\application\actions\SignInAction;
 use toubeelib_auth\application\actions\ValidateAction;
-use toubeelib_praticiens\application\actions\GetPraticiensAction;
 
 
 return function( App $app): App {

@@ -1,7 +1,7 @@
 <?php
 
 namespace toubeelib_auth\core\dto;
-class InputAuthDTO extends DTO
+class InputUserDTO extends DTO
 {
     protected string $email;
     protected string $password;

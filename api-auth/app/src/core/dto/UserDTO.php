@@ -2,7 +2,7 @@
 
 namespace toubeelib_auth\core\dto;
 
-class AuthDTO extends DTO
+class UserDTO extends DTO
 {
     protected string $id;
     protected string $email;

@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
 use toubeelib_auth\application\providers\auth\AuthProviderInterface;
-use toubeelib_auth\core\dto\InputAuthDTO;
+use toubeelib_auth\core\dto\InputUserDTO;
 
 class SignInAction extends AbstractAction
 {
@@ -43,7 +43,7 @@ class SignInAction extends AbstractAction
     $mdp = $credentials[1];
 
     try {
-      $authRes = $this->authProvider->signIn(new InputAuthDTO($email, $mdp));
+      $authRes = $this->authProvider->signIn(new InputUserDTO($email, $mdp));
     }catch (Exception $e){
       throw new HttpUnauthorizedException($rq, 'Identifiants incorrects ' . $e->getMessage());
     }
