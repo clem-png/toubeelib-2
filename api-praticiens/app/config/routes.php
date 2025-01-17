@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Slim\App;
 use toubeelib_praticiens\application\actions\GetPraticiensAction;
 use toubeelib_praticiens\application\actions\GetPraticiensByIdAction;
+use toubeelib_praticiens\application\actions\GetSpecialiteByIdAction;
 use toubeelib_praticiens\application\actions\HomeAction;
 use toubeelib_praticiens\application\actions\PostPraticiensAction;
 

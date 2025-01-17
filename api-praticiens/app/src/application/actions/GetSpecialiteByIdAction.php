@@ -2,6 +2,7 @@
 
 namespace toubeelib_praticiens\application\actions;
 
+use DI\NotFoundException;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

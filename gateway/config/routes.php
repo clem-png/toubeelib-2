@@ -30,7 +30,7 @@ return function( App $app): App {
     $app->get('/praticiens/{id}[/]', GeneriquePraticienAction::class)
         ->setName('praticiens-id');
 
-    $app->get('/specialites/{is}[/]', GeneriquePraticienAction::class)
+    $app->get('/specialites/{id}[/]', GeneriquePraticienAction::class)
         ->setName('specialites-id');
 
     

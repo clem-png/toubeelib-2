@@ -10,6 +10,9 @@ use toubeelib_praticiens\infrastructure\repositories\PDOPraticienRepository;
 use toubeelib_praticiens\application\actions\GetSpecialiteByIdAction;
 
 return [
+    GetSpecialiteByIdAction::class => function (ContainerInterface $c){
+        return new GetSpecialiteByIdAction($c->get(ServicePraticienInterface::class));
+    },
 
     PraticienRepositoryInterface::class => function (ContainerInterface $c){
         return new PDOPraticienRepository($c->get('praticien.pdo'));
@@ -28,7 +31,4 @@ return [
         return new PostPraticiensAction($c->get(ServicePraticienInterface::class));
     },
 
-    GetSpecialiteByIdAction::class => function(ContainerInterface $c){
-        return new GetSpecialiteByIdAction($c->get(ServicePraticienInterface::class));
-    },
 ];
