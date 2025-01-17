@@ -12,6 +12,14 @@ return  [
     'logs.name' => 'toubeelib.log',
     'logs.level' => Level::Info,
 
+    'rdv.pdo' => function (ContainerInterface $c) {
+        $config = parse_ini_file('iniconf/rdv.db.ini');
+        $dsn = "{$config['driver']}:host={$config['host']};port={$config['port']};dbname={$config['database']};";
+        $user = $config['username'];
+        $password = $config['password'];
+        return new \PDO($dsn, $user, $password, [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+    },
+
     'logger' => function( ContainerInterface $c) {
         $log = new Logger( $c->get('logs.name'));
         $log->pushHandler(
