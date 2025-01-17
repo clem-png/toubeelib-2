@@ -12,6 +12,9 @@ use GuzzleHttp\Exception\ServerException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpForbiddenException;
+use Slim\Exception\HttpNotFoundException;
 use Slim\Exception\HttpUnauthorizedException;
 //use nrv\application\providers\auth\AuthProviderInterface;
 //use nrv\application\providers\auth\JWTManager;
@@ -46,18 +49,21 @@ class AuthMiddleware{
             throw new HttpUnauthorizedException($rq,"no auth, try /users/signin[/] or /users/signup[/]");
         }
 
-        $h = $rq->getHeader('Authorization')[0];
-        $tokenstring = sscanf($h, "Bearer %s")[0];
-
+        $h = $rq->getHeader('Authorization');
+        if($h == null || empty($h)){
+            throw new HttpUnauthorizedException($rq,"no auth, try /users/signin[/] or /users/signup[/]");
+        }
         try {
-            $response = $this->client_auth->request('POST', '/tokens/validate', [
-                'json' => ['token' => $tokenstring]
-            ]);
+            $options = ['query' => $rq->getQueryParams()];
+            $options['headers'] = ['Authorization' => $h];
+            $response = $this->client_auth->request('POST', '/token/validate',$options);
         } catch (ConnectException | ServerException $e) {
         } catch (ClientException $e ) {
             match($e->getCode()) {
+                400 => throw new HttpBadRequestException($rq, "bad request ({$e->getCode()}, {$e->getMessage()})"),
                 401 => throw new HttpUnauthorizedException($rq, "unauthorized ({$e->getCode()}, {$e->getMessage()})"),
-                403 => throw new HttpUnauthorizedException($rq, "forbidden ({$e->getCode()}, {$e->getMessage()})"),
+                403 => throw new HttpForbiddenException($rq, "forbidden ({$e->getCode()}, {$e->getMessage()})"),
+                404 => throw new HttpNotFoundException($rq, "forbidden ({$e->getCode()}, {$e->getMessage()})"),
             };
         }
 
