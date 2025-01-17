@@ -13,13 +13,11 @@ use toubeelib_auth\core\services\auth\AuthServiceInterface;
 class ValidateAction extends AbstractAction
 {
 
-    private AuthServiceInterface $authService;
-    private JWTManager $jwtManager;
+    private AuthProviderInterface $authProvider;
 
-    public function __construct(AuthServiceInterface $authService, JWTManager $jwtManager)
-    {
-        $this->authService = $authService;
-        $this->jwtManager = $jwtManager;
+    public function __construct(AuthProviderInterface $authProvider)
+    {   
+        $this->authProvider = $authProvider;
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
@@ -27,14 +25,19 @@ class ValidateAction extends AbstractAction
         try {
             $h = $rq->getHeader('Authorization')[0];
             $tokenstring = sscanf($h, "Bearer %s")[0];
-
-            $credentials = $this->jwtManager->decodeToken($tokenstring);
-            var_dump($credentials);
-
-        }catch (\Exception $e){
-            throw new HttpUnauthorizedException($rq, "erreur auth");
+            $utiOutDTO = $this->provider->getSignIn($tokenstring);
+        }catch (ExpiredException $e) {
+            throw new HttpUnauthorizedException($rq,"expired token");
+        } catch (SignatureInvalidException $e) {
+            throw new HttpUnauthorizedException($rq,"signature invalid token");
+        } catch (BeforeValidException $e) {
+            throw new HttpUnauthorizedException($rq,"before valid token");
+        } catch (\UnexpectedValueException $e) {
+            throw new HttpUnauthorizedException($rq,"unexpected value token");
         }
 
+        $rq = $rq->withAttribute('UtiOutDTO',$utiOutDTO);
+        
         return $rs->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
 }

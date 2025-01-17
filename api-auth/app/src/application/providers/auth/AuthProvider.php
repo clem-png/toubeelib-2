@@ -61,7 +61,6 @@ class AuthProvider implements AuthProviderInterface
             $arrayToken['data']->email,
             $arrayToken['data']->role
         );
-
     }
 
     public function refresh(string $token): string {

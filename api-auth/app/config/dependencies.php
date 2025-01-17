@@ -51,7 +51,7 @@ return [
     },
 
     ValidateAction::class => function(ContainerInterface $c){
-        return new ValidateAction($c->get(AuthServiceInterface::class),$c->get(JWTManager::class));
+        return new ValidateAction($c->get(AuthProviderInterface::class));
     }
 
 ];
