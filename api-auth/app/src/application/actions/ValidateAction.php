@@ -5,19 +5,18 @@ namespace toubeelib_auth\application\actions;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpUnauthorizedException;
-use toubeelib_auth\application\providers\auth\JWTManager;
 use toubeelib_auth\core\dto\UserDTO;
 use toubeelib_auth\core\dto\InputUserDTO;
-use toubeelib_auth\core\services\auth\AuthServiceInterface;
+use toubeelib_auth\application\providers\auth\AuthProviderInterface;
 
 class ValidateAction extends AbstractAction
 {
 
-    private AuthProviderInterface $authProvider;
+    private AuthProviderInterface $provider;
 
-    public function __construct(AuthProviderInterface $authProvider)
+    public function __construct(AuthProviderInterface $provider)
     {   
-        $this->authProvider = $authProvider;
+        $this->provider = $provider;
     }
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
@@ -37,7 +36,7 @@ class ValidateAction extends AbstractAction
         }
 
         $rq = $rq->withAttribute('UtiOutDTO',$utiOutDTO);
-        
+
         return $rs->withStatus(200)->withHeader('Content-Type', 'application/json');
     }
 }
