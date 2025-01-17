@@ -11,7 +11,7 @@ class Praticien extends Entity
     protected string $prenom;
     protected string $adresse;
     protected string $tel;
-    protected ?Specialite $specialite = null; // version simplifiée : une seule spécialité
+    protected string $specialite = ""; // version simplifiée : une seule spécialité
 
     public function __construct(string $nom, string $prenom, string $adresse, string $tel)
     {
@@ -21,7 +21,7 @@ class Praticien extends Entity
         $this->tel = $tel;
     }
 
-    public function setSpecialite(Specialite $specialite): void
+    public function setSpecialite(string $specialite): void
     {
         $this->specialite = $specialite;
     }

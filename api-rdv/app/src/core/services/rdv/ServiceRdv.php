@@ -52,7 +52,7 @@ class ServiceRdv implements ServiceRDVInterface{
                     throw new RdvServiceException("Specialite pas trouvé");
                 }
     
-                if ($specialite->label !== $praticien->specialite_label) {
+                if ($specialite->label !== $praticien->specialite) {
                     throw new RdvServiceException("Specialite non valide");
                 }
             }

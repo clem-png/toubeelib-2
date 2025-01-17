@@ -43,7 +43,6 @@ class PostRdvsAction extends AbstractAction
 
         if ((filter_var($params['idPatient'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPatient']
                 || filter_var($params['idPraticien'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['idPraticien']
-                || filter_var($params['status'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['status']
                 || filter_var($params['specialite'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['specialite'])
                 || filter_var($params['type'], FILTER_SANITIZE_FULL_SPECIAL_CHARS) !== $params['type']) {
             throw new HttpBadRequestException($rq, 'Mauvais format de données');
