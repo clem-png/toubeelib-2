@@ -25,11 +25,12 @@ class ValidateAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         try {
-            $token_line = $rq->hasHeader('Authorization');
-            list($token) = sscanf($token_line, "Bearer %s");
-            $credentials = $this->jwtManager->decodeToken($token);
-            $inputAuthDTO = new InputUserDTO($credentials['email'], $credentials['mdp']);
-            $authDTO = $this->authService->verifyCredentials($inputAuthDTO);
+            $h = $rq->getHeader('Authorization')[0];
+            $tokenstring = sscanf($h, "Bearer %s")[0];
+
+            $credentials = $this->jwtManager->decodeToken($tokenstring);
+            var_dump($credentials);
+
         }catch (\Exception $e){
             throw new HttpUnauthorizedException($rq, "erreur auth");
         }
