@@ -147,6 +147,16 @@ class ServiceRdv implements ServiceRDVInterface{
             throw new RdvServiceException($e);
         }
 
+        try {
+            $specialite = $this->praticienService->getSpecialiteById($rdv->specialite->ID);
+            if(!$specialite){
+                throw new RdvServiceException("Specialite not found");
+            }
+            $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
+        }catch (\Exception $e){
+            throw new RdvServiceException($e);
+        }
+
         $rdvDTO = $rdv->toDTO();
         return $rdvDTO;
     }
