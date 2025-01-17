@@ -26,17 +26,13 @@ class RegisterAction extends AbstractAction
     {
         $params = $rq->getParsedBody() ?? null;
 
-        if (!isset($params['email']) || !isset($params['mdp']) || !isset($params['mdp2'])) {
+        if (!isset($params['email']) || !isset($params['mdp']) ) {
             throw new HttpBadRequestException($rq, 'Paramètres manquants');
         }
 
         $email = filter_var($params['email'], FILTER_SANITIZE_EMAIL);
 
-        if($params['mdp'] === $params['mdp2']){
           $this->utilisateurService->createUser(new InputUserDTO($email, $params['mdp']));
           return $rs->withStatus(200);
-        } else {
-          throw new HttpException($rq,'les mots de passe ne sont pas identique');
-        }
     }
 }

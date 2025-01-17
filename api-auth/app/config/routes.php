@@ -13,18 +13,13 @@ use toubeelib_auth\application\actions\ValidateAction;
 
 return function( App $app): App {
 
-    $app->options('/{routes:.+}',
-        function( Request $rq,
-                  Response $rs, array $args) : Response {
-            return $rs;
-        });
 
     $app->get('/', HomeAction::class);
 
-    $app->post('/token/signin[/]',SignInAction::class)
+    $app->post('/signin[/]',SignInAction::class)
         ->setName('tokenSignin');
 
-    $app->post('/token/register[/]',RegisterAction::class)
+    $app->post('/register[/]',RegisterAction::class)
         ->setName('tokenRegister');
 
     $app->post('/token/refresh[/]',RefreshAction::class)

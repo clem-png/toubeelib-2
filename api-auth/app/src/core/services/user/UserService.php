@@ -2,11 +2,12 @@
 
 namespace toubeelib_auth\core\services\user;
 
+use PHPUnit\Exception;
 use toubeelib_auth\core\dto\UserDTO;
 use toubeelib_auth\core\domain\entities\user\User;
 use toubeelib_auth\core\dto\InputUserDTO;
 use toubeelib_auth\core\repositoryInterfaces\UserRepositoryInterface;
-use toubeelib_auth\core\services\auth\UserServiceException;
+use toubeelib_auth\core\services\user\UserServiceException;
 
 class UserService implements UserServiceInterface
 {
@@ -18,12 +19,17 @@ class UserService implements UserServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function createUser(InputUserDTO $input): void{
+    public function createUser(InputUserDTO $input): void
+    {
         try {
             $user = $this->userRepository->findByEmail($input->email);
-            if ($user) {
-                throw new UserServiceException('Email déjà utilisé');
-            }
+        } catch (Exception) {
+            throw new UserServiceException('Erreur lors de la recherche de l\'utilisateur');
+        }
+        if ($user) {
+            throw new UserServiceException('Utilisateur déjà existant');
+        }
+        try {
             $user = new User(
                 $input->email,
                 password_hash($input->password, PASSWORD_DEFAULT),
@@ -31,9 +37,9 @@ class UserService implements UserServiceInterface
             );
             $this->userRepository->save($user);
         } catch (\Exception $e) {
-            throw new UserServiceException('Erreur lors de la création de l\'utilisateur');
+            throw new UserServiceException('Erreur lors de la création de l\'utilisateur' . $e->getMessage());
         }
-        
+
     }
 
     public function findUserById(string $ID): UserDTO

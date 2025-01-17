@@ -5,7 +5,7 @@ namespace toubeelib_auth\infrastructure\repositories;
 use PDO;
 use toubeelib_auth\core\repositoryInterfaces\UserRepositoryInterface;
 use toubeelib_auth\core\repositoryInterfaces\RepositoryEntityNotFoundException;
-use toubeelib_auth\core\domain\entities\auth\User;
+use toubeelib_auth\core\domain\entities\user\User;
 
 class PDOUserRepository implements UserRepositoryInterface
 {
@@ -15,7 +15,7 @@ class PDOUserRepository implements UserRepositoryInterface
         $this->pdo = $pdo;
     }
 
-    function findByEmail(string $email):User{
+    function findByEmail(string $email):User | null{
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ?');
         $stmt->bindParam(1, $email);
         $stmt->execute();
@@ -30,7 +30,7 @@ class PDOUserRepository implements UserRepositoryInterface
             return $auth;
 
         } else {
-            throw new RepositoryEntityNotFoundException("Utilisateur non trouvé");
+            return null;
         }
     }
 
@@ -46,6 +46,7 @@ class PDOUserRepository implements UserRepositoryInterface
             $row['role']
             );
             $auth->setID($row['id']);
+            return $auth;
         } else {
             throw new RepositoryEntityNotFoundException("Utilisateur non trouvé");
         }
@@ -56,12 +57,12 @@ class PDOUserRepository implements UserRepositoryInterface
         $password = $auth->password;
         $role = $auth->role;
         try {
-            $stmt = $this->pdo->prepare('INSERT INTO users (email, password, role) VALUES (?, ?, ?)');
-            $stmt->bindParam(2, $email);
-            $stmt->bindParam(3, $password);
-            $stmt->bindParam(4, $role);
+            $stmt = $this->pdo->prepare('INSERT INTO users (email, password, role) VALUES (?, ?, ?) RETURNING id');
+            $stmt->bindParam(1, $email);
+            $stmt->bindParam(2, $password);
+            $stmt->bindParam(3, $role);
             $stmt->execute();
-            $id = $this->pdo->lastInsertId();
+            $id = $stmt->fetchColumn();
         } catch (Exception $e) {
             throw new RepositoryEntityNotFoundException($e->getMessage());
         }
