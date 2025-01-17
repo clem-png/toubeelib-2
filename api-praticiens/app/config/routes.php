@@ -12,13 +12,7 @@ use toubeelib_praticiens\application\actions\PostPraticiensAction;
 
 
 return function( App $app): App {
-
-    $app->options('/{routes:.+}',
-        function( Request $rq,
-                  Response $rs, array $args) : Response {
-            return $rs;
-        });
-
+    
     $app->get('/', HomeAction::class);
 
     //praticiens
