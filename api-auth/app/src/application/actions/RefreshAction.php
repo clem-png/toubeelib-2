@@ -33,10 +33,13 @@ class RefreshAction extends AbstractAction
   public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface{
 
     try {
-      $h = $rq->getHeader('Authorization')[0];
-      $tokenstring = sscanf($h, "Bearer %s")[0];
-    }catch (Exception $e){
-      throw new HttpBadRequestException($rq, "erreur lors de la recuperation du token : ".$e->getMessage());
+      $headers = $rq->getHeader('Authorization');
+      if (empty($headers) || !isset($headers[0])) {
+        throw new HttpBadRequestException($rq, "Authorization header not found");
+      }
+      $tokenstring = sscanf($headers[0], "Bearer %s")[0];
+    } catch (Exception $e) {
+      throw new HttpBadRequestException($rq, "Error retrieving the token: " . $e->getMessage());
     }
 
     try {

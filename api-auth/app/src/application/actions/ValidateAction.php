@@ -22,8 +22,11 @@ class ValidateAction extends AbstractAction
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         try {
-            $h = $rq->getHeader('Authorization')[0];
-            $tokenstring = sscanf($h, "Bearer %s")[0];
+            $headers = $rq->getHeader('Authorization');
+            if (empty($headers) || !isset($headers[0])) {
+              throw new HttpBadRequestException($rq, "Authorization header not found");
+            }
+            $tokenstring = sscanf($headers[0], "Bearer %s")[0];
             $utiOutDTO = $this->provider->getSignIn($tokenstring);
         }catch (ExpiredException $e) {
             throw new HttpUnauthorizedException($rq,"expired token");
