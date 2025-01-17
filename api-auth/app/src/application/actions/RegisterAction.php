@@ -3,7 +3,6 @@
 namespace toubeelib_auth\application\actions;
 
 use Exception;
-use Slim\Exception\HttpException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Exception\HttpBadRequestException;
@@ -32,7 +31,11 @@ class RegisterAction extends AbstractAction
 
         $email = filter_var($params['email'], FILTER_SANITIZE_EMAIL);
 
-          $this->utilisateurService->createUser(new InputUserDTO($email, $params['mdp']));
-          return $rs->withStatus(200);
+        try{
+            $this->utilisateurService->createUser(new InputUserDTO($email, $params['mdp']));
+        }catch (Exception $e){
+            throw new HttpBadRequestException($rq, $e->getMessage());
+        }
+        return $rs->withStatus(200);
     }
 }
