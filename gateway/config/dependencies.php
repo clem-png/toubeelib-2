@@ -22,7 +22,7 @@ return [
     },
 
     'client_auth' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.toubeelib:80']);
+        return new Client(['base_uri' => 'http://api.auth.toubeelib:80']);
     },
 
     GeneriquePraticienAction::class => function (ContainerInterface $c){

@@ -5,6 +5,7 @@ namespace gateway\application\middleware;
 use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\SignatureInvalidException;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\ServerException;
@@ -16,13 +17,12 @@ use Slim\Exception\HttpUnauthorizedException;
 //use nrv\application\providers\auth\JWTManager;
 
 class AuthMiddleware{
-    protected AuthProviderInterface $provider;
 
-    /**
-     * @param AuthProviderInterface $p
-     */
-    public function __construct(AuthProviderInterface $p){
-        $this->provider = $p;
+    private ClientInterface $client_auth;
+
+
+    public function __construct(ClientInterface $c){
+        $this->client_auth = $c;
     }
 
     /**
@@ -46,24 +46,12 @@ class AuthMiddleware{
             throw new HttpUnauthorizedException($rq,"no auth, try /users/signin[/] or /users/signup[/]");
         }
 
-        try{
-
-            $token_line = $rq->hasHeader('Authorization');
-            list($token) = sscanf($token_line, "Bearer %s");
-
-        }catch (ExpiredException $e) {
-            throw new HttpUnauthorizedException($rq,"expired token");
-        } catch (SignatureInvalidException $e) {
-            throw new HttpUnauthorizedException($rq,"signature invalid token");
-        } catch (BeforeValidException $e) {
-            throw new HttpUnauthorizedException($rq,"before valid token");
-        } catch (\UnexpectedValueException $e) {
-            throw new HttpUnauthorizedException($rq,"unexpected value token");
-        }
+        $h = $rq->getHeader('Authorization')[0];
+        $tokenstring = sscanf($h, "Bearer %s")[0];
 
         try {
-            $response = $this->auth_service->request('POST', '/tokens/validate', [
-                'json' => ['token' => $token]
+            $response = $this->client_auth->request('POST', '/tokens/validate', [
+                'json' => ['token' => $tokenstring]
             ]);
         } catch (ConnectException | ServerException $e) {
         } catch (ClientException $e ) {

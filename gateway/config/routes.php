@@ -39,40 +39,50 @@ return function( App $app): App {
      *************************/
 
     $app->put('/rdvs/{ID-RDV}/annuler[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsAnnuler');
 
     $app->get('/rdvs/{ID-RDV}[/]', GeneriqueRDVAction::class)
+        //->add(AuthMiddleware::class)
         ->setName('rdvsId');
 
     $app->post('/rdvs[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsAdd');
 
     $app->patch('/rdvs/{ID-RDV}[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsEditPatient');
 
 
     $app->put('/rdvs/{ID-RDV}/payer[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsPayer');
 
 
     $app->put('/rdvs/{ID-RDV}/honorer[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsHonorer');
 
 
     $app->put('/rdvs/{ID-RDV}/non-honorer[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsNonHonorer');
 
     $app->post('/praticiens/{ID-PRATICIEN}/disponibilites', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('praticiensDispo');
 
 
     $app->post('/praticiens/{ID-PRATICIEN}/planning', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('praticiensPlanning');
 
     $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', GeneriqueRDVAction::class)
+        ->add(AuthMiddleware::class)
         ->setName('praticiensIndispo');
 
-    /*************************
+    /*****************  ********
      * Routes de l'API Auth
      *************************/
 
