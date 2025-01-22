@@ -26,11 +26,11 @@ use toubeelib_rdv\infrastructure\repositories\PraticienServiceAdapter;
 return [
 
     'client_praticien' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://gateway.toubeelib:80']);
+        return new Client(['base_uri' => 'http://api.praticiens.toubeelib:80']);
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
-        return new PraticienServiceAdapter($c->get('client_praticien'));
+        return new PraticienServiceAdapter($c->get('client_praticien'), $c->get('logger'));
     },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c){
