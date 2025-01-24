@@ -6,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 use toubeelib_rdv\core\domain\entities\rdv\Rdv;
 use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib_rdv\core\repositoryInterfaces\RepositoryEntityNotFoundException;
+use toubeelib_rdv\core\domain\entities\praticien\Specialite;
 
 class PDORdvRepository implements RdvRepositoryInterface
 {
@@ -29,6 +30,11 @@ class PDORdvRepository implements RdvRepositoryInterface
         }
         $rdvReturn = new Rdv($rdv['idPraticien'], $rdv['IdPatient'], $rdv['status'], \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $rdv['dateDebut']), $rdv['type']);
         $rdvReturn->setID($rdv['id']);
+
+        // magie noire pour ajouter juste l'id de la specialite dans le rdv dans le reste de la spe
+        $spe = new Specialite($rdv['idSpe'], '', '');
+        $rdvReturn->setSpecialite($spe);
+
         return $rdvReturn;
     }
 
@@ -98,8 +104,10 @@ class PDORdvRepository implements RdvRepositoryInterface
     public function getRdvByPraticienId(string $id): array
     {
         $rdvs = [];
-        $stmt = $this->pdo->prepare('SELECT * FROM rdv WHERE "idPraticien" = ? AND not status = "indisponible" ');
+        $indispo = 'indisponible';
+        $stmt = $this->pdo->prepare('SELECT * FROM rdv WHERE "idPraticien" = ? AND not "status" LIKE ? ');
         $stmt->bindParam(1, $id);
+        $stmt->bindParam(2, $indispo);
         $stmt->execute();
         $rdvsRes = $stmt->fetchAll();
         foreach ($rdvsRes as $rdv) {

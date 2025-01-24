@@ -43,7 +43,7 @@ return function( App $app): App {
         ->setName('rdvsAnnuler');
 
     $app->get('/rdvs/{ID-RDV}[/]', GeneriqueRDVAction::class)
-        //->add(AuthMiddleware::class)
+        ->add(AuthMiddleware::class)
         ->setName('rdvsId');
 
     $app->post('/rdvs[/]', GeneriqueRDVAction::class)
@@ -82,7 +82,7 @@ return function( App $app): App {
         ->add(AuthMiddleware::class)
         ->setName('praticiensIndispo');
 
-    /*****************  ********
+    /*************************
      * Routes de l'API Auth
      *************************/
 

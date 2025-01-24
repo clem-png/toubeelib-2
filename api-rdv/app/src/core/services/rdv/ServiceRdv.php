@@ -52,7 +52,7 @@ class ServiceRdv implements ServiceRDVInterface{
                     throw new RdvServiceException("Specialite pas trouvé");
                 }
     
-                if ($specialite->label !== $praticien->specialite_label) {
+                if ($specialite->label !== $praticien->specialite) {
                     throw new RdvServiceException("Specialite non valide");
                 }
             }
@@ -143,6 +143,16 @@ class ServiceRdv implements ServiceRDVInterface{
     public function consulterRdv(string $rdv_id): RdvDTO{
         try {
             $rdv = $this->rdvRepository->getRdvById($rdv_id);
+        }catch (\Exception $e){
+            throw new RdvServiceException($e);
+        }
+
+        try {
+            $specialite = $this->praticienService->getSpecialiteById($rdv->specialite->ID);
+            if(!$specialite){
+                throw new RdvServiceException("Specialite not found");
+            }
+            $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
         }catch (\Exception $e){
             throw new RdvServiceException($e);
         }

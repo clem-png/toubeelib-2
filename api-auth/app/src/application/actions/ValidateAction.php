@@ -2,8 +2,12 @@
 
 namespace toubeelib_auth\application\actions;
 
+use Firebase\JWT\BeforeValidException;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\SignatureInvalidException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpUnauthorizedException;
 use toubeelib_auth\core\dto\UserDTO;
 use toubeelib_auth\core\dto\InputUserDTO;

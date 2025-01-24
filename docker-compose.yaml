@@ -17,6 +17,7 @@ services:
     depends_on:
       - api.toubeelib
       - api.praticiens.toubeelib
+      - api.rdv.toubeelib
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   api.toubeelib:
