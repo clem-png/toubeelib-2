@@ -1,0 +1,8 @@
+[2025-01-17T09:31:54.991555+00:00] toubeelib.log.INFO: Modification RDV : 89695d04-74eb-4b82-a0bd-b8b802803c57 - Status : Annulé [] []
+[2025-01-17T10:39:34.637565+00:00] toubeelib.log.INFO: Creation RDV : 9ccc042b-3eef-45ab-ae7c-385da5f40b69 [] []
+[2025-01-17T10:48:02.610912+00:00] toubeelib.log.INFO: Modification RDV : 9ccc042b-3eef-45ab-ae7c-385da5f40b69 - Nouveau Patient : 326592e0-bf1f-4dda-8c51-7f4d6384491d Nouvelle spécialité  : Dentiste [] []
+[2025-01-17T10:48:15.157413+00:00] toubeelib.log.INFO: Modification RDV : 9ccc042b-3eef-45ab-ae7c-385da5f40b69 - Nouveau Patient : 326592e0-bf1f-4dda-8c51-7f4d6384491d Nouvelle spécialité  : Dentiste [] []
+[2025-01-17T10:52:11.423712+00:00] toubeelib.log.INFO: Modification RDV : 9ccc042b-3eef-45ab-ae7c-385da5f40b69 - Status : Honoré [] []
+[2025-01-17T10:52:15.871331+00:00] toubeelib.log.INFO: Modification RDV : 9ccc042b-3eef-45ab-ae7c-385da5f40b69 - Status : Payé [] []
+[2025-01-17T10:55:18.968569+00:00] toubeelib.log.INFO: Modification RDV : 4ab01147-adca-4326-92e4-7e02bdab12f4 - Status : Non Honoré [] []
+[2025-01-17T10:58:55.052069+00:00] toubeelib.log.INFO: Modification RDV : 51d3ce98-4951-4ae0-827b-c436da776d33 - Status : Honoré [] []

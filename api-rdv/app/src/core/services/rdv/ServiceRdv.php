@@ -15,6 +15,9 @@ use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib_rdv\core\domain\entities\rdv\Rdv;
 use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
 use toubeelib_rdv\core\domain\entities\praticien\Specialite;
+use toubeelib_rdv\core\dto\PatientDTO;
+use toubeelib_rdv\core\dto\PraticienDTO;
+
 
 
 class ServiceRdv implements ServiceRDVInterface{
@@ -301,6 +304,25 @@ class ServiceRdv implements ServiceRDVInterface{
             $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Annulé");
             return new RdvDTO($rdv);
         } catch (\Exception $e){
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function getPatientById(string $id): PatientDTO {
+        try {
+            $patient =$this->praticienService->getPatientById($id);
+            return $patient->toDTO();
+        }catch (\Exception $e){
+            throw new RdvServiceException($e);
+        }
+    }
+
+    public function getPraticienById(string $id): PraticienDTO
+    {
+        try {
+            $praticien = $this->praticienService->getPraticienById($id);
+            return $praticien->toDTO();
+        } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
     }

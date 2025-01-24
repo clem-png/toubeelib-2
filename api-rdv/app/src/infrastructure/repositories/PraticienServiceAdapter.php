@@ -2,6 +2,7 @@
 
 namespace toubeelib_rdv\infrastructure\repositories;
 
+use toubeelib_rdv\core\domain\entities\patient\Patient;
 use toubeelib_rdv\core\domain\entities\praticien\Specialite;
 use toubeelib_rdv\core\domain\entities\praticien\Praticien;
 use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
@@ -42,5 +43,13 @@ class PraticienServiceAdapter implements ServicePraticienInterface
         $data = json_decode($response->getBody()->getContents(), true);
         $data = $data['specialite'];
         return new Specialite($data['ID'], $data['label'], $data['description']);
+    }
+
+    public function getPatientById(string $id): Patient
+    {
+        $response = $this->client->get("/praticiens/{$id}");
+        $data = json_decode($response->getBody()->getContents(), true);
+        $data = $data['praticiens'];
+        return new Patient($data['nom'], $data['prenom'], $data['adresse'], $data['mail'], $data['dateNaissance'], $data['numSecu'], $data['numeroTel']);
     }
 }
