@@ -88,7 +88,7 @@ services:
     build:
       context: mail/build
       dockerfile: 8.3-cli.Dockerfile
-    env_file: mail/toubeelib.env
+    env_file: mail/mail.env
     ports:
       - '6088:80'
     working_dir: /var/php
@@ -166,3 +166,9 @@ services:
       interval: 8s
       timeout: 30s
       retries: 3
+
+  mailcatcher:
+    image: dockage/mailcatcher:0.9.0
+    ports:
+      - "1080:1080"
+      - "1025:1025"
