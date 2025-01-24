@@ -16,7 +16,7 @@ class PutRdvsAnnulerAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $args['ID-RDV'];
+        $id = $args['id'];
         $rdv = $this->serviceRdv->annulerRdv($id);
 
         $response = [

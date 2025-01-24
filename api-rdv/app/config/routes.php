@@ -14,44 +14,48 @@ use toubeelib_rdv\application\actions\PutRdvsHonorerAction;
 use toubeelib_rdv\application\actions\PutRdvsnonHonorerAction;
 use toubeelib_rdv\application\actions\PostPraticiensIndisponibiliteAction;
 
+use toubeelib_rdv\application\middlewares\AuthorisationMiddleware;
 
 return function( App $app): App {
 
     //rdvs
-    $app->put('/rdvs/{ID-RDV}/annuler[/]', PutRdvsAnnulerAction::class)
+    $app->put('/rdvs/{id}/annuler[/]', PutRdvsAnnulerAction::class)
         ->setName('rdvsAnnuler');
 
-    $app->get('/rdvs/{ID-RDV}[/]', GetRdvsByIdAction::class)
+    $app->get('/rdvs/{id}[/]', GetRdvsByIdAction::class)
+        ->add(AuthorisationMiddleware::class)
         ->setName('rdvsId');
 
     $app->post('/rdvs[/]', PostRdvsAction::class)
+        ->add(AuthorisationMiddleware::class)    
         ->setName('rdvsAdd');
 
-    $app->patch('/rdvs/{ID-RDV}[/]', PatchRdvsPatientAction::class)
+    $app->patch('/rdvs/{id}[/]', PatchRdvsPatientAction::class)
         ->setName('rdvsEditPatient');
 
 
-    $app->put('/rdvs/{ID-RDV}/payer[/]', PutPayerRdvsAction::class)
+    $app->put('/rdvs/{id}/payer[/]', PutPayerRdvsAction::class)
         ->setName('rdvsPayer');
 
 
-    $app->put('/rdvs/{ID-RDV}/honorer[/]', PutRdvsHonorerAction::class)
+    $app->put('/rdvs/{id}/honorer[/]', PutRdvsHonorerAction::class)
         ->setName('rdvsHonorer');
 
 
-    $app->put('/rdvs/{ID-RDV}/non-honorer[/]', PutRdvsNonHonorerAction::class)
+    $app->put('/rdvs/{id}/non-honorer[/]', PutRdvsNonHonorerAction::class)
         ->setName('rdvsNonHonorer');
 
 
     //praticiens
-    $app->post('/praticiens/{ID-PRATICIEN}/disponibilites', GetPraticiensDisponibilitesAction::class)
+    $app->post('/praticiens/{id}/disponibilites', GetPraticiensDisponibilitesAction::class)
         ->setName('praticiensDispo');
 
 
-    $app->post('/praticiens/{ID-PRATICIEN}/planning', GetPraticiensPlanningAction::class)
+    $app->post('/praticiens/{id}/planning', GetPraticiensPlanningAction::class)
+        ->add(AuthorisationMiddleware::class)
         ->setName('praticiensPlanning');
 
-    $app->post('/praticiens/{ID-PRATICIEN}/indisponibilite[/]', PostPraticiensIndisponibiliteAction::class)
+    $app->post('/praticiens/{id}/indisponibilite[/]', PostPraticiensIndisponibiliteAction::class)
         ->setName('praticiensIndispo');
 
     return $app;

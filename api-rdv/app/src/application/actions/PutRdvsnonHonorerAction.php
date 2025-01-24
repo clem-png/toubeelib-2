@@ -19,7 +19,7 @@ class PutRdvsnonHonorerAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $args['ID-RDV'];
+        $id = $args['id'];
 
         try {
             $serviceRDV = $this->serviceRDV->marquerRdvNonHonore($id);

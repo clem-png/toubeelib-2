@@ -27,4 +27,6 @@ return  [
                 $c->get('logs.level')));
         return $log;
     },
+
+    'SECRET_KEY' => getenv('lJWT_SECRET_KEY'),
 ];

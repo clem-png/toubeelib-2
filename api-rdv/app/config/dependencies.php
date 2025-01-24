@@ -23,6 +23,12 @@ use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
 use toubeelib_rdv\infrastructure\repositories\PDORdvRepository;
 use toubeelib_rdv\infrastructure\repositories\PraticienServiceAdapter;
 
+use toubeelib_rdv\core\services\authorisation\AuthorisationService;
+use toubeelib_rdv\core\services\authorisation\AuthorisationServiceInterface;
+
+use toubeelib_rdv\application\middlewares\AuthorisationMiddleware;
+use toubeelib_rdv\application\providers\JWTManager;
+
 return [
 
     'client_praticien' => function (ContainerInterface $c){
@@ -79,5 +85,17 @@ return [
 
     GetPraticiensPlanningAction::class => function(ContainerInterface $c){
         return new GetPraticiensPlanningAction($c->get(ServiceRDVInterface::class));
-    }
+    },
+
+    JWTManager::class => function(ContainerInterface $c){
+        return new JWTManager($c->get('SECRET_KEY'));
+    },
+
+    AuthorisationServiceInterface::class => function(ContainerInterface $c){
+        return new AuthorisationService($c->get(RdvRepositoryInterface::class));
+    },
+
+    AuthorisationMiddleware::class => function(ContainerInterface $c){
+        return new AuthorisationMiddleware($c->get(AuthorisationServiceInterface::class) ,$c->get(JWTManager::class));
+    },
 ];
