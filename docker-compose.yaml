@@ -83,6 +83,20 @@ services:
       - auth.toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  toubeelib.mail:
+    build:
+      context: mail/build
+      dockerfile: 8.3-cli.Dockerfile
+    env_file: mail/toubeelib.env
+    ports:
+      - '6088:80'
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - rabbitmq
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
   praticiens.toubeelib.db:
     image: 'postgres:latest'
     env_file: api-praticiens/toubeelibdb.env
@@ -133,3 +147,21 @@ services:
       - '8080:8080'
     networks:
       - toubeelib.net
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - '15672:15672'
+      - '5672:5672'
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./rabbitmq_dir:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=@dm1#!
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 8s
+      timeout: 30s
+      retries: 3
