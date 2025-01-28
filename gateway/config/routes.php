@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use gateway\application\actions\GeneriquePatientAction;
 use gateway\application\actions\GeneriquePraticienAction;
 use gateway\application\actions\GeneriqueRDVAction;
 use gateway\application\actions\GeneriqueUsersAction;
@@ -95,6 +96,17 @@ return function( App $app): App {
     $app->post('/users/refresh[/]', GeneriqueUsersAction::class)
         ->add(AuthMiddleware::class)
         ->setName('usersRefresh');
+
+  /*************************
+   * Routes de l'API Auth
+   *************************/
+
+  $app->post('/patient[/]', GeneriquePatientAction::class)
+    ->setName('patientPost');
+
+  $app->get('/patient/{ID-PATIENT}[/]', GeneriquePatientAction::class)
+    ->setName('patientGetById');
+
 
     return $app;
 };

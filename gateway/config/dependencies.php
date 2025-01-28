@@ -1,5 +1,6 @@
 <?php
 
+use gateway\application\actions\GeneriquePatientAction;
 use gateway\application\actions\GeneriquePraticienAction;
 use gateway\application\actions\GeneriqueRDVAction;
 use gateway\application\actions\GeneriqueUsersAction;
@@ -18,7 +19,7 @@ return [
     },
 
     'client_patient' => function (ContainerInterface $c){
-        return new Client(['base_uri' => '']);
+        return new Client(['base_uri' => 'http://api.patient.toubeelib:80']);
     },
 
     'client_auth' => function (ContainerInterface $c){
@@ -35,6 +36,10 @@ return [
 
     GeneriqueUsersAction::class => function (ContainerInterface $c){
         return new GeneriqueUsersAction($c->get('client_auth'));
+    },
+
+    GeneriquePatientAction::class => function (ContainerInterface $c){
+      return new GeneriquePatientAction($c->get('client_patient'));
     },
 
     AuthMiddleware::class => function (ContainerInterface $c) {
