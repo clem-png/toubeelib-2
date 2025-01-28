@@ -87,6 +87,22 @@ services:
       - auth.toubeelib.db
     command: php -S 0.0.0.0:80 -t /var/php/public
 
+  api.patient.toubeelib:
+    build:
+      context: api-patient/build
+      dockerfile: 8.3-cli.Dockerfile
+    env_file: api-patient/toubeelib.env
+    ports:
+      - '6084:80'
+    volumes:
+      - ./api-patient/app:/var/php
+    working_dir: /var/php
+    networks:
+      - toubeelib.net
+    depends_on:
+      - patient.toubeelib.db
+    command: php -S 0.0.0.0:80 -t /var/php/public
+
   toubeelib.mail:
     build:
       context: mail/build
@@ -137,6 +153,17 @@ services:
     volumes:
       - ./api-auth/app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
       - ./api-auth/sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
+
+  patient.toubeelib.db:
+    image: 'postgres:latest'
+    env_file: api-patient/toubeelibdb.env
+    ports:
+      - '5436:5432'
+    networks:
+      - toubeelib.net
+    volumes:
+      - ./api-patient/app/sql:/docker-entrypoint-initdb.d  # Mount SQL dump for initialization
+      - ./api-patient/sql_data:/var/lib/postgresql/data  # Mount data directory for persistence
 
   toubeelib.db:
     image: 'postgres:latest'

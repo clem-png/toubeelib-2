@@ -98,7 +98,7 @@ return function( App $app): App {
         ->setName('usersRefresh');
 
   /*************************
-   * Routes de l'API Auth
+   * Routes de l'API Patient
    *************************/
 
   $app->post('/patient[/]', GeneriquePatientAction::class)
