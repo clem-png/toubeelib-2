@@ -72,7 +72,7 @@ return [
     },
 
     PutRdvsAnnulerAction::class => function(ContainerInterface $c){
-        return new PutRdvsAnnulerAction($c->get(ServiceRDVInterface::class));
+        return new PutRdvsAnnulerAction($c->get(ServiceRDVInterface::class), $c->get(AdapterBrokerInterface::class));
     },
 
     GetPraticiensDisponibilitesAction::class => function(ContainerInterface $c){

@@ -63,7 +63,7 @@ class PostRdvsAction extends AbstractAction
         ];
 
         try {
-            $message = $this->serviceRdv->getCreateRDVMessage($res['idPraticien'], $res['idPatient'], $res);
+            $message = $this->serviceRdv->createMessage($res, "create");
         }catch (Exception $e){
             throw new HttpBadRequestException($rq, $e->getMessage());
         }

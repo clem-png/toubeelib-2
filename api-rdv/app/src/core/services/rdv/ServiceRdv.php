@@ -303,6 +303,17 @@ class ServiceRdv implements ServiceRDVInterface{
                 throw new RdvServiceException('Pas possible d\'annuler le RDV');
             }
             $rdv->setStatus("annule");
+            
+            try {
+                $specialite = $this->praticienService->getSpecialiteById($rdv->specialite->ID);
+                if(!$specialite){
+                    throw new RdvServiceException("Specialite not found");
+                }
+                $rdv->setSpecialite(new Specialite($specialite->ID, $specialite->label, $specialite->description));
+            }catch (\Exception $e){
+                throw new RdvServiceException($e);
+            }
+            
             $this->rdvRepository->update($rdv);
             $this->logger->log(Level::Info, "Modification RDV : " . $rdv_id. " - Status : Annulé");
             return new RdvDTO($rdv);
@@ -313,15 +324,15 @@ class ServiceRdv implements ServiceRDVInterface{
 
 
     // Création de message pour le broker. Récupération des informations du RDV, du patient et du praticien
-    public function getCreateRDVMessage(string $praticienId, string $patientId, array $rdv) : array {
+    public function createMessage(array $rdv, string $action) : array {
         try {
-            $patient =$this->patientService->getPatientById($patientId);
+            $patient =$this->patientService->getPatientById($rdv['idPatient']);
         }catch (\Exception $e){
             throw new RdvServiceException($e);
         }
 
         try {
-            $praticien = $this->praticienService->getPraticienById($praticienId);
+            $praticien = $this->praticienService->getPraticienById($rdv['idPraticien']);
             $praticien->setSpecialite($rdv['specialite_label']);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
@@ -331,7 +342,7 @@ class ServiceRdv implements ServiceRDVInterface{
             "rdv" => $rdv,
             "patient" => $patient->toDTO(),
             "praticien" => $praticien->toDTO(),
-            "action" => "create"
+            "action" => $action
         ];
 
         return $message;
