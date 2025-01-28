@@ -37,8 +37,16 @@ return [
         return new Client(['base_uri' => 'http://api.praticiens.toubeelib:80']);
     },
 
+    'client_patient' => function (ContainerInterface $c){
+        return new Client(['base_uri' => 'http://api.patients.toubeelib:80']);
+    },
+
     ServicePraticienInterface::class => function (ContainerInterface $c) {
-        return new PraticienServiceAdapter($c->get('client_praticien'), $c->get('logger'));
+        return new PraticienServiceAdapter($c->get('client_praticien'));
+    },
+
+    ServicePatientInterface::class => function (ContainerInterface $c) {
+        return new PatientServiceAdapter($c->get('client_patient'));
     },
 
     RdvRepositoryInterface::class => function (ContainerInterface $c){
@@ -46,11 +54,11 @@ return [
     },
 
     ServiceRDVInterface::class => function (ContainerInterface $c) {
-        return new ServiceRdv($c->get(RdvRepositoryInterface::class),$c->get(ServicePraticienInterface::class),$c->get('logger'));
+        return new ServiceRdv($c->get(RdvRepositoryInterface::class), $c->get(ServicePraticienInterface::class),$c->get(ServicePatientInterface::class), $c->get('logger'));
     },
 
     AdapterBrokerInterface::class => function(ContainerInterface $c){
-        return new AdapterRabbitMQ();
+        return new AdapterRabbitMQ($c->get('channel'));
     },
 
     GetRdvsByIdAction::class => function(ContainerInterface $c){

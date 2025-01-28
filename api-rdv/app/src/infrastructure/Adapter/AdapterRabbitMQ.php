@@ -2,22 +2,27 @@
 
 namespace toubeelib_rdv\infrastructure\Adapter;
 
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Channel\AMQPChannel;
 use toubeelib_rdv\application\AdapterInterface\AdapterBrokerInterface;
 
 class AdapterRabbitMQ implements AdapterBrokerInterface
 {
+    private AMQPChannel $channel;
+
+    public function __construct(AMQPChannel $channel)
+    {
+        $this->channel = $channel;
+    }
 
     public function publish($message, $routingKey)
     {
-        $connection = new AMQPStreamConnection('localhost',5672,'admin','@dm1#!');
-        $channel = $connection->channel();
-        $msg_body = $message ;
-        $msg = new AMQPMessage(json_encode($msg_body)) ;
-        $channel->basic_publish($msg, 'rdv', $routingKey);
-        print "[x] commande publiée : \n";
-        $channel->close();
-        $connection->close();
+        try {
+            $msg_body = $message;
+            $msg = new AMQPMessage(json_encode($msg_body));
+            $this->channel->basic_publish($msg, 'rdv', $routingKey);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }

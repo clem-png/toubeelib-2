@@ -14,5 +14,4 @@ interface ServicePraticienInterface
 {
     public function getPraticienById(string $id): Praticien;
     public function getSpecialiteById(string $id): Specialite;
-    public function getPatientById(string $id): Patient;
 }

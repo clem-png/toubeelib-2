@@ -63,22 +63,10 @@ class PostRdvsAction extends AbstractAction
         ];
 
         try {
-            $patient = $this->serviceRdv->getPatient($res['idPatient']);
-        }catch(Exception $e){
-            throw new HttpBadRequestException($rq, $e->getMessage());
-        }
-
-        try {
-            $praticien = $this->serviceRdv->getPraticien($res['idPraticien']);
+            $message = $this->serviceRdv->getCreateRDVMessage($res['idPraticien'], $res['idPatient'], $res);
         }catch (Exception $e){
             throw new HttpBadRequestException($rq, $e->getMessage());
         }
-
-        $message = [
-            "rdv" => $res,
-            "praticien" => $praticien->jsonSerialize(),
-            "patient" => $patient->jsonSerialize()
-        ];
 
         $this->adapterBroker->publish($message, 'rdv');
 
