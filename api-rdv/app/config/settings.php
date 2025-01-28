@@ -5,7 +5,6 @@ use Monolog\Level;
 use Monolog\Logger;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Container\ContainerInterface;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 return  [
 
