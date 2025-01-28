@@ -11,11 +11,11 @@ class AdapterRabbitMQ implements AdapterBrokerInterface
 
     public function publish($message, $routingKey)
     {
-        $connection = new AMQPStreamConnection('rabbitmq',5672,'staff','x@§#y');
+        $connection = new AMQPStreamConnection('localhost',5672,'admin','@dm1#!');
         $channel = $connection->channel();
         $msg_body = $message ;
         $msg = new AMQPMessage(json_encode($msg_body)) ;
-        $channel->basic_publish($msg, 'direx', $routingKey);
+        $channel->basic_publish($msg, 'rdv', $routingKey);
         print "[x] commande publiée : \n";
         $channel->close();
         $connection->close();

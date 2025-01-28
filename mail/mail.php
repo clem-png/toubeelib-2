@@ -8,7 +8,19 @@ use Symfony\Component\Mime\Email;
 
 require_once 'vendor/autoload.php';
 
-$queue = 'queue_name';
+$connection = new AMQPStreamConnection('rabbitmq',5672,'admin','@dm1#!');
+$channel = $connection->channel();
+$msg_body = [
+    "caca" => "capitaliste",
+    "coco" => "communiste"
+];
+$msg = new AMQPMessage(json_encode($msg_body)) ;
+$channel->basic_publish($msg, 'rdv', "rdv");
+print "[x] commande publiée : \n";
+$channel->close();
+$connection->close();
+
+$queue = 'rdv';
 
 $host = getenv('HOST');
 $port = getenv('PORT');

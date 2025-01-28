@@ -92,6 +92,8 @@ services:
     ports:
       - '6088:80'
     working_dir: /var/php
+    volumes:
+      - ./mail:/var/php
     networks:
       - toubeelib.net
     depends_on:
