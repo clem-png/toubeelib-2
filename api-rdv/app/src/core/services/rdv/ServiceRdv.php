@@ -15,12 +15,16 @@ use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib_rdv\core\domain\entities\rdv\Rdv;
 use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
 use toubeelib_rdv\core\domain\entities\praticien\Specialite;
+use toubeelib_rdv\core\dto\PatientDTO;
+use toubeelib_rdv\core\dto\PraticienDTO;
+
 
 
 class ServiceRdv implements ServiceRDVInterface{
 
     private RdvRepositoryInterface $rdvRepository;
     private ServicePraticienInterface $praticienService;
+    private ServicePatientInterface $patientService;
 
     private LoggerInterface $logger;
 
@@ -29,9 +33,10 @@ class ServiceRdv implements ServiceRDVInterface{
     const HEURE_FIN = '17:00';
     const DUREE_RDV = '30'; //minutes
 
-    public function __construct(RdvRepositoryInterface $rdvRepository, ServicePraticienInterface $praticienService, LoggerInterface $logger){
+    public function __construct(RdvRepositoryInterface $rdvRepository, ServicePraticienInterface $praticienService, ServicePatientInterface $patientService, LoggerInterface $logger){
         $this->rdvRepository = $rdvRepository;
         $this->praticienService = $praticienService;
+        $this->patientService = $patientService;
         $this->logger = $logger;
     }
 
@@ -303,5 +308,31 @@ class ServiceRdv implements ServiceRDVInterface{
         } catch (\Exception $e){
             throw new RdvServiceException($e);
         }
+    }
+
+
+    // Création de message pour le broker. Récupération des informations du RDV, du patient et du praticien
+    public function getCreateRDVMessage(string $praticienId, string $patientId, string $rdv) : array {
+        try {
+            $patient =$this->patientService->getPatientById($id);
+            return $patient->toDTO();
+        }catch (\Exception $e){
+            throw new RdvServiceException($e);
+        }
+
+        try {
+            $praticien = $this->praticienService->getPraticienById($id);
+            return $praticien->toDTO();
+        } catch (\Exception $e) {
+            throw new RdvServiceException($e);
+        }
+
+        $message = [
+            "rdv" => $rdv,
+            "patient" => $patient,
+            "praticien" => $praticien
+        ];
+
+        return $message;
     }
 }

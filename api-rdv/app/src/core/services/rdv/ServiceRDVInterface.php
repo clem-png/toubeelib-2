@@ -3,6 +3,8 @@
 namespace toubeelib_rdv\core\services\rdv;
 
 use toubeelib_rdv\core\dto\InputRdvDTO;
+use toubeelib_rdv\core\dto\PatientDTO;
+use toubeelib_rdv\core\dto\PraticienDTO;
 use toubeelib_rdv\core\dto\RdvDTO;
 use toubeelib_rdv\core\dto\InputSpecialiteDTO;
 use DateTime;
@@ -19,4 +21,6 @@ interface ServiceRDVInterface{
     public function listerRdvPatient(string $patient_id): array;
     public function afficherPlanningPraticien(DateTime $dateDebut, DateTime $dateFin, string $id, string $idSpe, string $type): array;
     public function indisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id): void ;
+    public function getPatientById(string $id): PatientDTO;
+    public function getPraticienById(string $id): PraticienDTO;
 }

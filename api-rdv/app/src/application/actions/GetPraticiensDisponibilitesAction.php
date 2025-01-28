@@ -21,7 +21,7 @@ class GetPraticiensDisponibilitesAction  extends AbstractAction {
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $args['ID-PRATICIEN'];
+        $id = $args['id'];
         $params = $rq->getParsedBody() ?? null;
         $praticiensDispoValidator = Validator::key('dateDeb', Validator::stringType()->notEmpty()->dateTime('Y-m-d H:i'))
                                     ->key('dateFin', Validator::stringType()->notEmpty()->dateTime('Y-m-d H:i'));

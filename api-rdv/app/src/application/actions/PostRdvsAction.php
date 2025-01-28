@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
+use toubeelib_rdv\application\AdapterInterface\AdapterBrokerInterface;
 use toubeelib_rdv\core\dto\InputRdvDTO;
 use toubeelib_rdv\core\dto\InputSpecialiteDTO;
 use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
@@ -16,15 +17,14 @@ use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 class PostRdvsAction extends AbstractAction
 {
     private ServiceRDVInterface $serviceRdv;
+    private AdapterBrokerInterface $adapterBroker;
 
-    public function __construct(ServiceRDVInterface $serviceRdv)
+    public function __construct(ServiceRDVInterface $serviceRdv, AdapterBrokerInterface $adapterBroker)
     {
         $this->serviceRdv = $serviceRdv;
+        $this->adapterBroker = $adapterBroker;
     }
 
-    /**
-     * @throws DateMalformedStringException
-     */
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
         $params = $rq->getParsedBody() ?? null;
@@ -61,6 +61,15 @@ class PostRdvsAction extends AbstractAction
             "type" => "resource",
             "rdv" => $res
         ];
+
+        try {
+            $message = $this->serviceRdv->getCreateRDVMessage($res['idPraticien'], $res['idPatient'], $res);
+        }catch (Exception $e){
+            throw new HttpBadRequestException($rq, $e->getMessage());
+        }
+
+        $this->adapterBroker->publish($message, 'rdv');
+
         $rs->getBody()->write(json_encode($response));
         return $rs->withHeader('Location', "/rdvs/{$res['id']}")->withHeader('Content-Type', 'application/json')->withStatus(201);
     }

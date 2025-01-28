@@ -22,7 +22,7 @@ class PatchRdvsPatientAction extends AbstractAction
 
     public function __invoke(ServerRequestInterface $rq, ResponseInterface $rs, array $args): ResponseInterface
     {
-        $id = $args['ID-RDV'];
+        $id = $args['id'];
         $params = $rq->getParsedBody();
         if (empty($params['idPatient']) && empty($params['specialite'])) {
             throw new HttpBadRequestException($rq, 'Aucune valeur fournit');

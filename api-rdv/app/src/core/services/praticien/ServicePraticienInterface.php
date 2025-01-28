@@ -2,6 +2,7 @@
 
 namespace toubeelib_rdv\core\services\praticien;
 
+use toubeelib_rdv\core\domain\entities\patient\Patient;
 use toubeelib_rdv\core\domain\entities\praticien\Specialite;
 use toubeelib_rdv\core\domain\entities\praticien\Praticien;
 use toubeelib_rdv\core\dto\InputPraticienDTO;

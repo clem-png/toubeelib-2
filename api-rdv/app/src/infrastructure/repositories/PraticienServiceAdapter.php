@@ -9,19 +9,14 @@ use toubeelib_rdv\core\dto\PraticienDTO;
 use toubeelib_rdv\core\dto\SpecialiteDTO;
 
 use GuzzleHttp\Client;
-use Monolog\Logger;
-use Monolog\Level;
-use Psr\Log\LoggerInterface;
 
 class PraticienServiceAdapter implements ServicePraticienInterface
 {
     private $client;
-    private LoggerInterface $logger;
 
-    public function __construct(Client $client, LoggerInterface $logger)
+    public function __construct(Client $client)
     {
         $this->client = $client;
-        $this->logger = $logger;
     }
 
     public function getPraticienById(string $id): Praticien
@@ -38,11 +33,9 @@ class PraticienServiceAdapter implements ServicePraticienInterface
 
     public function getSpecialiteById(string $id): Specialite
     {
-        $this->logger->log(Level::Info, "get specialite by id");
         $response = $this->client->get("/specialites/{$id}");
         $data = json_decode($response->getBody()->getContents(), true);
         $data = $data['specialite'];
-        $this->logger->log(Level::Info, " specialite fetched: " . json_encode($data));
         return new Specialite($data['ID'], $data['label'], $data['description']);
     }
 }

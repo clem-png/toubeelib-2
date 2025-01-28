@@ -27,4 +27,24 @@ return  [
                 $c->get('logs.level')));
         return $log;
     },
+
+    'SECRET_KEY' => getenv('lJWT_SECRET_KEY'),
+
+ 'channel' => function (ContainerInterface $c) {
+    $config = parse_ini_file('iniconf/rdv.rabbitmq.ini');
+
+    $connection = new AMQPStreamConnection(
+        $config['rabbitmq_host'],
+        $config['rabbitmq_port'],
+        $config['rabbitmq_user'],
+        $config['rabbitmq_password']
+    );
+    $channel = $connection->channel();
+
+    $channel->exchange_declare('rdv', 'direct', false, true, false);
+    $channel->queue_declare('rdv', false, true, false, false);
+    $channel->queue_bind('rdv', 'rdv', 'rdv');
+
+    return $channel;
+},
 ];
