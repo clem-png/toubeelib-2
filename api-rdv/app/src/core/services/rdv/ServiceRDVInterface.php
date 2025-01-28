@@ -21,5 +21,5 @@ interface ServiceRDVInterface{
     public function listerRdvPatient(string $patient_id): array;
     public function afficherPlanningPraticien(DateTime $dateDebut, DateTime $dateFin, string $id, string $idSpe, string $type): array;
     public function indisponibilitePraticien(DateTime $dateDebut, DateTime $dateFin, string $id): void ;
-    public function getCreateRDVMessage(string $praticienId, string $patientId, array $rdv) : array;
+    public function createMessage(array $rdv, string $action) : array;
 }

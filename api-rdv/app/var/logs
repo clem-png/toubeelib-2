@@ -6,3 +6,6 @@
 [2025-01-17T10:52:15.871331+00:00] toubeelib.log.INFO: Modification RDV : 9ccc042b-3eef-45ab-ae7c-385da5f40b69 - Status : Payé [] []
 [2025-01-17T10:55:18.968569+00:00] toubeelib.log.INFO: Modification RDV : 4ab01147-adca-4326-92e4-7e02bdab12f4 - Status : Non Honoré [] []
 [2025-01-17T10:58:55.052069+00:00] toubeelib.log.INFO: Modification RDV : 51d3ce98-4951-4ae0-827b-c436da776d33 - Status : Honoré [] []
+[2025-01-28T16:22:01.734964+00:00] toubeelib.log.INFO: Creation RDV : c04449d3-bc13-4521-928c-845a9640a9d9 [] []
+[2025-01-28T16:26:10.407008+00:00] toubeelib.log.INFO: Creation RDV : a58510c1-c263-42fd-b8a0-5d9000d3a4de [] []
+[2025-01-28T16:27:18.410269+00:00] toubeelib.log.INFO: Modification RDV : a58510c1-c263-42fd-b8a0-5d9000d3a4de - Status : Annulé [] []
