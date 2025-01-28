@@ -13,10 +13,10 @@ class mailEnvoi implements mailEnvoiInterface
         $transport = Transport::fromDsn($dns);
         $mailer = new Mailer($transport);
         $email = (new Email())
-            ->from('hello@example.com')
-            ->to('you@example.com')
-            ->subject('sujet')
-            ->html('<p>ça marche</p>');
+            ->from($from)
+            ->to($to)
+            ->subject($subject)
+            ->html($content);
 
         $mailer->send($email);
     }

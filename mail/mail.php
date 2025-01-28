@@ -29,12 +29,17 @@ $password = getenv('PASSWORD');
 $connection = new AMQPStreamConnection($host, $port, $user, $password);
 $channel = $connection->channel();
 $callback = function(AMQPMessage $msg) {
-    $msg_body = json_decode($msg->body, true);
-    print "[x] message reçu : " . $msg->body . "\n";
+    $msgJson = json_decode($msg->body, true);
+    print "[x] message reçu : " . $msgJson . "\n";
+    print_r($msgJson);
+
+    $corpsMail = "<p> date de debut : ". $msgJson['rdv']['dateDebut'] ."</p> <p> Rendez vous de : ". $msgJson['rdv']['specialite_label'] ."</p> <p> De type : ". $msgJson['rdv']['type'] ."</p>";
+    $corpsMailPatient = $corpsMail . "<p> Votre praticien sera : ". $msgJson['praticien']['nom'] . " " . $msgJson['praticien']['prenom']."</p>";
 
     try {
         $mail = new MailEnvoi();
-        $mail->envoi(getenv('DNS'),'hello@example.com','you@example.com','sujet','ça marche');
+        //envoie patient
+        $mail->envoi(getenv('DNS'),'toubelib@mail.com',$msgJson['patient']['mail'],$msgJson['action'],$corpsMailPatient);
     }catch (Exception $e){
         print $e->getMessage();
     }

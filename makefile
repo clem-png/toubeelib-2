@@ -17,5 +17,7 @@ build:
 	$(call check_and_install,./api-praticiens/app)
 	@echo "Construction dans ./api-rdv/app..."
 	$(call check_and_install,./api-rdv/app)
+	@echo "Construction dans ./api-patient/app..."
+	$(call check_and_install,./api-patient/app)
 	@echo "Construction dans ./gateway..."
 	$(call check_and_install,./gateway)
