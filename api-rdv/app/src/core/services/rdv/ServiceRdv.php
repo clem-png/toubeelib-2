@@ -14,6 +14,7 @@ use toubeelib_rdv\core\dto\InputSpecialiteDTO;
 use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib_rdv\core\domain\entities\rdv\Rdv;
 use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
+use toubeelib_rdv\core\services\patient\ServicePatientInterface;
 use toubeelib_rdv\core\domain\entities\praticien\Specialite;
 use toubeelib_rdv\core\dto\PatientDTO;
 use toubeelib_rdv\core\dto\PraticienDTO;

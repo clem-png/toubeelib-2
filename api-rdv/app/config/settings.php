@@ -4,6 +4,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 return  [
 
@@ -30,21 +31,16 @@ return  [
 
     'SECRET_KEY' => getenv('lJWT_SECRET_KEY'),
 
- 'channel' => function (ContainerInterface $c) {
-    $config = parse_ini_file('iniconf/rdv.rabbitmq.ini');
-
-    $connection = new AMQPStreamConnection(
-        $config['rabbitmq_host'],
-        $config['rabbitmq_port'],
-        $config['rabbitmq_user'],
-        $config['rabbitmq_password']
-    );
-    $channel = $connection->channel();
-
-    $channel->exchange_declare('rdv', 'direct', false, true, false);
-    $channel->queue_declare('rdv', false, true, false, false);
-    $channel->queue_bind('rdv', 'rdv', 'rdv');
-
-    return $channel;
-},
+    'channel' => function (ContainerInterface $c) {
+    
+        $connection = new AMQPStreamConnection(
+            'rabbitmq',
+            5672,
+            'admin',
+            '@dm1#!'
+        );
+        $channel = $connection->channel();
+    
+        return $channel;
+    },
 ];

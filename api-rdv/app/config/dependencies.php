@@ -20,10 +20,12 @@ use toubeelib_rdv\core\repositoryInterfaces\RdvRepositoryInterface;
 use toubeelib_rdv\core\services\rdv\ServiceRdv;
 use toubeelib_rdv\core\services\rdv\ServiceRDVInterface;
 use toubeelib_rdv\core\services\praticien\ServicePraticienInterface;
+use toubeelib_rdv\core\services\patient\ServicePatientInterface;
 
 use toubeelib_rdv\infrastructure\Adapter\AdapterRabbitMQ;
 use toubeelib_rdv\infrastructure\repositories\PDORdvRepository;
 use toubeelib_rdv\infrastructure\repositories\PraticienServiceAdapter;
+use toubeelib_rdv\infrastructure\repositories\PatientServiceAdapter;
 
 use toubeelib_rdv\core\services\authorisation\AuthorisationService;
 use toubeelib_rdv\core\services\authorisation\AuthorisationServiceInterface;
@@ -38,7 +40,7 @@ return [
     },
 
     'client_patient' => function (ContainerInterface $c){
-        return new Client(['base_uri' => 'http://api.patients.toubeelib:80']);
+        return new Client(['base_uri' => 'http://api.patient.toubeelib:80']);
     },
 
     ServicePraticienInterface::class => function (ContainerInterface $c) {
