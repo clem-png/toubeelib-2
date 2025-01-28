@@ -1,4 +1,5 @@
 <?php
+namespace mail;
 
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
@@ -9,7 +10,7 @@ class mailEnvoi implements mailEnvoiInterface
 
     public function envoi($dns,$from, $to, $subject, $content): void
     {
-        $transport = Transport::fromDsn();
+        $transport = Transport::fromDsn($dns);
         $mailer = new Mailer($transport);
         $email = (new Email())
             ->from('hello@example.com')

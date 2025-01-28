@@ -20,7 +20,9 @@ class PatientServiceAdapter implements ServicePatientInterface
     {
         $response = $this->client->get("/patient/{$id}");
         $data = json_decode($response->getBody()->getContents(), true);
-        $data = $data['praticiens'];
-        return new Patient($data['nom'], $data['prenom'], $data['adresse'], $data['mail'], $data['dateNaissance'], $data['numSecu'], $data['numeroTel']);
+        $data = $data['patient'];
+        $p = new Patient($data['nom'], $data['prenom'], $data['adresse'], $data['mail'], $data['dateNaissance'], $data['numSecu'], $data['numeroTel']);
+        $p->setID($data['ID']);
+        return $p;
     }
 }

@@ -28,14 +28,14 @@ class GetPatientAction extends AbstractAction
     {
       try {
         $id = $args['ID-PATIENT'];
-        $praticien = $this->servicePatient->getPatientById($id);
+        $patient = $this->servicePatient->getPatientById($id);
         $response = [
           "type" => "ressource",
-          "praticien" => $praticien,
+          "patient" => $patient,
         ];
         $rs->getBody()->write(json_encode($response));
       } catch (Exception $e) {
-        throw new HttpNotFoundException($rq,"le praticien n'existe pas !");
+        throw new HttpNotFoundException($rq,"le patient n'existe pas !");
       }
       return $rs->withHeader('Content-Type', 'application/json');
     }

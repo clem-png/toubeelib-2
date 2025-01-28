@@ -313,25 +313,25 @@ class ServiceRdv implements ServiceRDVInterface{
 
 
     // Création de message pour le broker. Récupération des informations du RDV, du patient et du praticien
-    public function getCreateRDVMessage(string $praticienId, string $patientId, string $rdv) : array {
+    public function getCreateRDVMessage(string $praticienId, string $patientId, array $rdv) : array {
         try {
-            $patient =$this->patientService->getPatientById($id);
-            return $patient->toDTO();
+            $patient =$this->patientService->getPatientById($patientId);
         }catch (\Exception $e){
             throw new RdvServiceException($e);
         }
 
         try {
-            $praticien = $this->praticienService->getPraticienById($id);
-            return $praticien->toDTO();
+            $praticien = $this->praticienService->getPraticienById($praticienId);
+            $praticien->setSpecialite($rdv['specialite_label']);
         } catch (\Exception $e) {
             throw new RdvServiceException($e);
         }
 
         $message = [
             "rdv" => $rdv,
-            "patient" => $patient,
-            "praticien" => $praticien
+            "patient" => $patient->toDTO(),
+            "praticien" => $praticien->toDTO(),
+            "action" => "create"
         ];
 
         return $message;

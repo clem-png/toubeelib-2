@@ -1,5 +1,6 @@
 <?php
 
+use mail\mailEnvoi;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -29,10 +30,14 @@ $connection = new AMQPStreamConnection($host, $port, $user, $password);
 $channel = $connection->channel();
 $callback = function(AMQPMessage $msg) {
     $msg_body = json_decode($msg->body, true);
-    print "[x] message reçu : \n";
+    print "[x] message reçu : " . $msg->body . "\n";
 
-    $mail = new MailEnvoi();
-    $mail->envoi(getenv('DNS'),'hello@example.com','you@example.com','sujet','ça marche');
+    try {
+        $mail = new MailEnvoi();
+        $mail->envoi(getenv('DNS'),'hello@example.com','you@example.com','sujet','ça marche');
+    }catch (Exception $e){
+        print $e->getMessage();
+    }
     $msg->getChannel()->basic_ack($msg->getDeliveryTag());
 
 };

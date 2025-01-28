@@ -21,7 +21,7 @@ class PraticienDTO extends DTO
         $this->prenom = $p->prenom;
         $this->adresse = $p->adresse;
         $this->tel = $p->tel;
-        $this->specialite_label = $p->specialite->label;
+        $this->specialite_label = $p->specialite;
     }
 
 
