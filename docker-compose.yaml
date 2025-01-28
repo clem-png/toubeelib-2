@@ -65,7 +65,10 @@ services:
     networks:
       - toubeelib.net
     depends_on:
-      - rdv.toubeelib.db
+      rdv.toubeelib.db:
+        condition: service_started
+      rabbitmq:
+          condition: service_healthy
     command: php -S 0.0.0.0:80 -t /var/php/public
 
   api.auth.toubeelib:
@@ -97,8 +100,10 @@ services:
     networks:
       - toubeelib.net
     depends_on:
-      - rabbitmq
-    command: php -S 0.0.0.0:80 -t /var/php/public
+      rabbitmq:
+        condition: service_healthy
+
+    command: php mail.php
 
   praticiens.toubeelib.db:
     image: 'postgres:latest'
