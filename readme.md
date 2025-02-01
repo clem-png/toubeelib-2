@@ -80,7 +80,7 @@
 | dateDeb      | string | Date de début de la période (y-m-d H:i)  |
 | dateFin      | string | Date de fin de la période (y-m-d H:i)    |
 | idSpe        | uuid   | ID de la spécialité                      |
-| type         | string | Type de rendez-vous (presentiel ou téléconsultation) |
+| type         | string | Type de rendez-vous (presentiel ou teleconsultation) |
 
 > POST /praticiens/{id}/indisponibilite
 >
@@ -120,7 +120,18 @@
 | idPraticien  | uuid   | ID du praticien                                      |
 | date         | string | Date du rendez-vous (y-m-d hh:mm)                    |
 | specialite   | uuid   | ID de la spécialité (optionnel)                      |
-| type         | string | Type de rendez-vous (présentiel ou téléconsultation) |
+| type         | string | Type de rendez-vous (presentiel ou teleconsultation) |
+
+>> Exemple de body :
+```json
+{
+    "idPatient": "d8bfdec3-ca7c-4e72-98f2-749e5f775c86" ,
+    "idPraticien": "cb771755-26f4-4e6c-b327-a1217f5b09cd" ,
+    "date": "2025-08-04 08:00",
+    "specialite": "dd3cac4c-c175-427c-b2aa-8fcc54f250b5",
+    "type": "presentiel"
+}
+```
 
 > PATCH /rdvs/{id}
 > 
