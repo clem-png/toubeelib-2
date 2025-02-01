@@ -21,3 +21,5 @@ build:
 	$(call check_and_install,./api-patient/app)
 	@echo "Construction dans ./gateway..."
 	$(call check_and_install,./gateway)
+	@echo "Construction dans ./mail..."
+	$(call check_and_install,./mail)
