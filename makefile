@@ -23,3 +23,6 @@ build:
 	$(call check_and_install,./gateway)
 	@echo "Construction dans ./mail..."
 	$(call check_and_install,./mail)
+
+	@echo "Lancement de Docker Compose..."
+	docker-compose up --build -d
