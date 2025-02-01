@@ -6,6 +6,16 @@
 - [Quilliec Amaury](https://github.com/Aliec-AQ)
 - [Ringot Mathias](https://github.com/4n0m4lie)
 
+## Instalation :
+- Pré-requis :
+  - Commande :
+    - make
+    - docker compose
+    - PHP :
+      - Version >= 8.3
+- Setup :
+  - à la racine du projet executer la commande ```make build``` cela executera les différent composer puis lancera le docker
+
 ## Données de population :
 - [Praticiens](https://github.com/clem-png/toubeelib-2/tree/main/api-praticiens/app/sql)
 - [RDV](https://github.com/clem-png/toubeelib-2/tree/main/api-rdv/app/sql)
