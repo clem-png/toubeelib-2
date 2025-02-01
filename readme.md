@@ -1,68 +1,29 @@
 # API - Toubeelib
 
 ## Membres du groupe :
-- Etique Kevin
-- Netange Clément
-- Quilliec Amaury
-- Ringot Mathias
+- [Etique Kevin](https://github.com/EtiqueKevin)
+- [Netange Clément](https://github.com/clem-png)
+- [Quilliec Amaury](https://github.com/Aliec-AQ)
+- [Ringot Mathias](https://github.com/4n0m4lie)
+
+## Données de population :
+- [Praticiens](https://github.com/clem-png/toubeelib-2/tree/main/api-praticiens/app/sql)
+- [RDV](https://github.com/clem-png/toubeelib-2/tree/main/api-rdv/app/sql)
+- [Auth](https://github.com/clem-png/toubeelib-2/tree/main/api-auth/app/sql)
+- [patient](https://github.com/clem-png/toubeelib-2/tree/main/api-patient/app/src)
+
+## Données utiles pour tester :
+- Connection en tant qu'Admin :
+  - email : admin@test.fr
+  - password : test
+- Connection en tant que Praticien :
+  - email : praticien@test.fr
+  - password : test
+- Connection en tant que Patient :
+  - email : patient@test.fr
+  - password : test
 
 ## Routes :
-
-### Rendez-vous :
->PUT /rdvs/:id/annuler
->
->>Annule un rendez-vous
->>
->>Paramètres : id (uuid)
-
-
->GET /rdvs/:id
->
->>Récupère un rendez-vous
->>
->>Paramètres : id (uuid)
-
-
->POST /rdvs
->
->>Crée un rendez-vous
->>
->>Body :
-
-| nom attribut | type   | description                                          |
-|--------------|--------|------------------------------------------------------|
-| idPatient    | uuid   | id du patient                                        |
-| idPraticien  | uuid   | id du praticien                                      |
-| date         | string | date du rendez-vous (y-m-d hh:mm)                    |
-| specialite   | uuid   | id de la specialite (optionnel)                      |
-| type         | string | type de rendez-vous (presentiel ou teleconsultation) |
-
-> PATCH /rdvs/:id
-> 
-> > Modifie un rendez-vous
-> >
-> > Paramètres : id (uuid)
-> >
-> > Body :
-
-| nom attribut | type   | description                                                             |
-|--------------|--------|-------------------------------------------------------------------------|
-| idPatient    | uuid   | id du patient  ( optionnel, si envie de changer le patient du rdv )     |
-| specialite   | uuid   | id du praticien ( optionnel, si envie de changer la specialite du rdv ) |
-
-> PUT /rdvs/:id/payer
-> 
-> > Payer un rendez-vous
-> >
-> > Récupérer les liens de paiement
-> >
-> > Paramètres : id (uuid)
-
-> PUT /rdvs/:id/honorer
-> 
-> > Mettre le status du rendez-vous à honoré
-> >
-> > Paramètres : id (uuid)
 
 ### Praticiens :
 > GET /praticiens
@@ -71,11 +32,23 @@
 >>
 >> Paramètres : Aucun
 
-> GET /praticiens/{ID-PRATICIEN}/disponibilites
+> GET /praticiens/{id}
+>
+>> Récupère un praticien par son ID
+>>
+>> Paramètres : id (uuid)
+
+> GET /specialites/{id}
+>
+>> Récupère un praticien par spécialité ID
+>>
+>> Paramètres : id (uuid)
+
+> POST /praticiens/{id}/disponibilites
 >
 >> Récupère les disponibilités d'un praticien
 >>
->> Paramètres : ID-PRATICIEN (uuid)
+>> Paramètres : id (uuid)
 >>
 >> Body :
 
@@ -84,11 +57,11 @@
 | dateDeb      | string | Date de début de la période (y-m-d H:i)  |
 | dateFin      | string | Date de fin de la période (y-m-d H:i)    |
 
-> GET /praticiens/{ID-PRATICIEN}/planning
+> POST /praticiens/{id}/planning
 >
 >> Récupère le planning d'un praticien
 >>
->> Paramètres : ID-PRATICIEN (uuid)
+>> Paramètres : id (uuid)
 >>
 >> Body :
 
@@ -97,33 +70,111 @@
 | dateDeb      | string | Date de début de la période (y-m-d H:i)  |
 | dateFin      | string | Date de fin de la période (y-m-d H:i)    |
 | idSpe        | uuid   | ID de la spécialité                      |
-| type         | string | Type de rendez-vous                      |
+| type         | string | Type de rendez-vous (presentiel ou téléconsultation) |
 
-
-> GET /praticiens/{ID-PRATICIEN}
+> POST /praticiens/{id}/indisponibilite
 >
->> Récupère les informations d'un praticien par ID
+>> Ajoute une indisponibilité pour un praticien
 >>
->> Paramètres : ID-PRATICIEN (uuid)
+>> Paramètres : id (uuid)
+>> 
+>> Body :
 
-> POST /praticiens
+| nom attribut | type   | description                              |
+|--------------|--------|------------------------------------------|
+| dateDeb      | string | Date de début de la période (y-m-d H:i)  |
+| dateFin      | string | Date de fin de la période (y-m-d H:i)    |
+
+### Rendez-vous :
+> PUT /rdvs/{id}/annuler
 >
->> Ajoute un nouveau praticien
+>> Annule un rendez-vous
+>>
+>> Paramètres : id (uuid)
+
+> GET /rdvs/{id}
+>
+>> Récupère un rendez-vous
+>>
+>> Paramètres : id (uuid)
+
+> POST /rdvs
+>
+>> Crée un rendez-vous
 >>
 >> Body :
 
-| nom attribut | type   | description                |
-|--------------|--------|----------------------------|
-| nom          | string | Nom du praticien           |
-| prenom       | string | Prénom du praticien        |
-| telephone    | string | Numéro de téléphone        |
-| adresse      | string | Adresse du praticien       |
-| specialite   | uuid   | ID de la spécialité        |
+| nom attribut | type   | description                                          |
+|--------------|--------|------------------------------------------------------|
+| idPatient    | uuid   | ID du patient                                        |
+| idPraticien  | uuid   | ID du praticien                                      |
+| date         | string | Date du rendez-vous (y-m-d hh:mm)                    |
+| specialite   | uuid   | ID de la spécialité (optionnel)                      |
+| type         | string | Type de rendez-vous (présentiel ou téléconsultation) |
+
+> PATCH /rdvs/{id}
+> 
+> Modifie un rendez-vous
+> 
+> Paramètres : id (uuid)
+> 
+> Body :
+
+| nom attribut | type   | description                                                             |
+|--------------|--------|-------------------------------------------------------------------------|
+| idPatient    | uuid   | ID du patient  (optionnel, si vous voulez changer le patient du rdv)     |
+| specialite   | uuid   | ID de la spécialité (optionnel, si vous voulez changer la spécialité)    |
+
+> PUT /rdvs/{id}/payer
+> 
+> Payer un rendez-vous
+> 
+> Paramètres : id (uuid)
+
+> PUT /rdvs/{id}/honorer
+> 
+> Mettre le statut du rendez-vous à honoré
+> 
+> Paramètres : id (uuid)
+
+> PUT /rdvs/{id}/non-honorer
+> 
+> Mettre le statut du rendez-vous à non honoré
+> 
+> Paramètres : id (uuid)
+
+### Authentification :
+> POST /users/signin
+>
+>> Authentifie un utilisateur
+>>
+>> En-tête de la requête (Header) :
+
+| nom attribut | type   | description                   |
+|--------------|--------|-------------------------------|
+| Authorization | string | En-tête contenant les identifiants encodés en Base64 dans le format Basic <base64(email:password) |
+
+> POST /users/register
+>
+>> Enregistre un nouvel utilisateur
+>>
+>> Body :
+
+| nom attribut | type   | description                   |
+|--------------|--------|-------------------------------|
+| Username     | string | Email de l'utilisateur        |
+| Password     | string | Mot de passe de l'utilisateur |
+
+> POST /users/refresh
+>
+>> Rafraîchit le token d'authentification
+>>
+>> Paramètres : Aucun
 
 ### Patients :
-> POST /patients
+> POST /patient
 >
->> Ajoute un nouveau patient
+>> Crée un nouveau patient
 >>
 >> Body :
 
@@ -131,21 +182,14 @@
 |---------------|--------|----------------------------|
 | nom           | string | Nom du patient             |
 | prenom        | string | Prénom du patient          |
+| dateNaissance | string | Date de naissance (y-m-d)  |
 | adresse       | string | Adresse du patient         |
 | telephone     | string | Numéro de téléphone        |
 | mail          | string | Email du patient           |
-| dateNaissance | string | Date de naissance (y-m-d)  |
 | password      | string | Mot de passe du patient    |
 
-### Authentification :
-
-> POST /users/signin
+> GET /patient/{id}
 >
->> Authentifie un utilisateur
+>> Récupère un patient par ID
 >>
->> Autorization : Basic Auth
-
-| nom attribut | type   | description                   |
-|--------------|--------|-------------------------------|
-| Username     | string | Email de l'utilisateur        |
-| Password     | string | Mot de passe de l'utilisateur |
+>> Paramètres : id (uuid)
